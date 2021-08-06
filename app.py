@@ -15,9 +15,48 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""This is the main script of the template project."""
+from license_solver import LicenseSolver
+import click
+from typing import Any
+from typing import Dict
+from typing import Optional
 
-from template.version import __version__
 
-if __name__ == "__main__":
-    print(f"A template project with Thoth integration, v{__version__}.")
+# TODO: pass program arguments
+@click.command()
+@click.pass_context
+@click.option(
+    "-f",
+    "--file",
+    type=str,
+    help="Get license from file"
+)
+@click.option(
+    "-d",
+    "--directory",
+    nargs=1,
+    type=str,
+    help="Get licenses from folder"
+)
+def cli(
+        _: click.Context,
+        directory: Optional[str] = None,
+        file: Optional[str] = None,
+) -> None:
+    if directory and file:
+        print("Only one option between directory and file ")
+
+    license_solver = LicenseSolver()
+
+    if directory:
+        print("DIRECTORY")
+        license_solver.get_dir_files(directory)
+
+    if file:
+        print("FILE")
+        license_solver.get_file(file)
+
+    license_solver.create_file()
+
+
+__name__ == '__main__' and cli()
