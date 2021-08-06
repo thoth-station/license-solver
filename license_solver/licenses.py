@@ -1,35 +1,54 @@
-# author:   Viliam Podhajecky
-# contact:  vpodhaje@redhat.com
+#!/usr/bin/env python3
+# solver-license-job
+# Copyright(C) 2021 Red Hat, Inc.
+#
+# This program is free software: you can redistribute it and / or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+"""Class download licenses and extract data from them."""
 
 import sys
 import urllib.request
 import json
 import attr
-from typing import Dict, Any, List, Optional
 
 
 @attr.s
 class Licenses:
+    """Class detect all licenses from downloaded data."""
+
     _received_text: str = ""
     json_data: dict = dict()
     licenses: list = list()
     licenses_list: list = list()
 
     def __attrs_post_init__(self) -> None:
+        """Run methods."""
         self._download_licenses()
         self._cmp_sets_of_data()
         self._extract()
 
     def _download_licenses(self) -> None:
         """
-            Download licenses from SPDX and load
-            link to repo: https://github.com/spdx/license-list-data
+        Download licenses from SPDX and load.
+
+        link to repo: https://github.com/spdx/license-list-data
         """
         url_json = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json"
         try:
             response = urllib.request.urlopen(url_json)
             data = response.read()
-            self._received_text = data.decode('utf-8')
+            self._received_text = data.decode("utf-8")
             self.json_data = json.loads(self._received_text)
         except ValueError as e:
             print(f"Can't load file.\n Error: {e}", file=sys.stderr)
@@ -40,6 +59,7 @@ class Licenses:
             pass
 
     def _cmp_sets_of_data(self) -> None:
+        """Compare sets od data."""
         local_path = "data/spdx_licenses.json"
 
         with open(local_path) as f:
@@ -51,6 +71,7 @@ class Licenses:
             self.json_data = data
 
     def _extract(self) -> None:
+        """Extract licenses from downloaded data."""
         try:
             for i in self.json_data["licenses"]:
                 # original data

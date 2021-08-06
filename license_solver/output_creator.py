@@ -1,6 +1,21 @@
-# author:   Viliam Podhajecky
-# contact:  vpodhaje@redhat.com
+#!/usr/bin/env python3
+# solver-license-job
+# Copyright(C) 2021 Red Hat, Inc.
+#
+# This program is free software: you can redistribute it and / or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+"""Class create output dictionary."""
 
 import json
 import sys
@@ -8,14 +23,13 @@ from license_solver.package import Package
 
 
 class OutputCreator:
-    """
-    Propose of this class is to create dictionary for all packages (input)
-    """
+    """Propose of this class is to create dictionary for all packages (input)."""
+
     file: dict = {}
 
     def add_package(self, package: Package, warning: bool = False) -> None:
         """
-        Method add package to dictionary
+        Add package to dictionary.
 
         :param package: Package data
         :param warning: default False, if true create warning in package info
@@ -33,9 +47,7 @@ class OutputCreator:
             package_data["warning"] = str(False)
 
         if self.file.get(package.name) is None:
-            self.file[package.name] = {
-                package.version: package_data
-            }
+            self.file[package.name] = {package.version: package_data}
         else:
             if self.file[package.name].get(package.version) is None:
                 self.file[package.name][package.version] = package_data
@@ -44,7 +56,7 @@ class OutputCreator:
 
     def _check_duplicity(self, old: dict, new: dict) -> None:
         """
-        Method check version duplicity, if they don't match create warning in dict
+        Check version duplicity, if they don't match create warning in dict.
 
         :param old: package in class dictionary
         :param new: new package witch want to be added
@@ -64,4 +76,5 @@ class OutputCreator:
                     old["warning"] = True
 
     def print(self, indent=4):
+        """Print dictionary on STDOUT."""
         print(json.dumps(self.file, indent=indent), file=sys.stdout)

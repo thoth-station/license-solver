@@ -1,6 +1,21 @@
-# author:   Viliam Podhajecky
-# contact:  vpodhaje@redhat.com
+#!/usr/bin/env python3
+# solver-license-job
+# Copyright(C) 2021 Red Hat, Inc.
+#
+# This program is free software: you can redistribute it and / or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+"""Main class witch work with detecting and creating output."""
 
 import os
 import sys
@@ -18,6 +33,8 @@ COUNTER_DEBUG = 0
 
 @attrs
 class LicenseSolver:
+    """Class pass all detected files and try to detect all necessary data."""
+
     classifiers: Classifiers = Classifiers()
     licenses: Licenses = Licenses()
     output: OutputCreator = OutputCreator()
@@ -25,14 +42,15 @@ class LicenseSolver:
     _files_list: list = list()
 
     def __attrs_post_init__(self) -> None:
+        """Open JSON file of license aliases."""
         with open("data/license_dictionary.json") as f:
             self.license_dictionary = json.load(f).get("data")
 
     def create_file(self) -> None:
         """
-        Method pass all input files and create output (than print on STDOUT)
+        Pass all input files and create output, witch will be printed on STDOUT.
 
-        :return: print on STDOUT dictionary of all packages
+        :return: None
         """
         global COUNTER_DEBUG
         # comparator = Comparator(self.licenses.licenses_list, self.classifiers.classifiers_list)
@@ -43,7 +61,7 @@ class LicenseSolver:
                 with open(file_path) as f:
                     json_solver = JsonSolver(json.load(f), f)
             except Exception as e:
-                print("Broken or can't find file: ", file_path, file=sys.stderr)
+                print("Broken or can't find file: ", file_path, f"error: {e}", file=sys.stderr)
                 exit(1)
 
             package = Package()
@@ -62,7 +80,7 @@ class LicenseSolver:
 
     def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """
-        Method to get classifier and license groups
+        Get classifier and license groups.
 
         :param json_file: json class witch hold data from file
         :param package: class package witch will hold all package data
@@ -87,7 +105,7 @@ class LicenseSolver:
 
     def _get_license_group(self, license_name: str, package: Package) -> None:
         """
-        Method searching for a group of entered license name
+        Search for a group of entered license name.
 
         :param license_name: name of license to find in class license_list
         :param package: package info
@@ -105,8 +123,11 @@ class LicenseSolver:
         # pass license list
         for lic_li in self.licenses.licenses_list:
             lic_li_lower = [x.lower() for x in lic_li]
-            if license_name.lower() in lic_li_lower or _delete_brackets(license_name).lower() in lic_li_lower \
-                    or _delete_brackets_and_content(license_name).lower() in lic_li_lower:
+            if (
+                license_name.lower() in lic_li_lower
+                or _delete_brackets(license_name).lower() in lic_li_lower
+                or _delete_brackets_and_content(license_name).lower() in lic_li_lower
+            ):
                 package.set_license(lic_li, set_version=True)
                 return
 
@@ -130,7 +151,7 @@ class LicenseSolver:
 
     def _get_classifier_group(self, classifier_name, package: Package) -> None:
         """
-        Method searching for a group of entered classifier name
+        Search for a group of entered classifier name.
 
         :param classifier_name: name of license to find in class classifier list
         :param package: package info
@@ -145,7 +166,7 @@ class LicenseSolver:
 
     def get_file(self, file: str) -> None:
         """
-        Method add file to file_list
+        Add file to file_list.
 
         :param file: path to file
         :return: None
@@ -158,12 +179,11 @@ class LicenseSolver:
 
     def get_dir_files(self, directory) -> None:
         """
-        Method create list of all files in directory
+        Create list of all files in directory.
 
         :param directory: path to directory
         :return: None
         """
-
         for f in os.listdir(directory):
             full_path = os.path.join(directory, f)
             if full_path.lower().endswith(".json"):

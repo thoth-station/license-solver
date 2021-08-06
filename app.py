@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# project template
+# solver-license-job
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -14,35 +14,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+"""solver-license-jon CLI."""
 
 from license_solver import LicenseSolver
 import click
-from typing import Any
-from typing import Dict
 from typing import Optional
 
 
 # TODO: pass program arguments
 @click.command()
 @click.pass_context
-@click.option(
-    "-f",
-    "--file",
-    type=str,
-    help="Get license from file"
-)
-@click.option(
-    "-d",
-    "--directory",
-    nargs=1,
-    type=str,
-    help="Get licenses from folder"
-)
+@click.option("-f", "--file", type=str, help="Get license from file")
+@click.option("-d", "--directory", nargs=1, type=str, help="Get licenses from folder")
 def cli(
-        _: click.Context,
-        directory: Optional[str] = None,
-        file: Optional[str] = None,
+    _: click.Context,
+    directory: Optional[str] = None,
+    file: Optional[str] = None,
 ) -> None:
+    """Parse program arguments."""
     if directory and file:
         print("Only one option between directory and file ")
 
@@ -59,4 +48,4 @@ def cli(
     license_solver.create_file()
 
 
-__name__ == '__main__' and cli()
+__name__ == "__main__" and cli()
