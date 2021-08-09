@@ -20,7 +20,7 @@
 import re
 import sys
 import yaml
-from attr import attrs
+
 from license_solver.package import Package
 
 
@@ -32,13 +32,8 @@ def _delete_brackets_and_content(license_list: str):
     return re.sub(r"\(.*?\)", "", license_list).strip()
 
 
-@attrs
 class Comparator:
     """Class Comparator compare classifiers and licenses."""
-
-    # licenses: Licenses.licenses_list = attrib()
-    # classifiers: Classifiers.classifiers_list = attrib()
-    counter: int = 0
 
     def __attrs_post_init__(self):
         """Open dictionary for comparing license and classifier."""

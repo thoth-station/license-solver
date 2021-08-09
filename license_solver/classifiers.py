@@ -20,7 +20,6 @@
 import re
 import sys
 import urllib.request
-from attr import attrs
 
 
 def _get_abbreviation(classifier: str) -> list:
@@ -44,7 +43,6 @@ def _get_name_license(classifier: str) -> str:
         return ""
 
 
-@attrs
 class Classifiers:
     """Class detect all classifiers from downloaded data."""
 

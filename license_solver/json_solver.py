@@ -20,8 +20,8 @@
 import attr
 
 
-@attr.s
-class JsonSolver:
+@attr.s(slots=True)
+class JsonSolver(object):
     """Class JsonSolver extend class LicenseSolver, help inquiry json data from metadata."""
 
     json_file: dict = attr.ib()

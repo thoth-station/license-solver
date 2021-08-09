@@ -20,7 +20,6 @@
 import os
 import sys
 import json
-from attr import attrs
 from license_solver.classifiers import Classifiers
 from license_solver.licenses import Licenses
 from license_solver.package import Package, _detect_version_and_delete
@@ -28,10 +27,7 @@ from license_solver.json_solver import JsonSolver
 from license_solver.comparator import Comparator, _delete_brackets, _delete_brackets_and_content
 from license_solver.output_creator import OutputCreator
 
-COUNTER_DEBUG = 0
 
-
-@attrs
 class LicenseSolver:
     """Class pass all detected files and try to detect all necessary data."""
 
@@ -52,7 +48,6 @@ class LicenseSolver:
 
         :return: None
         """
-        global COUNTER_DEBUG
         # comparator = Comparator(self.licenses.licenses_list, self.classifiers.classifiers_list)
         comparator = Comparator()
         for file_path in self._files_list[:]:
@@ -75,7 +70,6 @@ class LicenseSolver:
                     self.output.add_package(package, warning=True)
                     pass
 
-        print(COUNTER_DEBUG)
         self.output.print()
 
     def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
@@ -96,12 +90,6 @@ class LicenseSolver:
 
         self._get_license_group(license_name, package)
         self._get_classifier_group(classifier_name, package)
-
-        # DEBUG
-        if package.license and package.classifier:
-            global COUNTER_DEBUG
-            COUNTER_DEBUG += 1
-            # package.print()
 
     def _get_license_group(self, license_name: str, package: Package) -> None:
         """
