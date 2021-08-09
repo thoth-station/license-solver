@@ -35,7 +35,7 @@ def _delete_brackets_and_content(license_list: str):
 class Comparator:
     """Class Comparator compare classifiers and licenses."""
 
-    def __attrs_post_init__(self):
+    def __init__(self):
         """Open dictionary for comparing license and classifier."""
         with open("data/comparator_dictionary.yaml", "r") as f:
             try:

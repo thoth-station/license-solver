@@ -17,15 +17,14 @@
 
 """A class for work with loaded json files."""
 
-import attr
 
-
-@attr.s(slots=True)
-class JsonSolver(object):
+class JsonSolver:
     """Class JsonSolver extend class LicenseSolver, help inquiry json data from metadata."""
 
-    json_file: dict = attr.ib()
-    path: object = attr.ib()
+    def __init__(self, json_file, path):
+        """Init variables."""
+        self.json_file: dict = json_file
+        self.path: object = path
 
     def get_package_name(self):
         """Get package name from metadata."""

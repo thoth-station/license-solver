@@ -20,10 +20,8 @@
 import sys
 import urllib.request
 import json
-import attr
 
 
-@attr.s
 class Licenses:
     """Class detect all licenses from downloaded data."""
 
@@ -32,7 +30,7 @@ class Licenses:
     licenses: list = list()
     licenses_list: list = list()
 
-    def __attrs_post_init__(self) -> None:
+    def __init__(self) -> None:
         """Run methods."""
         self._download_licenses()
         self._cmp_sets_of_data()
