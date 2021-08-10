@@ -19,8 +19,11 @@
 
 import json
 import sys
+import logging
 from license_solver.package import Package
 from typing import Dict, Any
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class OutputCreator:
@@ -79,4 +82,5 @@ class OutputCreator:
 
     def print(self, indent: int = 4) -> None:
         """Print dictionary on STDOUT."""
+        _LOGGER.debug("Print on STDOUT final json")
         print(json.dumps(self.file, indent=indent), file=sys.stdout)

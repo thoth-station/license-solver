@@ -18,11 +18,13 @@
 """A Class compare classifier and license."""
 
 import re
-import sys
 import yaml
 import attr
+import logging
 from typing import List, Any, Dict
 from license_solver.package import Package
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _delete_brackets(license_list: str) -> str:
@@ -45,7 +47,7 @@ class Comparator:
             try:
                 self._comparator_dictionary = yaml.safe_load(f)
             except yaml.YAMLError:
-                print("Can't open data/comparator_dictionary.yaml. Broken file", file=sys.stderr)
+                _LOGGER.warning("Can't open data/comparator_dictionary.yaml or broken file")
                 exit(1)
 
     def cmp(self, package: Package) -> bool:
@@ -88,7 +90,6 @@ class Comparator:
         if self._comparator_dictionary["classifier"].get(classifier[1]) is not None:
             for x in self._comparator_dictionary["classifier"].get(classifier[1]):
                 if x == license_name[0]:
-                    # print(x) # DEBUG
                     return True
 
         return False

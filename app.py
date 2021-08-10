@@ -18,18 +18,31 @@
 
 """solver-license-jon CLI."""
 
-from license_solver import LicenseSolver
 import click
+import logging
+from thoth.common import init_logging
+from license_solver import LicenseSolver
+
+init_logging()
+_LOGGER = logging.getLogger("license_solver")
 
 
 @click.command()
 @click.pass_context
+@click.option(
+    "-v",
+    "--verbose",
+    is_flag=True,
+    envvar="THOTH_SOLVER_LICENSE_JOB_DEBUG",
+    help="Be verbose about what's going on.",
+)
 @click.option(
     "-f",
     "--file",
     nargs=1,
     type=str,
     help="Get license from file",
+    envvar="THOTH_SOLVER_LICENSE_JOB_FILE",
 )
 @click.option(
     "-d",
@@ -37,22 +50,22 @@ import click
     nargs=1,
     type=str,
     help="Get licenses from folder",
+    envvar="THOTH_SOLVER_LICENSE_JOB_DIRECTORY",
 )
-# type ignore [misc]
-def cli(
-    _: click.Context,
-    directory: str,
-    file: str,
-) -> None:
+def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> None:
     """Parse program arguments."""
+    if verbose:
+        _LOGGER.setLevel(logging.DEBUG)
+        _LOGGER.debug("Debug mode is on")
+
     license_solver = LicenseSolver()
 
     if directory:
-        print("DIRECTORY")
+        _LOGGER.debug(f"Parsing directory argument: {directory}")
         license_solver.get_dir_files(directory)
 
     if file:
-        print("FILE")
+        _LOGGER.debug(f"Parsing file argument: {file}")
         license_solver.get_file(file)
 
     license_solver.create_file()

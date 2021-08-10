@@ -17,12 +17,13 @@
 
 """Class download licenses and extract data from them."""
 
-import sys
 import attr
 import json
+import logging
+import requests
 from typing import List, Dict, Any
 
-import requests
+_LOGGER = logging.getLogger(__name__)
 
 
 @attr.s(slots=True)
@@ -84,6 +85,6 @@ class Licenses:
                 self.licenses_list.append(li)
             # print(*self.licenses_list, sep="\n")
         except IndexError as e:
-            print(f"Something bad with Indexing: {e}", file=sys.stderr)
+            _LOGGER.warning(f"Something bad with Indexing: {e}")
         except Exception as e:
-            print(f"Exception. Nice to know but WTF?: {e}", file=sys.stderr)
+            _LOGGER.warning(f"Exception. Nice to know but WTF?: {e}")

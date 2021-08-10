@@ -18,9 +18,9 @@
 """Main class witch work with detecting and creating output."""
 
 import os
-import sys
 import json
 import attr
+import logging
 from typing import List, Tuple, Union, Dict, Any, Optional
 from license_solver.classifiers import Classifiers
 from license_solver.licenses import Licenses
@@ -28,6 +28,8 @@ from license_solver.package import Package, _detect_version_and_delete
 from license_solver.json_solver import JsonSolver
 from license_solver.comparator import Comparator, _delete_brackets, _delete_brackets_and_content
 from license_solver.output_creator import OutputCreator
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @attr.s(slots=True)
@@ -53,13 +55,15 @@ class LicenseSolver:
         :return: None
         """
         comparator = Comparator()
-        for file_path in self._files_list[:]:
+        _LOGGER.debug("Start parsing file list")
+        for file_path in self._files_list[:100]:
+            _LOGGER.debug(f"Parsing file: {file_path}")
             # pass all listed metadata
             try:
                 with open(file_path) as f:
                     json_solver = JsonSolver(json.load(f), f.name)
             except Exception as e:
-                print("Broken or can't find file: ", file_path, f"error: {e}", file=sys.stderr)
+                _LOGGER.error(f"Broken or can't find file: {file_path} error: {e}")
                 exit(1)
 
             package = Package()
@@ -73,11 +77,12 @@ class LicenseSolver:
                     # warning
                     self.output.add_package(package, warning=True)
                     pass
+
         self.output.print()
 
     def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """
-        Get classifier and license groups.
+        Get classifier and license groups and save them to parameter package.
 
         :param json_file: json class witch hold data from file
         :param package: class package witch will hold all package data
@@ -99,8 +104,7 @@ class LicenseSolver:
         Search for a group of entered license name.
 
         :param license_name: name of license to find in class license_list
-        :param package: package info
-        :return: None
+        :return: Tuple[List[str], bool]:
         """
         # undetected license
         if license_name is None:
@@ -160,7 +164,7 @@ class LicenseSolver:
         if os.path.isfile(file) and file.lower().endswith(".json"):
             self._files_list.append(file)
         else:
-            print(f"[ERROR]: wrong format you can insert only .json file: {file}", file=sys.stderr)
+            _LOGGER.warning("wrong format you can insert only .json file: ", file)
 
     def get_dir_files(self, directory: str) -> None:
         """
@@ -170,12 +174,12 @@ class LicenseSolver:
         :return: None
         """
         if os.path.isdir(directory):
+            _LOGGER.debug("Creating list of file from directory")
             for f in os.listdir(directory):
                 full_path = os.path.join(directory, f)
                 if full_path.lower().endswith(".json"):
                     self._files_list.append(full_path)
                 else:
-                    print(f"[ERROR]: wrong format you can insert only .json SKIPPED: {f}", file=sys.stderr)
-
+                    _LOGGER.warning("wrong format you can insert only .json SKIPPED: ", f)
         else:
-            print("[ERROR]: invalid patch to directory", file=sys.stderr)
+            _LOGGER.warning("invalid path to directory")

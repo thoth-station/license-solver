@@ -18,7 +18,10 @@
 """A class for work with loaded json files."""
 
 import attr
+import logging
 from typing import Dict, Any, Union, Optional, List
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @attr.s(slots=True)
@@ -33,6 +36,7 @@ class JsonSolver:
         try:
             return self.json_file["result"]["tree"][0].get("package_name")
         except Exception:
+            _LOGGER.debug("Can't detect package name from input file")
             return None
 
     def get_package_version(self) -> Optional[Any]:
@@ -40,6 +44,7 @@ class JsonSolver:
         try:
             return self.json_file["result"]["tree"][0].get("package_version")
         except Exception:
+            _LOGGER.debug("Can't detect package version from input file")
             return None
 
     def get_license_name(self) -> Optional[Any]:
@@ -47,6 +52,7 @@ class JsonSolver:
         try:
             return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("License")
         except Exception:
+            _LOGGER.debug("Can't detect license_name from input file")
             return None
 
     def get_classifier_name(self) -> Union[List[Any], Any, None]:
@@ -54,6 +60,7 @@ class JsonSolver:
         try:
             return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
         except Exception:
+            _LOGGER.debug("Can't detect license_name from input file")
             return None
 
     def get_errors(self) -> bool:
@@ -71,4 +78,5 @@ class JsonSolver:
                 or self.json_file["result"].get("unresolved")
             )
         except Exception:
+            _LOGGER.debug("Metadata from file have error (skipped)")
             return False

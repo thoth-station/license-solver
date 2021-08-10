@@ -18,38 +18,19 @@
 """Class download classifiers and extract data from them."""
 
 import re
-import sys
 import attr
 import requests
+import logging
 from typing import List, Any
 
-
-def _get_abbreviation(classifier: str) -> List[str]:
-    """Abbreviation for license name."""
-    abbreviation = list()
-    start = classifier.find("(")
-    end = classifier.find(")")
-    if start != -1 and end != -1:
-        txt = classifier[classifier.find("(") + 1 : classifier.find(")")]
-        abbreviation.append(txt)
-    return abbreviation
-
-
-def _get_name_license(classifier: str) -> str:
-    """Get licence name from classifier string."""
-    data = classifier.split("::")
-
-    if len(data) > 0 and len(data[len(data) - 1]) > 1:
-        return data[len(data) - 1].strip()[0:]
-    else:
-        return ""
+_LOGGER = logging.getLogger(__name__)
 
 
 @attr.s()
 class Classifiers:
     """Class detect all classifiers from downloaded data."""
 
-    _received_text: str = ""
+    received_text = attr.ib(init=False, type=str)
     classifiers: List[str] = list()
     classifiers_list: List[Any] = list()
 
@@ -64,9 +45,9 @@ class Classifiers:
         url = "https://pypi.org/pypi?%3Aaction=list_classifiers"
         response = requests.get(url)
         if response.status_code != 200:
-            print("[Error] in downloading classifiers from PyPI")
+            _LOGGER.warning("unsuccessful downloading classifiers from PyPI")
         else:
-            self._received_text = response.text
+            self.received_text = response.text
 
     def _cmp_sets_of_data(self) -> None:
         """Compare downloaded file with local."""
@@ -74,21 +55,21 @@ class Classifiers:
         with open(local_path, "r") as file:
             data = file.read()
 
-        if not self._received_text or self._received_text.find("License ::") == -1:
-            print("[Error] in downloading files from server or broken document. Using local file. ", file=sys.stderr)
-            self._received_text = data
+        if not self.received_text or self.received_text.find("License ::") == -1:
+            _LOGGER.warning("Using local classifier file")
+            self.received_text = data
 
     def _convert_to_list(self) -> None:
         """Covert downloaded string to list."""
-        self.classifiers = list(self._received_text.split("\n"))
+        self.classifiers = list(self.received_text.split("\n"))
 
     def _extract(self) -> None:
         """Extract licence from classifiers list."""
         for classifier_full in self.classifiers:
             if len(classifier_full) >= 7 and classifier_full.startswith("License"):
                 # append licenses to list
-                classifier_name = _get_name_license(classifier_full)
-                classifier_abbreviation = _get_abbreviation(classifier_full)
+                classifier_name = self._get_name_license(classifier_full)
+                classifier_abbreviation = self._get_abbreviation(classifier_full)
 
                 li = list()
                 li.append(classifier_full)  # full classifier name
@@ -113,3 +94,24 @@ class Classifiers:
         """Extract classifiers from downloaded data."""
         self._convert_to_list()
         self._extract()
+
+    @staticmethod
+    def _get_name_license(classifier: str) -> str:
+        """Get licence name from classifier string."""
+        data = classifier.split("::")
+
+        if len(data) > 0 and len(data[len(data) - 1]) > 1:
+            return data[len(data) - 1].strip()[0:]
+        else:
+            return ""
+
+    @staticmethod
+    def _get_abbreviation(classifier: str) -> List[str]:
+        """Abbreviation for license name."""
+        abbreviation = list()
+        start = classifier.find("(")
+        end = classifier.find(")")
+        if start != -1 and end != -1:
+            txt = classifier[classifier.find("(") + 1 : classifier.find(")")]
+            abbreviation.append(txt)
+        return abbreviation
