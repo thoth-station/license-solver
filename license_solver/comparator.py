@@ -20,28 +20,33 @@
 import re
 import sys
 import yaml
-
+import attr
+from typing import List, Any, Dict
 from license_solver.package import Package
 
 
-def _delete_brackets(license_list: str):
+def _delete_brackets(license_list: str) -> str:
     return re.sub(r"(\(?)(\)?)", "", license_list).strip()
 
 
-def _delete_brackets_and_content(license_list: str):
+def _delete_brackets_and_content(license_list: str) -> str:
     return re.sub(r"\(.*?\)", "", license_list).strip()
 
 
+@attr.s(slots=True)
 class Comparator:
     """Class Comparator compare classifiers and licenses."""
 
-    def __init__(self):
+    _comparator_dictionary: Dict[str, Any] = attr.ib(init=False)
+
+    def __attrs_post_init__(self) -> None:
         """Open dictionary for comparing license and classifier."""
         with open("data/comparator_dictionary.yaml", "r") as f:
             try:
                 self._comparator_dictionary = yaml.safe_load(f)
             except yaml.YAMLError:
-                print("Can't open data/comparator_dictionary.yaml", file=sys.stderr) and exit(1)
+                print("Can't open data/comparator_dictionary.yaml. Broken file", file=sys.stderr)
+                exit(1)
 
     def cmp(self, package: Package) -> bool:
         """
@@ -53,7 +58,7 @@ class Comparator:
         _license = package.license
         _classifier = package.classifier
 
-        if _license is None or _classifier is None:
+        if not _license or not _classifier:
             return True
 
         for x in _classifier:
@@ -69,17 +74,20 @@ class Comparator:
         # print("Warning\n")
         return False
 
-    def search_in_dictionary(self, license, classifier) -> bool:
+    def search_in_dictionary(self, license_name: List[str], classifier: List[str]) -> bool:
         """
         Search for alias in data/comparator_dictionary.yaml.
 
-        :param license: License to compare with classifier
+        :param license_name: License to compare with classifier
         :param classifier: Classifier to compare with license
         :return: True if found match, False if not
         """
+        if len(license_name) == 0:
+            return False
+
         if self._comparator_dictionary["classifier"].get(classifier[1]) is not None:
             for x in self._comparator_dictionary["classifier"].get(classifier[1]):
-                if x == license[0]:
+                if x == license_name[0]:
                     # print(x) # DEBUG
                     return True
 

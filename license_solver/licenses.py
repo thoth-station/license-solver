@@ -18,19 +18,23 @@
 """Class download licenses and extract data from them."""
 
 import sys
-import urllib.request
+import attr
 import json
+from typing import List, Dict, Any
+
+import requests
 
 
+@attr.s(slots=True)
 class Licenses:
     """Class detect all licenses from downloaded data."""
 
-    _received_text: str = ""
-    json_data: dict = dict()
-    licenses: list = list()
-    licenses_list: list = list()
+    received_text = attr.ib(init=False, type=str)
+    json_data = attr.ib(init=True, type=Dict[str, Any], default=dict())
+    licenses: List[Any] = list()
+    licenses_list: List[Any] = list()
 
-    def __init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         """Run methods."""
         self._download_licenses()
         self._cmp_sets_of_data()
@@ -43,29 +47,23 @@ class Licenses:
         link to repo: https://github.com/spdx/license-list-data
         """
         url_json = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json"
-        try:
-            response = urllib.request.urlopen(url_json)
-            data = response.read()
-            self._received_text = data.decode("utf-8")
-            self.json_data = json.loads(self._received_text)
-        except ValueError as e:
-            print(f"Can't load file.\n Error: {e}", file=sys.stderr)
-        except Exception as e:
-            # no internet connection or url to download data are wrong
-            # in next step will load local file
-            print("[Error] in downloading licenses from SPDX:", e, file=sys.stderr)
-            pass
+        response = requests.get(url_json)
+
+        if response.status_code != 200:
+            print("[Error] in downloading licenses from SPDX")
+        else:
+            self.received_text = response.text
+            self.json_data = json.loads(self.received_text)
 
     def _cmp_sets_of_data(self) -> None:
         """Compare sets od data."""
-        local_path = "data/spdx_licenses.json"
+        if not hasattr(self, "received_text") or not self.received_text:
+            local_path = "data/spdx_licenses.json"
 
-        with open(local_path) as f:
-            data = json.load(f)
+            with open(local_path) as f:
+                data = json.load(f)
 
-        if not self._received_text:
-            print("[Error] in downloading files from server or broken document. Using local file.", file=sys.stderr)
-            self._received_text = data
+            self.received_text = data
             self.json_data = data
 
     def _extract(self) -> None:

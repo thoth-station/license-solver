@@ -20,12 +20,13 @@
 import json
 import sys
 from license_solver.package import Package
+from typing import Dict, Any
 
 
 class OutputCreator:
     """Propose of this class is to create dictionary for all packages (input)."""
 
-    file: dict = {}
+    file: Dict[Any, Any] = dict()
 
     def add_package(self, package: Package, warning: bool = False) -> None:
         """
@@ -35,7 +36,7 @@ class OutputCreator:
         :param warning: default False, if true create warning in package info
         :return: None
         """
-        package_data = {
+        package_data: Dict[str, Any] = {
             "license": package.license,
             "license_version": str(package.license_version),
             "classifier": package.classifier,
@@ -54,7 +55,8 @@ class OutputCreator:
             else:
                 self._check_duplicity(self.file[package.name].get(package.version), package_data)
 
-    def _check_duplicity(self, old: dict, new: dict) -> None:
+    @staticmethod
+    def _check_duplicity(old: Dict[str, Any], new: Dict[str, Any]) -> None:
         """
         Check version duplicity, if they don't match create warning in dict.
 
@@ -75,6 +77,6 @@ class OutputCreator:
                 elif old[index] != new[index]:
                     old["warning"] = True
 
-    def print(self, indent=4):
+    def print(self, indent: int = 4) -> None:
         """Print dictionary on STDOUT."""
         print(json.dumps(self.file, indent=indent), file=sys.stdout)

@@ -20,6 +20,8 @@
 import os
 import sys
 import json
+import attr
+from typing import List, Tuple, Union, Dict, Any, Optional
 from license_solver.classifiers import Classifiers
 from license_solver.licenses import Licenses
 from license_solver.package import Package, _detect_version_and_delete
@@ -28,14 +30,16 @@ from license_solver.comparator import Comparator, _delete_brackets, _delete_brac
 from license_solver.output_creator import OutputCreator
 
 
+@attr.s(slots=True)
 class LicenseSolver:
     """Class pass all detected files and try to detect all necessary data."""
+
+    license_dictionary: Dict[str, Any] = attr.ib(init=False)
+    _files_list: List[str] = list()
 
     classifiers: Classifiers = Classifiers()
     licenses: Licenses = Licenses()
     output: OutputCreator = OutputCreator()
-
-    _files_list: list = list()
 
     def __attrs_post_init__(self) -> None:
         """Open JSON file of license aliases."""
@@ -48,19 +52,19 @@ class LicenseSolver:
 
         :return: None
         """
-        # comparator = Comparator(self.licenses.licenses_list, self.classifiers.classifiers_list)
         comparator = Comparator()
         for file_path in self._files_list[:]:
             # pass all listed metadata
             try:
                 with open(file_path) as f:
-                    json_solver = JsonSolver(json.load(f), f)
+                    json_solver = JsonSolver(json.load(f), f.name)
             except Exception as e:
                 print("Broken or can't find file: ", file_path, f"error: {e}", file=sys.stderr)
                 exit(1)
 
             package = Package()
             self.get_classifier_and_license(json_solver, package)
+            # TODO
             if package.name and package.version and (package.license_version or package.classifier):
                 if comparator.cmp(package):
                     # no warning
@@ -69,7 +73,6 @@ class LicenseSolver:
                     # warning
                     self.output.add_package(package, warning=True)
                     pass
-
         self.output.print()
 
     def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
@@ -85,13 +88,13 @@ class LicenseSolver:
         package.set_package_name(json_file.get_package_name())
         package.set_version(json_file.get_package_version())
 
-        classifier_name = json_file.get_classifier_name()
         license_name = json_file.get_license_name()
+        package.set_license(self.get_license_group(license_name))
 
-        self._get_license_group(license_name, package)
-        self._get_classifier_group(classifier_name, package)
+        classifier_name = json_file.get_classifier_name()
+        package.set_classifier(self.get_classifier_group(classifier_name))
 
-    def _get_license_group(self, license_name: str, package: Package) -> None:
+    def get_license_group(self, license_name: Optional[Any]) -> Tuple[List[str], bool]:
         """
         Search for a group of entered license name.
 
@@ -101,12 +104,11 @@ class LicenseSolver:
         """
         # undetected license
         if license_name is None:
-            return
+            return list(["UNKNOWN"]), False
 
         # UNKNOWN license name
         if license_name.lower() == "unknown":
-            package.set_license(list(["UNKNOWN"]))
-            return
+            return list(["UNKNOWN"]), False
 
         # pass license list
         for lic_li in self.licenses.licenses_list:
@@ -116,10 +118,9 @@ class LicenseSolver:
                 or _delete_brackets(license_name).lower() in lic_li_lower
                 or _delete_brackets_and_content(license_name).lower() in lic_li_lower
             ):
-                package.set_license(lic_li, set_version=True)
-                return
+                return lic_li, True
 
-        # try to found license without version of license or license in dictionary
+        # try to found license without version or license in dictionary
         for lic_li in self.licenses.licenses_list:
             license_name_no_version, _ = _detect_version_and_delete(lic_li[len(lic_li) - 1])
 
@@ -127,30 +128,27 @@ class LicenseSolver:
                 # license found in license dictionary
                 _license = self.license_dictionary.get(license_name.lower())
                 _license_li = [x for x in self.licenses.licenses_list if _license in x][0]
-                package.set_license(_license_li, set_version=True)
-                return
-
+                return _license_li, True
             elif license_name_no_version == license_name:
-                # license found without license version
-                package.set_license(list([license_name]))
-                package.set_license_version("UNDETECTED")
-                return
-        return
+                return list([license_name]), True
 
-    def _get_classifier_group(self, classifier_name, package: Package) -> None:
+        return list(), False
+
+    def get_classifier_group(self, classifier_name: Union[List[Any], Any, None]) -> Optional[Any]:
         """
         Search for a group of entered classifier name.
 
         :param classifier_name: name of license to find in class classifier list
-        :param package: package info
         :return: None
         """
         if classifier_name is None:
-            return
+            return None
 
         for cla_li in self.classifiers.classifiers_list:
             if list(set(cla_li) & set(classifier_name)):
-                package.set_classifier(cla_li)
+                return cla_li
+
+        return None
 
     def get_file(self, file: str) -> None:
         """
@@ -159,23 +157,25 @@ class LicenseSolver:
         :param file: path to file
         :return: None
         """
-        if file.lower().endswith(".json"):
+        if os.path.isfile(file) and file.lower().endswith(".json"):
             self._files_list.append(file)
         else:
             print(f"[ERROR]: wrong format you can insert only .json file: {file}", file=sys.stderr)
-            exit(1)
 
-    def get_dir_files(self, directory) -> None:
+    def get_dir_files(self, directory: str) -> None:
         """
         Create list of all files in directory.
 
         :param directory: path to directory
         :return: None
         """
-        for f in os.listdir(directory):
-            full_path = os.path.join(directory, f)
-            if full_path.lower().endswith(".json"):
-                self._files_list.append(full_path)
-            else:
-                print(f"[ERROR]: wrong format you can insert only .json SKIPPED: {f}", file=sys.stderr)
-                exit(1)
+        if os.path.isdir(directory):
+            for f in os.listdir(directory):
+                full_path = os.path.join(directory, f)
+                if full_path.lower().endswith(".json"):
+                    self._files_list.append(full_path)
+                else:
+                    print(f"[ERROR]: wrong format you can insert only .json SKIPPED: {f}", file=sys.stderr)
+
+        else:
+            print("[ERROR]: invalid patch to directory", file=sys.stderr)

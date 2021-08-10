@@ -14,27 +14,37 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+# type: ignore
+
 """solver-license-jon CLI."""
 
 from license_solver import LicenseSolver
 import click
-from typing import Optional
 
 
-# TODO: pass program arguments
 @click.command()
 @click.pass_context
-@click.option("-f", "--file", type=str, help="Get license from file")
-@click.option("-d", "--directory", nargs=1, type=str, help="Get licenses from folder")
+@click.option(
+    "-f",
+    "--file",
+    nargs=1,
+    type=str,
+    help="Get license from file",
+)
+@click.option(
+    "-d",
+    "--directory",
+    nargs=1,
+    type=str,
+    help="Get licenses from folder",
+)
+# type ignore [misc]
 def cli(
     _: click.Context,
-    directory: Optional[str] = None,
-    file: Optional[str] = None,
+    directory: str,
+    file: str,
 ) -> None:
     """Parse program arguments."""
-    if directory and file:
-        print("Only one option between directory and file ")
-
     license_solver = LicenseSolver()
 
     if directory:

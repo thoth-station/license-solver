@@ -15,16 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""init package."""
+"""Init package."""
 
 from .license_solver import LicenseSolver
 
-# from .licenses import *
-# from .classifiers import *
-# from .json_solver import *
-# from .comparator import *
-
-
+__title__ = "license_solver"
+__version__ = "0.1.0"
 __author__ = "Viliam Podhajecky <vpodhaje@redhat.com>"
+
 
 __all__ = ["LicenseSolver"]

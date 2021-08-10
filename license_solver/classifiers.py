@@ -19,10 +19,12 @@
 
 import re
 import sys
-import urllib.request
+import attr
+import requests
+from typing import List, Any
 
 
-def _get_abbreviation(classifier: str) -> list:
+def _get_abbreviation(classifier: str) -> List[str]:
     """Abbreviation for license name."""
     abbreviation = list()
     start = classifier.find("(")
@@ -43,14 +45,15 @@ def _get_name_license(classifier: str) -> str:
         return ""
 
 
+@attr.s()
 class Classifiers:
     """Class detect all classifiers from downloaded data."""
 
     _received_text: str = ""
-    classifiers: list = list()
-    classifiers_list: list = list()
+    classifiers: List[str] = list()
+    classifiers_list: List[Any] = list()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         """INIT method."""
         self._download_classifiers()
         self._cmp_sets_of_data()
@@ -59,14 +62,11 @@ class Classifiers:
     def _download_classifiers(self) -> None:
         """Download classifiers from PyPI."""
         url = "https://pypi.org/pypi?%3Aaction=list_classifiers"
-        try:
-            response = urllib.request.urlopen(url)
-            data = response.read()
-            self._received_text = data.decode("utf-8")
-        except Exception as e:
-            # no internet connection or url to download data are wrong
-            print(f"[Error] in downloading classifiers from PyPI: {e}", file=sys.stderr)
-            pass
+        response = requests.get(url)
+        if response.status_code != 200:
+            print("[Error] in downloading classifiers from PyPI")
+        else:
+            self._received_text = response.text
 
     def _cmp_sets_of_data(self) -> None:
         """Compare downloaded file with local."""

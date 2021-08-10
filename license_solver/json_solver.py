@@ -17,44 +17,46 @@
 
 """A class for work with loaded json files."""
 
+import attr
+from typing import Dict, Any, Union, Optional, List
 
+
+@attr.s(slots=True)
 class JsonSolver:
     """Class JsonSolver extend class LicenseSolver, help inquiry json data from metadata."""
 
-    def __init__(self, json_file, path):
-        """Init variables."""
-        self.json_file: dict = json_file
-        self.path: object = path
+    json_file = attr.ib(default=None, type=Dict[str, Any])
+    path = attr.ib(default=None, type=str)
 
-    def get_package_name(self):
+    def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
         try:
             return self.json_file["result"]["tree"][0].get("package_name")
         except Exception:
             return None
 
-    def get_package_version(self):
+    def get_package_version(self) -> Optional[Any]:
         """Get package version from metadata."""
         try:
             return self.json_file["result"]["tree"][0].get("package_version")
         except Exception:
             return None
 
-    def get_license_name(self):
+    def get_license_name(self) -> Optional[Any]:
         """Get license name from metadata."""
         try:
             return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("License")
         except Exception:
             return None
 
-    def get_classifier_name(self):
+    def get_classifier_name(self) -> Union[List[Any], Any, None]:
         """Get classifier name from metadata."""
         try:
             return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
         except Exception:
             return None
 
-    def get_errors(self):
+    def get_errors(self) -> bool:
         """
         Check if errors occurred return True.
 
