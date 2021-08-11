@@ -1,3 +1,4 @@
 attrs
 pyyaml
 requests
+click

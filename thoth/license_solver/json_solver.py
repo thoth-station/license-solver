@@ -28,8 +28,8 @@ _LOGGER = logging.getLogger("thoth.license_solver.json_solver")
 class JsonSolver:
     """Class JsonSolver extend class LicenseSolver, help inquiry json data from metadata."""
 
-    json_file = attr.ib(default=None, type=Dict[str, Any])
-    path = attr.ib(default=None, type=str)
+    json_file = attr.ib(default=dict(), type=Dict[str, Any])
+    path = attr.ib(default="", type=str)
 
     def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
