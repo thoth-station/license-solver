@@ -45,7 +45,8 @@ class Solver:
 
     def __attrs_post_init__(self) -> None:
         """Open JSON file of license aliases."""
-        with open("thoth/license_solver/data/license_dictionary.json") as f:
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/license_dictionary.json")
+        with open(file_path) as f:
             self.license_dictionary = json.load(f).get("data")
 
     def create_file(self) -> None:
@@ -56,7 +57,7 @@ class Solver:
         """
         comparator = Comparator()
         _LOGGER.debug("Start parsing file list")
-        for file_path in self._files_list[:100]:
+        for file_path in self._files_list[:]:
             _LOGGER.debug(f"Parsing file: {file_path}")
             # pass all listed metadata
             try:

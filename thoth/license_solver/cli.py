@@ -23,7 +23,6 @@ import logging
 from thoth.common import init_logging
 from thoth.license_solver.solver import Solver
 
-
 init_logging()
 _LOGGER = logging.getLogger("thoth.license_solver")
 

@@ -17,6 +17,7 @@
 
 """A Class compare classifier and license."""
 
+import os
 import re
 import yaml
 import attr
@@ -43,7 +44,8 @@ class Comparator:
 
     def __attrs_post_init__(self) -> None:
         """Open dictionary for comparing license and classifier."""
-        with open("thoth/license_solver/data/comparator_dictionary.yaml", "r") as f:
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/comparator_dictionary.yaml")
+        with open(file_path) as f:
             try:
                 self._comparator_dictionary = yaml.safe_load(f)
             except yaml.YAMLError:

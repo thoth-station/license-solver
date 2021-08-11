@@ -17,6 +17,7 @@
 
 """Class download licenses and extract data from them."""
 
+import os
 import attr
 import json
 import logging
@@ -59,9 +60,8 @@ class Licenses:
     def _cmp_sets_of_data(self) -> None:
         """Compare sets od data."""
         if not hasattr(self, "received_text") or not self.received_text:
-            local_path = "thoth/license_solver/data/spdx_licenses.json"
-
-            with open(local_path) as f:
+            file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/spdx_licenses.json")
+            with open(file_path) as f:
                 data = json.load(f)
 
             self.received_text = data

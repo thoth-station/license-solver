@@ -17,6 +17,7 @@
 
 """Class download classifiers and extract data from them."""
 
+import os
 import re
 import attr
 import requests
@@ -26,7 +27,7 @@ from typing import List, Any
 _LOGGER = logging.getLogger(__name__)
 
 
-@attr.s(slots=True)
+@attr.s
 class Classifiers:
     """Class detect all classifiers from downloaded data."""
 
@@ -51,8 +52,8 @@ class Classifiers:
 
     def _cmp_sets_of_data(self) -> None:
         """Compare downloaded file with local."""
-        local_path = "thoth/license_solver/data/pypi_classifiers.txt"
-        with open(local_path) as file:
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/pypi_classifiers.txt")
+        with open(file_path) as file:
             data = file.read()
 
         if not self.received_text or self.received_text.find("License ::") == -1:
