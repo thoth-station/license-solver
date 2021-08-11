@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -22,18 +22,18 @@ import json
 import attr
 import logging
 from typing import List, Tuple, Union, Dict, Any, Optional
-from license_solver.classifiers import Classifiers
-from license_solver.licenses import Licenses
-from license_solver.package import Package, _detect_version_and_delete
-from license_solver.json_solver import JsonSolver
-from license_solver.comparator import Comparator, _delete_brackets, _delete_brackets_and_content
-from license_solver.output_creator import OutputCreator
+from .classifiers import Classifiers
+from .licenses import Licenses
+from .package import Package, _detect_version_and_delete
+from .json_solver import JsonSolver
+from .comparator import Comparator, _delete_brackets, _delete_brackets_and_content
+from .output_creator import OutputCreator
 
 _LOGGER = logging.getLogger(__name__)
 
 
 @attr.s(slots=True)
-class LicenseSolver:
+class Solver:
     """Class pass all detected files and try to detect all necessary data."""
 
     license_dictionary: Dict[str, Any] = attr.ib(init=False)
@@ -45,7 +45,7 @@ class LicenseSolver:
 
     def __attrs_post_init__(self) -> None:
         """Open JSON file of license aliases."""
-        with open("data/license_dictionary.json") as f:
+        with open("thoth/license_solver/data/license_dictionary.json") as f:
             self.license_dictionary = json.load(f).get("data")
 
     def create_file(self) -> None:

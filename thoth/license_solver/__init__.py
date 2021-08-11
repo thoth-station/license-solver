@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -17,11 +17,12 @@
 
 """Init package."""
 
-from .license_solver import LicenseSolver
+# from .license_solver import Solver
 
-__title__ = "license_solver"
+__title__ = "license-solver"
 __version__ = "0.1.0"
 __author__ = "Viliam Podhajecky <vpodhaje@redhat.com>"
 
-
-__all__ = ["LicenseSolver"]
+# __all__ = [
+#     "Solver"
+# ]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -21,10 +21,11 @@
 import click
 import logging
 from thoth.common import init_logging
-from license_solver import LicenseSolver
+from thoth.license_solver.solver import Solver
+
 
 init_logging()
-_LOGGER = logging.getLogger("license_solver")
+_LOGGER = logging.getLogger("thoth.license_solver")
 
 
 @click.command()
@@ -58,7 +59,7 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
         _LOGGER.setLevel(logging.DEBUG)
         _LOGGER.debug("Debug mode is on")
 
-    license_solver = LicenseSolver()
+    license_solver = Solver()
 
     if directory:
         _LOGGER.debug(f"Parsing directory argument: {directory}")

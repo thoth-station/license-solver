@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -20,7 +20,7 @@
 import json
 import sys
 import logging
-from license_solver.package import Package
+from .package import Package
 from typing import Dict, Any
 
 _LOGGER = logging.getLogger(__name__)

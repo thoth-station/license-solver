@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -21,7 +21,7 @@ import attr
 import logging
 from typing import Dict, Any, Union, Optional, List
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger("thoth.license_solver.json_solver")
 
 
 @attr.s(slots=True)

@@ -1,0 +1,9 @@
+exclude *.yaml
+
+include OWNERS
+include LICENSE
+include README.md
+include mypy.ini
+include Pipfile
+include Pipfile.lock
+include requirements.txt

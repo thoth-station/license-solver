@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -59,7 +59,7 @@ class Licenses:
     def _cmp_sets_of_data(self) -> None:
         """Compare sets od data."""
         if not hasattr(self, "received_text") or not self.received_text:
-            local_path = "data/spdx_licenses.json"
+            local_path = "thoth/license_solver/data/spdx_licenses.json"
 
             with open(local_path) as f:
                 data = json.load(f)

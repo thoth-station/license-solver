@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# solver-license-job
+# license-solver
 # Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
@@ -22,7 +22,7 @@ import yaml
 import attr
 import logging
 from typing import List, Any, Dict
-from license_solver.package import Package
+from .package import Package
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ class Comparator:
 
     def __attrs_post_init__(self) -> None:
         """Open dictionary for comparing license and classifier."""
-        with open("data/comparator_dictionary.yaml", "r") as f:
+        with open("thoth/license_solver/data/comparator_dictionary.yaml", "r") as f:
             try:
                 self._comparator_dictionary = yaml.safe_load(f)
             except yaml.YAMLError:
