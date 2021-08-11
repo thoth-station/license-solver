@@ -62,7 +62,7 @@ class Solver:
             # pass all listed metadata
             try:
                 with open(file_path) as f:
-                    json_solver = JsonSolver(json_file=json.load(f), path=f.name)
+                    json_solver = JsonSolver(json.load(f), f.name)
             except Exception as e:
                 _LOGGER.error(f"Broken or can't find file: {file_path} error: {e}")
                 exit(1)

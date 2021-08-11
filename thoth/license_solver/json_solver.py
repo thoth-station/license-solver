@@ -18,6 +18,7 @@
 """A class for work with loaded json files."""
 
 import attr
+from attr import attrib
 import logging
 from typing import Dict, Any, Union, Optional, List
 
@@ -28,8 +29,8 @@ _LOGGER = logging.getLogger("thoth.license_solver.json_solver")
 class JsonSolver:
     """Class JsonSolver extend class LicenseSolver, help inquiry json data from metadata."""
 
-    json_file = attr.ib(type=Dict[str, Any])
-    path = attr.ib(type=str)
+    json_file = attrib(type=Dict[str, Any])
+    path = attrib(type=str)
 
     def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
