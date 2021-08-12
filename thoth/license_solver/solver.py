@@ -62,7 +62,7 @@ class Solver:
             # pass all listed metadata
             try:
                 with open(file_path) as f:
-                    json_solver = JsonSolver(json.load(f), f.name)
+                    json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
             except Exception as e:
                 _LOGGER.error(f"Broken or can't find file: {file_path} error: {e}")
                 exit(1)
@@ -70,7 +70,7 @@ class Solver:
             package = Package()
             self.get_classifier_and_license(json_solver, package)
             # TODO
-            if package.name and package.version and (package.license_version or package.classifier):
+            if package.name and package.version and (package.license or package.classifier):
                 if comparator.cmp(package):
                     # no warning
                     self.output.add_package(package)
