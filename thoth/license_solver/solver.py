@@ -69,7 +69,7 @@ class Solver:
 
             package = Package()
             self.get_classifier_and_license(json_solver, package)
-            # TODO
+
             if package.name and package.version and (package.license or package.classifier):
                 if comparator.cmp(package):
                     # no warning
@@ -78,7 +78,11 @@ class Solver:
                     # warning
                     self.output.add_package(package, warning=True)
                     pass
+            else:
+                # no need to compare license and classifier
+                self.output.add_package(package)
 
+        # print result to STDOUT
         self.output.print()
 
     def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
