@@ -46,9 +46,9 @@ class OutputCreator:
         }
 
         if warning:
-            package_data["warning"] = str(True)
+            package_data["warning"] = True
         else:
-            package_data["warning"] = str(False)
+            package_data["warning"] = False
 
         if self.file.get(package.name) is None:
             self.file[package.name] = {package.version: package_data}

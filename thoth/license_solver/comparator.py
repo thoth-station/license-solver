@@ -50,7 +50,7 @@ class Comparator:
                 self._comparator_dictionary = yaml.safe_load(f)
             except yaml.YAMLError:
                 _LOGGER.warning("Can't open data/comparator_dictionary.yaml or broken file")
-                exit(1)
+                raise yaml.YAMLError
 
     def cmp(self, package: Package) -> bool:
         """
@@ -59,23 +59,30 @@ class Comparator:
         :param package: Package from input
         :return: True if match, False if not
         """
-        _license = package.license
-        _classifier = package.classifier
+        license_name = package.license
+        classifier_name = package.classifier
 
-        if not _license or not _classifier:
+        debug_tab = 10 * "\t"
+
+        if not license_name or not classifier_name:
             return True
 
-        for x in _classifier:
+        for x in classifier_name:
+
+            _LOGGER.debug(
+                "Compare license and classifier:\n" "{}{}\n" "{}{}".format(debug_tab, license_name, debug_tab, x)
+            )
+
             if (
-                list(set(_license) & set(x))
-                or self.search_in_dictionary(_license, x)
-                or _license[0] == "UNKNOWN"
-                or _license[0].lower() == "the unlicense"
+                list(set(license_name) & set(x))
+                or self.search_in_dictionary(license_name, x)
+                or license_name[0] == "UNKNOWN"
+                or license_name[0].lower() == "the unlicense"
             ):
-                # print("Match ", list(set(_license) & set(_classifier[0])), "\n") # DEBUG
+                _LOGGER.debug("Found match or alias")
                 return True
 
-        # print("Warning\n")
+        _LOGGER.debug("No match")
         return False
 
     def search_in_dictionary(self, license_name: List[str], classifier: List[str]) -> bool:

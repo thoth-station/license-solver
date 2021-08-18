@@ -21,7 +21,6 @@ import os
 import attr
 import json
 import logging
-import requests
 from typing import List, Dict, Any
 
 _LOGGER = logging.getLogger(__name__)
@@ -38,34 +37,20 @@ class Licenses:
 
     def __attrs_post_init__(self) -> None:
         """Run methods."""
-        self._download_licenses()
-        self._cmp_sets_of_data()
+        self._load_data()
         self._extract()
 
-    def _download_licenses(self) -> None:
-        """
-        Download licenses from SPDX and load.
-
-        link to repo: https://github.com/spdx/license-list-data
-        """
-        url_json = "https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json"
-        response = requests.get(url_json)
-
-        if response.status_code != 200:
-            print("[Error] in downloading licenses from SPDX")
-        else:
-            self.received_text = response.text
-            self.json_data = json.loads(self.received_text)
-
-    def _cmp_sets_of_data(self) -> None:
-        """Compare sets od data."""
-        if not hasattr(self, "received_text") or not self.received_text:
-            file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/spdx_licenses.json")
-            with open(file_path) as f:
-                data = json.load(f)
-
-            self.received_text = data
-            self.json_data = data
+    def _load_data(self) -> None:
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/spdx_licenses.json")
+        try:
+            with open(file_path) as file:
+                data = file.read()
+                self.received_text = data
+                self.json_data = json.loads(self.received_text)
+                _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
+        except OSError:
+            _LOGGER.critical(f"Could not open/read file: {file_path}")
+            raise OSError
 
     def _extract(self) -> None:
         """Extract licenses from downloaded data."""
@@ -83,7 +68,6 @@ class Licenses:
                     li.append(i["licenseId"].replace("-", " "))
 
                 self.licenses_list.append(li)
-            # print(*self.licenses_list, sep="\n")
         except IndexError as e:
             _LOGGER.warning(f"Something bad with Indexing: {e}")
         except Exception as e:

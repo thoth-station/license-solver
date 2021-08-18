@@ -46,8 +46,12 @@ class Solver:
     def __attrs_post_init__(self) -> None:
         """Open JSON file of license aliases."""
         file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/license_dictionary.json")
-        with open(file_path) as f:
-            self.license_dictionary = json.load(f).get("data")
+        try:
+            with open(file_path) as f:
+                self.license_dictionary = json.load(f).get("data")
+                _LOGGER.debug("File license_dictionary.json was successful loaded")
+        except OSError:
+            raise OSError
 
     def create_file(self) -> None:
         """
@@ -63,6 +67,7 @@ class Solver:
             try:
                 with open(file_path) as f:
                     json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
+                    _LOGGER.debug(f"Loaded file {file_path}")
             except Exception as e:
                 _LOGGER.error(f"Broken or can't find file: {file_path} error: {e}")
                 exit(1)
@@ -70,17 +75,19 @@ class Solver:
             package = Package()
             self.get_classifier_and_license(json_solver, package)
 
-            if package.name and package.version and (package.license or package.classifier):
-                if comparator.cmp(package):
-                    # no warning
-                    self.output.add_package(package)
+            # save only package with name and version
+            if package.name and package.version:
+                if package.license and package.classifier:
+                    if comparator.cmp(package):
+                        # no warning
+                        self.output.add_package(package)
+                    else:
+                        # set warning
+                        self.output.add_package(package, warning=True)
+                        pass
                 else:
-                    # warning
-                    self.output.add_package(package, warning=True)
-                    pass
-            else:
-                # no need to compare license and classifier
-                self.output.add_package(package)
+                    # no need to compare license and classifier
+                    self.output.add_package(package)
 
         # print result to STDOUT
         self.output.print()

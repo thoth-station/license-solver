@@ -20,45 +20,35 @@
 import os
 import re
 import attr
-import requests
 import logging
 from typing import List, Any
 
 _LOGGER = logging.getLogger(__name__)
 
 
-@attr.s
+@attr.s(slots=True)
 class Classifiers:
     """Class detect all classifiers from downloaded data."""
 
     received_text = attr.ib(init=False, type=str)
-    classifiers: List[str] = list()
+    classifiers: List[str] = attr.ib(init=True, default=list())
     classifiers_list: List[Any] = list()
 
     def __attrs_post_init__(self) -> None:
         """INIT method."""
-        self._download_classifiers()
-        self._cmp_sets_of_data()
+        self._load_data()
         self._extract_classifiers()
 
-    def _download_classifiers(self) -> None:
-        """Download classifiers from PyPI."""
-        url = "https://pypi.org/pypi?%3Aaction=list_classifiers"
-        response = requests.get(url)
-        if response.status_code != 200:
-            _LOGGER.warning("unsuccessful downloading classifiers from PyPI")
-        else:
-            self.received_text = response.text
-
-    def _cmp_sets_of_data(self) -> None:
-        """Compare downloaded file with local."""
+    def _load_data(self) -> None:
         file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/pypi_classifiers.txt")
-        with open(file_path) as file:
-            data = file.read()
-
-        if not self.received_text or self.received_text.find("License ::") == -1:
-            _LOGGER.warning("Using local classifier file")
-            self.received_text = data
+        try:
+            with open(file_path) as file:
+                data = file.read()
+                self.received_text = data
+                _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
+        except OSError:
+            _LOGGER.critical(f"Could not open/read file: {file_path}")
+            raise OSError
 
     def _convert_to_list(self) -> None:
         """Covert downloaded string to list."""
