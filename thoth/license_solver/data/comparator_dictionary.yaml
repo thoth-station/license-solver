@@ -1,0 +1,138 @@
+version: 1.0
+
+classifier:
+  Apache Software License:
+    - Apache # alias for undetected version
+    - Apache License 2.0
+    - Apache License 1.1
+    - Apache License 1.0
+
+  BSD License:
+    #   BSD 4
+    - BSD 4-Clause "Original" or "Old" License
+    - BSD 4 Clause Shortened
+    - BSD-4-Clause (University of California-Specific)
+    #   BSD 3
+    - BSD 3-Clause "New" or "Revised" License
+    - BSD 3-Clause No Nuclear Warranty
+    - BSD 3-Clause No Nuclear License 2014
+    - BSD 3-Clause Modification
+    - BSD 3-Clause Clear License
+    - BSD 3-Clause No Military License
+    - Lawrence Berkeley National Labs BSD variant license
+    - BSD with attribution
+    - BSD 3-Clause Open MPI variant
+    #   BSD 2
+    - BSD 2-Clause FreeBSD License
+    - BSD 2-Clause "Simplified" License
+    - BSD 2-Clause NetBSD License
+    - BSD-2-Clause Plus Patent License
+    - BSD 2-Clause with views sentence
+    #   BSD 1
+    - BSD 1-Clause License
+    #   BSD 0
+    - BSD Zero Clause License
+    #   BSD ?
+    - BSD Protection License
+    - BSD Source Code Attribution
+
+  Zope Public License:
+    - ZPL # alias for undetected version
+    - Zope Public License 1.1
+    - Zope Public License 2.0
+    - Zope Public License 2.1
+
+  # GNU licenses
+  GNU Affero General Public License v3:
+    - AGPL # alias for undetected version
+    - GNU Affero General Public License v3.0
+    - GNU Affero General Public License v3.0 only
+    - GNU Affero General Public License v3.0 or later
+
+
+  GNU Affero General Public License v3 or later (AGPLv3+):
+    - AGPL # alias for undetected version
+    - GNU Affero General Public License v3.0
+    - GNU Affero General Public License v3.0 only
+    - GNU Affero General Public License v3.0 or later
+
+  GNU General Public License (GPL):
+    - GPL # alias for undetected version
+    - GNU General Public License v1.0
+    - GNU General Public License v1.0 only
+    - GNU General Public License v1.0 or later
+    - GNU General Public License v2.0 only
+    - GNU General Public License v2.0 or later
+    - GNU General Public License v2.0 w/Bison exception
+    - GNU General Public License v2.0 w/GCC Runtime Library exception
+    - GNU General Public License v2.0 w/Font exception
+    - GNU General Public License v3.0 only
+    - GNU General Public License v3.0 or later
+    - GNU General Public License v3.0 w/Autoconf exceptions
+    - GNU General Public License v3.0 w/GCC Runtime Library exception
+
+  GNU General Public License v2 (GPLv2):
+    - GPL # alias for undetected version
+    - GNU General Public License v2.0 only
+    - GNU General Public License v2.0 or later
+    - GNU General Public License v2.0 w/Bison exception
+    - GNU General Public License v2.0 w/GCC Runtime Library exception
+    - GNU General Public License v2.0 w/Font exception
+
+
+  GNU General Public License v2 or later (GPLv2+):
+    - GPL # alias for undetected version
+    - GNU General Public License v2.0 only
+    - GNU General Public License v2.0 or later
+    - GNU General Public License v2.0 w/Bison exception
+    - GNU General Public License v2.0 w/GCC Runtime Library exception
+    - GNU General Public License v2.0 w/Font exception
+
+  GNU General Public License v3 (GPLv3):
+    - GPL # alias for undetected version
+    - GNU General Public License v3.0 only
+    - GNU General Public License v3.0 or later
+    - GNU General Public License v3.0 w/Autoconf exception
+    - GNU General Public License v3.0 w/GCC Runtime Library exception
+
+  GNU General Public License v3 or later (GPLv3+):
+    - GPL # alias for undetected version
+    - GNU General Public License v3.0 only
+    - GNU General Public License v3.0 or later
+    - GNU General Public License v3.0 w/Autoconf exceptions
+    - GNU General Public License v3.0 w/GCC Runtime Library exception
+
+  GNU Library or Lesser General Public License (LGPL):
+    - LGPL # alias for undetected version
+    - GNU Library General Public License v2 only
+    - GNU Library General Public License v2 or later
+    - GNU Lesser General Public License v2.1 only
+    - GNU Lesser General Public License v2.1 or later
+    - GNU Lesser General Public License v3.0 only
+    - GNU Lesser General Public License v3.0 or later
+
+  GNU Lesser General Public License v2 (LGPLv2):
+    - LGPL # alias for undetected version
+    - GNU Library General Public License v2 only
+    - GNU Library General Public License v2 or later
+
+  GNU Lesser General Public License v2 or later (LGPLv2+):
+    - LGPL # alias for undetected version
+    - GNU Library General Public License v2 only
+    - GNU Library General Public License v2 or later
+    - GNU Lesser General Public License v2.1 only
+    - GNU Lesser General Public License v2.1 or later
+
+  GNU Lesser General Public License v3 (LGPLv3):
+    - LGPL # alias for undetected version
+    - GNU Lesser General Public License v3.0 only
+    - GNU Lesser General Public License v3.0 or later
+
+  GNU Lesser General Public License v3 or later (LGPLv3+):
+    - LGPL # alias for undetected version
+    - GNU Lesser General Public License v3.0 only
+    - GNU Lesser General Public License v3.0 or later
+
+  Python Software Foundation License:
+    - PSF
+    - Python Software Foundation License 2.0
