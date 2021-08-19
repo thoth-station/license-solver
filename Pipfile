@@ -12,6 +12,8 @@ types-requests = "*"
 attrs = "*"
 pyyaml = "*"
 requests = "*"
+click = "*"
+thoth-common = "*"
 
 [requires]
 python_version = "3.8"
