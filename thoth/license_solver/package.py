@@ -18,6 +18,8 @@
 """File is proposed for creating Package objects."""
 
 import re
+import yaml
+import os
 from typing import Union, Tuple, List, Any, Optional
 
 
@@ -63,8 +65,16 @@ class Package:
 
     def set_license(self, license_name: Tuple[List[str], bool]) -> None:
         """Set type of license."""
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/license_without_versions.yaml")
+        with open(file_path) as f:
+            data = yaml.load(f)
+            licenses_without_version = data["license-no-versions"]
+
         if len(license_name[0]) > 1:
-            if license_name[1]:
+            if license_name[0][0] in licenses_without_version:
+                self.license = license_name[0]
+                self.set_license_version("LICENSE-WITHOUT-VERSION")
+            elif license_name[1]:
                 _license_name_no_version, _license_version = _detect_version_and_delete(
                     license_name[0][len(license_name[0]) - 1]
                 )
