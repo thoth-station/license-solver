@@ -176,7 +176,7 @@ class Solver:
         if os.path.isfile(file) and file.lower().endswith(".json"):
             self._files_list.append(file)
         else:
-            _LOGGER.warning("wrong format you can insert only .json file: ", file)
+            _LOGGER.warning(f"wrong format you can insert only .json file: {file}")
 
     def get_dir_files(self, directory: str) -> None:
         """
@@ -192,6 +192,6 @@ class Solver:
                 if full_path.lower().endswith(".json"):
                     self._files_list.append(full_path)
                 else:
-                    _LOGGER.warning("wrong format you can insert only .json SKIPPED: ", f)
+                    _LOGGER.warning(f"wrong format you can insert only .json SKIPPED: {f}")
         else:
             _LOGGER.warning("invalid path to directory")

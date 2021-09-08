@@ -69,6 +69,7 @@ setup(
             "data/license_dictionary.json",
             "data/pypi_classifiers.txt",
             "data/spdx_licenses.json",
+            "data/license_without_versions.yaml",
         ]
     },
     entry_points={"console_scripts": ["thoth-license-solver=thoth.license_solver.cli:cli"]},

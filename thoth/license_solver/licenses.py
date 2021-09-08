@@ -70,7 +70,5 @@ class Licenses:
                     li.append(i["licenseId"].replace("-", " "))
 
                 self.licenses_list.append(li)
-        except IndexError as e:
-            _LOGGER.warning(f"Something bad with Indexing: {e}")
         except Exception as e:
-            _LOGGER.warning(f"Exception. Nice to know but WTF?: {e}")
+            _LOGGER.warning(f"Something bad with Indexing: {e}")

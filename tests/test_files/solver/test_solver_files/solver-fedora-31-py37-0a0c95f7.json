@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "analyzer": "thoth-solver",
+    "analyzer_version": "1.4.1",
+    "arguments": {
+      "python": {
+        "exclude_packages": null,
+        "index": "https://pypi.org/simple",
+        "no_pretty": false,
+        "no_transitive": true,
+        "output": "http://result-api/api/v1/solver-result",
+        "requirements": "pymongo==1.4",
+        "virtualenv": "/home/solver/venv"
+      },
+      "thoth-solver": {
+        "verbose": false
+      }
+    },
+    "datetime": "2019-12-24T17:44:08.250883",
+    "distribution": {
+      "codename": "",
+      "id": "fedora",
+      "like": "",
+      "version": "31",
+      "version_parts": {
+        "build_number": "",
+        "major": "31",
+        "minor": ""
+      }
+    },
+    "document_id": "solver-fedora-31-py37-0a0c95f7",
+    "duration": 2,
+    "hostname": "solver-fedora-31-py37-0a0c95f7-b69g2",
+    "os_release": {
+      "id": "fedora",
+      "name": "Fedora",
+      "platform_id": "platform:f31",
+      "redhat_bugzilla_product": "Fedora",
+      "redhat_bugzilla_product_version": "31",
+      "redhat_support_product": "Fedora",
+      "redhat_support_product_version": "31",
+      "variant_id": "container",
+      "version": "31 (Container Image)",
+      "version_id": "31"
+    },
+    "python": {
+      "api_version": 1013,
+      "implementation_name": "cpython",
+      "major": 3,
+      "micro": 5,
+      "minor": 7,
+      "releaselevel": "final",
+      "serial": 0
+    },
+    "thoth_deployment_name": "thoth-psi-stage",
+    "timestamp": 1577209448
+  },
+  "result": {
+    "environment": {
+      "implementation_name": "cpython",
+      "implementation_version": "3.7.5",
+      "os_name": "posix",
+      "platform_machine": "x86_64",
+      "platform_python_implementation": "CPython",
+      "platform_release": "3.10.0-957.21.2.el7.x86_64",
+      "platform_system": "Linux",
+      "platform_version": "#1 SMP Tue May 28 09:26:43 UTC 2019",
+      "python_full_version": "3.7.5",
+      "python_version": "3.7",
+      "sys_platform": "linux"
+    },
+    "environment_packages": [
+      {
+        "package_name": "pipdeptree",
+        "package_version": "0.13.2"
+      }
+    ],
+    "errors": [
+      {
+        "details": {
+          "command": "/home/solver/venv/bin/python3 -m pip install --force-reinstall --no-cache-dir --no-deps pymongo==1.4 --index-url \"https://pypi.org/simple\"  --trusted-host pypi.org",
+          "message": "Command exited with non-zero status code (1):     ERROR: Command errored out with exit status 1:\n     command: /home/solver/venv/bin/python3 -c 'import sys, setuptools, tokenize; sys.argv[0] = '\"'\"'/tmp/pip-install-v4pc3x20/pymongo/setup.py'\"'\"'; __file__='\"'\"'/tmp/pip-install-v4pc3x20/pymongo/setup.py'\"'\"';f=getattr(tokenize, '\"'\"'open'\"'\"', open)(__file__);code=f.read().replace('\"'\"'\\r\\n'\"'\"', '\"'\"'\\n'\"'\"');f.close();exec(compile(code, __file__, '\"'\"'exec'\"'\"'))' egg_info --egg-base /tmp/pip-install-v4pc3x20/pymongo/pip-egg-info\n         cwd: /tmp/pip-install-v4pc3x20/pymongo/\n    Complete output (6 lines):\n    Traceback (most recent call last):\n      File \"<string>\", line 1, in <module>\n      File \"/tmp/pip-install-v4pc3x20/pymongo/setup.py\", line 69\n        print \"\"\n               ^\n    SyntaxError: Missing parentheses in call to 'print'. Did you mean print(\"\")?\n    ----------------------------------------\nERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.\n",
+          "return_code": 1,
+          "stderr": "    ERROR: Command errored out with exit status 1:\n     command: /home/solver/venv/bin/python3 -c 'import sys, setuptools, tokenize; sys.argv[0] = '\"'\"'/tmp/pip-install-v4pc3x20/pymongo/setup.py'\"'\"'; __file__='\"'\"'/tmp/pip-install-v4pc3x20/pymongo/setup.py'\"'\"';f=getattr(tokenize, '\"'\"'open'\"'\"', open)(__file__);code=f.read().replace('\"'\"'\\r\\n'\"'\"', '\"'\"'\\n'\"'\"');f.close();exec(compile(code, __file__, '\"'\"'exec'\"'\"'))' egg_info --egg-base /tmp/pip-install-v4pc3x20/pymongo/pip-egg-info\n         cwd: /tmp/pip-install-v4pc3x20/pymongo/\n    Complete output (6 lines):\n    Traceback (most recent call last):\n      File \"<string>\", line 1, in <module>\n      File \"/tmp/pip-install-v4pc3x20/pymongo/setup.py\", line 69\n        print \"\"\n               ^\n    SyntaxError: Missing parentheses in call to 'print'. Did you mean print(\"\")?\n    ----------------------------------------\nERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.\n",
+          "stdout": "Collecting pymongo==1.4\n  Downloading https://files.pythonhosted.org/packages/9b/7d/7645e80b40626c33d3fa177f922225e78280ea5912a1466381abc7597547/pymongo-1.4.tar.gz (113kB)\n",
+          "timeout": 60
+        },
+        "index_url": "https://pypi.org/simple",
+        "is_provided_package": true,
+        "is_provided_package_version": true,
+        "package_name": "pymongo",
+        "package_version": "1.4",
+        "type": "command_error"
+      }
+    ],
+    "tree": [],
+    "unparsed": [],
+    "unresolved": []
+  }
+}

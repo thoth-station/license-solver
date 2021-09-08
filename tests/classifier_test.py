@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # license-solver
-# Copyright(C) 2019 - 2021 Fridolin Pokorny
+# Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 """Tests related to class Licenses."""
 
+import pytest
+
 from thoth.license_solver.classifiers import Classifiers
 
 
@@ -27,13 +29,8 @@ class TestClassifier:
 
     def test_wrong_file_path(self) -> None:
         """Test loading file and test with wrong file path."""
-        try:
+        with pytest.raises(OSError):
             self.classifier.load_data(file_path="wrong_path")
-            assert False, "Must be except"
-        except OSError:
-            assert True
-        except Exception as e:
-            assert False, f"Exception must be OSError. Not {e}"
 
     def test_init_variables(self) -> None:
         """Test if variables are initialized."""
@@ -44,6 +41,7 @@ class TestClassifier:
         """Test extracting classifier name."""
         classifier_txt = "License :: OSI Approved :: MIT License"
         assert self.classifier._extract_name(classifier_txt) == "MIT License", "extract_name does not work properly"
+        assert self.classifier._extract_name("") == ""
 
     def test_extract_abbreviation(self):
         """Text extracting abbreviation."""
@@ -54,6 +52,6 @@ class TestClassifier:
             self.classifier._extract_abbreviation(classifier_txt_no_abbreviation) == list()
         ), "Example does not have abbreviation"
 
-        assert self.classifier._extract_abbreviation(classifier_txt_with_abbreviation) == list(
+        assert self.classifier._extract_abbreviation(classifier_txt_with_abbreviation) == (
             ["MPL"]
         ), "Example does have abbreviation, but no found"

@@ -71,8 +71,7 @@ class Classifiers:
                 # abbreviation
                 if len(classifier_abbreviation) > 0:
                     for abbre in classifier_abbreviation:
-                        classifier_no_abbreviation = re.sub(" +", " ", classifier_name)
-                        classifier_no_abbreviation = re.sub(" +", " ", classifier_no_abbreviation)
+                        classifier_no_abbreviation = re.sub(r"\s*\([^()]*\)\s*", "", classifier_name)
                         if classifier_name != classifier_no_abbreviation:
                             li.append(classifier_no_abbreviation)  # name without abbreviation
 

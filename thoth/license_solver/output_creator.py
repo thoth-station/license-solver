@@ -72,7 +72,8 @@ class OutputCreator:
         else:
             for index in old:
                 if old[index] is None and old[index] != new[index]:
-                    old[index] = new[index]
+                    if index != "license_version":
+                        old[index] = new[index]
 
                     if index == "license":
                         old["license_version"] = new["license_version"]
@@ -80,7 +81,7 @@ class OutputCreator:
                 elif old[index] != new[index]:
                     old["warning"] = True
 
-    def print(self, indent: int = 4) -> None:
+    def print(self) -> None:
         """Print dictionary on STDOUT."""
         _LOGGER.debug("Print on STDOUT final json")
-        print(json.dumps(self.file, indent=indent), file=sys.stdout)
+        print(json.dumps(self.file), file=sys.stdout)

@@ -1,0 +1,602 @@
+{
+  "metadata": {
+    "analyzer": "thoth-solver",
+    "analyzer_version": "1.4.1",
+    "arguments": {
+      "python": {
+        "exclude_packages": null,
+        "index": "https://pypi.org/simple",
+        "no_pretty": false,
+        "no_transitive": true,
+        "output": "/mnt/workdir/solver-fedora-31-py37-0a0a46ec",
+        "requirements": "oslotest===4.2.0",
+        "virtualenv": "/home/solver/venv"
+      },
+      "thoth-solver": {
+        "verbose": false
+      }
+    },
+    "datetime": "2020-04-08T03:34:43.017997",
+    "distribution": {
+      "codename": "",
+      "id": "fedora",
+      "like": "",
+      "version": "31",
+      "version_parts": {
+        "build_number": "",
+        "major": "31",
+        "minor": ""
+      }
+    },
+    "document_id": "solver-fedora-31-py37-0a0a46ec",
+    "duration": 6,
+    "hostname": "solver-fedora-31-py37-0a0a46ec-2725709581",
+    "os_release": {
+      "id": "fedora",
+      "name": "Fedora",
+      "platform_id": "platform:f31",
+      "redhat_bugzilla_product": "Fedora",
+      "redhat_bugzilla_product_version": "31",
+      "redhat_support_product": "Fedora",
+      "redhat_support_product_version": "31",
+      "variant_id": "container",
+      "version": "31 (Container Image)",
+      "version_id": "31"
+    },
+    "python": {
+      "api_version": 1013,
+      "implementation_name": "cpython",
+      "major": 3,
+      "micro": 5,
+      "minor": 7,
+      "releaselevel": "final",
+      "serial": 0
+    },
+    "thoth_deployment_name": "thoth-psi-stage",
+    "timestamp": 1586316883
+  },
+  "result": {
+    "environment": {
+      "implementation_name": "cpython",
+      "implementation_version": "3.7.5",
+      "os_name": "posix",
+      "platform_machine": "x86_64",
+      "platform_python_implementation": "CPython",
+      "platform_release": "3.10.0-957.21.2.el7.x86_64",
+      "platform_system": "Linux",
+      "platform_version": "#1 SMP Tue May 28 09:26:43 UTC 2019",
+      "python_full_version": "3.7.5",
+      "python_version": "3.7",
+      "sys_platform": "linux"
+    },
+    "environment_packages": [
+      {
+        "package_name": "pipdeptree",
+        "package_version": "0.13.2"
+      }
+    ],
+    "errors": [],
+    "tree": [
+      {
+        "dependencies": [
+          {
+            "extra": [],
+            "extras": [],
+            "marker": null,
+            "marker_evaluated": null,
+            "marker_evaluation_error": null,
+            "marker_evaluation_result": true,
+            "normalized_package_name": "fixtures",
+            "package_name": "fixtures",
+            "resolved_versions": [
+              {
+                "index": "https://pypi.org/simple",
+                "versions": [
+                  "3.0.0"
+                ]
+              }
+            ],
+            "specifier": ">=3.0.0"
+          },
+          {
+            "extra": [],
+            "extras": [],
+            "marker": null,
+            "marker_evaluated": null,
+            "marker_evaluation_error": null,
+            "marker_evaluation_result": true,
+            "normalized_package_name": "python-subunit",
+            "package_name": "python-subunit",
+            "resolved_versions": [
+              {
+                "index": "https://pypi.org/simple",
+                "versions": [
+                  "1.0.0",
+                  "1.1.0",
+                  "1.2.0",
+                  "1.3.0",
+                  "1.4.0"
+                ]
+              }
+            ],
+            "specifier": ">=1.0.0"
+          },
+          {
+            "extra": [],
+            "extras": [],
+            "marker": null,
+            "marker_evaluated": null,
+            "marker_evaluation_error": null,
+            "marker_evaluation_result": true,
+            "normalized_package_name": "six",
+            "package_name": "six",
+            "resolved_versions": [
+              {
+                "index": "https://pypi.org/simple",
+                "versions": [
+                  "1.10.0",
+                  "1.11.0",
+                  "1.12.0",
+                  "1.13.0",
+                  "1.14.0"
+                ]
+              }
+            ],
+            "specifier": ">=1.10.0"
+          },
+          {
+            "extra": [],
+            "extras": [],
+            "marker": null,
+            "marker_evaluated": null,
+            "marker_evaluation_error": null,
+            "marker_evaluation_result": true,
+            "normalized_package_name": "testtools",
+            "package_name": "testtools",
+            "resolved_versions": [
+              {
+                "index": "https://pypi.org/simple",
+                "versions": [
+                  "2.2.0",
+                  "2.3.0",
+                  "2.4.0"
+                ]
+              }
+            ],
+            "specifier": ">=2.2.0"
+          },
+          {
+            "extra": [],
+            "extras": [],
+            "marker": null,
+            "marker_evaluated": null,
+            "marker_evaluation_error": null,
+            "marker_evaluation_result": true,
+            "normalized_package_name": "mock",
+            "package_name": "mock",
+            "resolved_versions": [
+              {
+                "index": "https://pypi.org/simple",
+                "versions": [
+                  "2.0.0",
+                  "3.0.0",
+                  "3.0.1",
+                  "3.0.2",
+                  "3.0.3",
+                  "3.0.4",
+                  "3.0.5",
+                  "4.0.0",
+                  "4.0.1",
+                  "4.0.2"
+                ]
+              }
+            ],
+            "specifier": ">=2.0.0"
+          }
+        ],
+        "importlib_metadata": {
+          "entry_points": [],
+          "files": [
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "DLEU3_8O5ctDP3VIdruFZZjZ_zEiz2CChNFxrmWXWr4"
+              },
+              "path": "../../../bin/oslo_debug_helper",
+              "size": 1181
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "uMM0ekgPt3yQXaAc1xDqLmNkA9IZqlwijsKtScgiJpU"
+              },
+              "path": "../../../bin/oslo_run_cross_tests",
+              "size": 2861
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "SGox3nMyFTg_rptYVav7HXu0zPyp3dN7KM3GE1TvVvM"
+              },
+              "path": "../../../bin/oslo_run_pre_release_tests",
+              "size": 6672
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "1ogKcKFgqmUArR_qOAgE9i715v9-K7dyPTq6tZuhSLc"
+              },
+              "path": "oslotest-4.2.0.dist-info/AUTHORS",
+              "size": 2717
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg"
+              },
+              "path": "oslotest-4.2.0.dist-info/INSTALLER",
+              "size": 4
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "CeipvOyAZxBGUsFoaFqwkx54aPnIKEtm9a5u2uXxEws"
+              },
+              "path": "oslotest-4.2.0.dist-info/LICENSE",
+              "size": 10142
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "K9g-yY1hyMAdkfAgoXuGgHr4bUgJWGUUXGLKzqIRvxg"
+              },
+              "path": "oslotest-4.2.0.dist-info/METADATA",
+              "size": 1788
+            },
+            {
+              "hash": null,
+              "path": "oslotest-4.2.0.dist-info/RECORD",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "g4nMs7d-Xl9-xC9XovUrsDHGXt-FT0E17Yqo92DEfvY"
+              },
+              "path": "oslotest-4.2.0.dist-info/WHEEL",
+              "size": 92
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "8O9wNTtpiJqT3F1Q4Ox5Z13rZE2eZ6Tt3VmUnD-OObY"
+              },
+              "path": "oslotest-4.2.0.dist-info/pbr.json",
+              "size": 46
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "S3imWEMmv-J9oZVGORsdILO1f67cyLWG3xdIkINr-Hs"
+              },
+              "path": "oslotest-4.2.0.dist-info/top_level.txt",
+              "size": 9
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "qJ1-Y9XbqFhUsDrx-m8Z1biq_zMSnXeMCJayrWbH0A0"
+              },
+              "path": "oslotest/__init__.py",
+              "size": 649
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/__init__.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/base.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/createfile.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/log.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/mock_fixture.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/modules.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/output.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/__pycache__/timeout.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "6iWFesa9qv9UOESNxC-hVrsrBOrmSX5AlX_mKQOTgiY"
+              },
+              "path": "oslotest/base.py",
+              "size": 6606
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "TAYbxdskZe4KFLWGa3YUkVrAgQqe3igd7rqa-NybGuY"
+              },
+              "path": "oslotest/createfile.py",
+              "size": 2393
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "WALVjffbsejdUvSbtXIdlIcngUD_OHBdTJLbsgRojoo"
+              },
+              "path": "oslotest/log.py",
+              "size": 3107
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "QfthoARZKT5cM_EXo6DTNPThgSFt4K2VY7u5utxnjpU"
+              },
+              "path": "oslotest/mock_fixture.py",
+              "size": 7518
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "DDzKdy9Jq1QJmALloxFQaJzuV-aMs8CNxxsOhirsIW8"
+              },
+              "path": "oslotest/modules.py",
+              "size": 1683
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "lYCbZNnzUHSOy5abYrEQ9Hm1kHXErVot2eOH0dLjJuA"
+              },
+              "path": "oslotest/output.py",
+              "size": 2546
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "qJ1-Y9XbqFhUsDrx-m8Z1biq_zMSnXeMCJayrWbH0A0"
+              },
+              "path": "oslotest/tests/__init__.py",
+              "size": 649
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/__pycache__/__init__.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+              },
+              "path": "oslotest/tests/unit/__init__.py",
+              "size": 0
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/__init__.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_base.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_createfile.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_log.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_mock_fixture.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_mockpatch.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_modules.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_output.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tests/unit/__pycache__/test_timeout.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "__fSrJovBSg1zVqHzc11-wyc5r1u96KDahB1oNzmPUU"
+              },
+              "path": "oslotest/tests/unit/test_base.py",
+              "size": 6984
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "CEGhymh9mtNr643Cf2I_UiLySZ22I1ucAAfIJXQ03ac"
+              },
+              "path": "oslotest/tests/unit/test_createfile.py",
+              "size": 2041
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "dkDu0kybsE_WW5q-Z-9q253rK85TdrT4Eni6HvUZrtE"
+              },
+              "path": "oslotest/tests/unit/test_log.py",
+              "size": 4092
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "B4W6Bsajkv_JeJXMt1oHAClIkGv7vaFOogTEguiqkDs"
+              },
+              "path": "oslotest/tests/unit/test_mock_fixture.py",
+              "size": 4467
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "6tmJtO9A0qIfAzOCtNyzZ5QYQRrpYFt61eDhhY6mn44"
+              },
+              "path": "oslotest/tests/unit/test_mockpatch.py",
+              "size": 987
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "umMme0O5CQwULylJ9QqHvxInaqZdJo3U9bF7eYqj57A"
+              },
+              "path": "oslotest/tests/unit/test_modules.py",
+              "size": 918
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "4FBshshzpUayR_RAWM2ty5J0BimNiLeL0tTaQVFMlsI"
+              },
+              "path": "oslotest/tests/unit/test_output.py",
+              "size": 2203
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "R4D5s3GVptDVRw9VR7P3mGrk7jGq9PuSNC2GfHBGe3A"
+              },
+              "path": "oslotest/tests/unit/test_timeout.py",
+              "size": 3849
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "eyL4oUzltJl8GlIcuuxY4hYg91h_gAbzZLV6bed1v8g"
+              },
+              "path": "oslotest/timeout.py",
+              "size": 1739
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+              },
+              "path": "oslotest/tools/__init__.py",
+              "size": 0
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tools/__pycache__/__init__.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "oslotest/tools/__pycache__/config.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "rLHd1tqVBlqofq0hKJCNkguwyujYRUYdyDhqxNlL5tw"
+              },
+              "path": "oslotest/tools/config.py",
+              "size": 1334
+            }
+          ],
+          "metadata": {
+            "Author": "OpenStack",
+            "Author-email": "openstack-discuss@lists.openstack.org",
+            "Classifier": [
+              "Environment :: OpenStack",
+              "Intended Audience :: Developers",
+              "Intended Audience :: Information Technology",
+              "License :: OSI Approved :: Apache Software License",
+              "Operating System :: POSIX :: Linux",
+              "Programming Language :: Python",
+              "Programming Language :: Python :: 3",
+              "Programming Language :: Python :: 3.6",
+              "Programming Language :: Python :: 3.7",
+              "Programming Language :: Python :: 3 :: Only",
+              "Programming Language :: Python :: Implementation :: CPython"
+            ],
+            "Home-page": "https://docs.openstack.org/oslotest/latest/",
+            "License": "UNKNOWN",
+            "Metadata-Version": "2.1",
+            "Name": "oslotest",
+            "Platform": [
+              "UNKNOWN"
+            ],
+            "Requires-Dist": [
+              "fixtures (>=3.0.0)",
+              "python-subunit (>=1.0.0)",
+              "six (>=1.10.0)",
+              "testtools (>=2.2.0)",
+              "mock (>=2.0.0)"
+            ],
+            "Requires-Python": ">=3.6",
+            "Summary": "Oslo test framework",
+            "Version": "4.2.0"
+          },
+          "requires": [
+            "fixtures (>=3.0.0)",
+            "python-subunit (>=1.0.0)",
+            "six (>=1.10.0)",
+            "testtools (>=2.2.0)",
+            "mock (>=2.0.0)"
+          ],
+          "version": "4.2.0"
+        },
+        "index_url": "https://pypi.org/simple",
+        "package_name": "oslotest",
+        "package_version": "4.2.0",
+        "package_version_requested": "4.2.0",
+        "sha256": [
+          "84c61383c23e7402761d14898575cc0da5d6f31f2413a475ec71a053992bd713",
+          "e89bc59747f0934406c9990bcc7e93d8bfc8a80bb62abf68c7a1249b273e0ee0"
+        ]
+      }
+    ],
+    "unparsed": [],
+    "unresolved": []
+  }
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # license-solver
-# Copyright(C) 2019 - 2021 Fridolin Pokorny
+# Copyright(C) 2021 Red Hat, Inc.
 #
 # This program is free software: you can redistribute it and / or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,3 +40,9 @@ class TestLicense:
         assert self.licenses.json_data, "Failed to load JSON data"
         assert self.licenses.licenses
         assert self.licenses.licenses_list
+
+    def test_extract(self):
+        """Test extract."""
+        self.licenses.json_data = {"licenses": {"aa": "a"}}
+
+        self.licenses._extract()
