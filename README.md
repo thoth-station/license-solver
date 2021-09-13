@@ -6,7 +6,7 @@ This repository serves for license detection and classifier detection from PyPI 
 
 ## How it works
 
-license-solver detect licenses and classifiers from input files/directory. If the solver can't find a license or
+license-solver detects licenses and classifiers from input files/directory. If the solver can't find a license or
 classifier related to the supported name, then the result is for them `UNKNOWN`, for undetected license version
 is `UNDETECTED`. Some licenses do not have versions, and their naming is `LICENSE-WITHOUT-VERSION`. All dictionaries with the most used aliases are stored in thoth/license_solver/data. <br>
 After successful detection, license and classifier will be compared. If they don't match, then in final JSON will be
