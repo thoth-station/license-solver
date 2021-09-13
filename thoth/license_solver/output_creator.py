@@ -58,6 +58,8 @@ class OutputCreator:
             else:
                 self._check_duplicity(self.file[package.name].get(package.version), package_data)
 
+        _LOGGER.debug("Add package to OutputCreator: %s", package_data)
+
     @staticmethod
     def _check_duplicity(old: Dict[str, Any], new: Dict[str, Any]) -> None:
         """
@@ -78,7 +80,10 @@ class OutputCreator:
                     if index == "license":
                         old["license_version"] = new["license_version"]
 
+                    _LOGGER.debug("Update package information %s to %s", index, new[index])
+
                 elif old[index] != new[index]:
+                    _LOGGER.debug("Found not same duplicity set warning=True")
                     old["warning"] = True
 
     def print(self) -> None:
