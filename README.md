@@ -14,6 +14,8 @@ warning: True. In case if it is missing license or classifier, comparing will be
 In final will be printed JSON on STDOUT.
 
 ## Important aliases
+This section provides information about specific implementation detail, which can be not obviously clear.
+- `BSD` license name in metadata without specific clause is `4-clause BSD` in license-solver implementation ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
 license name:
 - `BSD` without clause = 4 clause BSD ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
 
