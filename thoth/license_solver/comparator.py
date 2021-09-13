@@ -69,9 +69,7 @@ class Comparator:
 
         for x in classifier_name:
 
-            _LOGGER.debug(
-                "Compare license and classifier:\n" "{}{}\n" "{}{}".format(debug_tab, license_name, debug_tab, x)
-            )
+            _LOGGER.debug("Compare license and classifier:\n" "%s%s\n" "%s%s", debug_tab, license_name, debug_tab, x)
 
             if (
                 list(set(license_name) & set(x))

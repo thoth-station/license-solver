@@ -62,14 +62,14 @@ class Solver:
         comparator = Comparator()
         _LOGGER.debug("Start parsing file list")
         for file_path in self._files_list[:]:
-            _LOGGER.debug(f"Parsing file: {file_path}")
+            _LOGGER.debug("Parsing file: %s", file_path)
             # pass all listed metadata
             try:
                 with open(file_path) as f:
                     json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
-                    _LOGGER.debug(f"Loaded file {file_path}")
+                    _LOGGER.debug("Loaded file %s", file_path)
             except Exception as e:
-                _LOGGER.error(f"Broken or can't find file: {file_path} error: {e}")
+                _LOGGER.error("Broken or can't find file: %s\nerror: %s", file_path, e)
                 exit(1)
 
             package = Package()
@@ -176,7 +176,7 @@ class Solver:
         if os.path.isfile(file) and file.lower().endswith(".json"):
             self._files_list.append(file)
         else:
-            _LOGGER.warning(f"wrong format you can insert only .json file: {file}")
+            _LOGGER.warning("wrong format you can insert only .json file: %s", file)
 
     def get_dir_files(self, directory: str) -> None:
         """
@@ -192,6 +192,6 @@ class Solver:
                 if full_path.lower().endswith(".json"):
                     self._files_list.append(full_path)
                 else:
-                    _LOGGER.warning(f"wrong format you can insert only .json SKIPPED: {f}")
+                    _LOGGER.warning("wrong format you can insert only .json SKIPPED: %s", f)
         else:
             _LOGGER.warning("invalid path to directory")

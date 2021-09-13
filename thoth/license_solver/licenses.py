@@ -49,7 +49,7 @@ class Licenses:
                 self.json_data = json.loads(self.received_text)
                 _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
         except OSError:
-            _LOGGER.critical(f"Could not open/read file: {file_path}")
+            _LOGGER.critical("Could not open/read file: %s", file_path)
             raise OSError
 
         self._extract()
@@ -71,4 +71,4 @@ class Licenses:
 
                 self.licenses_list.append(li)
         except Exception as e:
-            _LOGGER.warning(f"Something bad with Indexing: {e}")
+            _LOGGER.warning("Something bad with Indexing: %s", e)
