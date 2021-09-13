@@ -20,7 +20,10 @@
 import re
 import yaml
 import os
+import logging
 from typing import Union, Tuple, List, Any, Optional
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _detect_version_and_delete(string: str) -> Union[Tuple[str, str], Tuple[str, None]]:
@@ -57,11 +60,17 @@ class Package:
         """Set package name."""
         if type(package_name) is str:
             self.name = package_name
+            _LOGGER.debug("Set name package: %s", package_name)
+        else:
+            _LOGGER.debug("Unsuccessful set name package")
 
     def set_version(self, package_version: Optional[Any]) -> None:
         """Set version of package name."""
         if type(package_version) is str:
             self.version = package_version
+            _LOGGER.debug("Set name package: %s", package_version)
+        else:
+            _LOGGER.debug("Unsuccessful set version package")
 
     def set_license(self, license_name: Tuple[List[str], bool]) -> None:
         """Set type of license."""
@@ -74,24 +83,31 @@ class Package:
             if license_name[0][0] in licenses_without_version:
                 self.license = license_name[0]
                 self.set_license_version("LICENSE-WITHOUT-VERSION")
+                _LOGGER.debug("Set license %s and version %s", license_name[0], "LICENSE-WITHOUT-VERSION")
             elif license_name[1]:
                 _license_name_no_version, _license_version = _detect_version_and_delete(
                     license_name[0][len(license_name[0]) - 1]
                 )
+                self.license = license_name[0]
+
                 if _license_version is None:
                     self.set_license_version("UNDETECTED")
+                    _LOGGER.debug("Set license %s and version %s", license_name[0], "UNDETECTED")
                 else:
                     self.set_license_version(_license_version)
-                self.license = license_name[0]
+                    _LOGGER.debug("Set license %s and version %s", license_name[0], _license_version)
             else:
                 self.license = license_name[0]
                 self.set_license_version("UNDETECTED")
+                _LOGGER.debug("Set license %s and version %s", license_name[0], "UNDETECTED")
         elif len(license_name[0]) == 1:
             self.license = license_name[0]
             self.set_license_version("UNDETECTED")
+            _LOGGER.debug("Set license %s and version %s", license_name[0], "UNDETECTED")
         else:
             self.license = list(["UNKNOWN"])
             self.set_license_version("UNDETECTED")
+            _LOGGER.debug("Set license %s and version %s", list(["UNKNOWN"]), "UNDETECTED")
 
     def set_license_version(self, license_version: str) -> None:
         """Set version of license."""
