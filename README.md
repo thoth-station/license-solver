@@ -22,7 +22,7 @@ classifier:
 
 ## Run solver locally
 
-Often, it is useful to run adviser locally to experiment or verify your changes in implementation. You can do so easily
+Often, it is useful to run license-solver locally to experiment or verify your changes in implementation. You can do so easily
 by running:
 
 ```
