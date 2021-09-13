@@ -15,7 +15,7 @@ In final will be printed JSON on STDOUT.
 
 ## Important aliases
 license name:
-- `BSD` = 4 clause BSD ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
+- `BSD` without clause = 4 clause BSD ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
 
 classifier:
 - None for now
