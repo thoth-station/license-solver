@@ -1,12 +1,32 @@
-# template-project
+# License solver
 
-This is a Template for any Python based project, it contains what Project Thoth and the AI CoE need:
+Welcome to Thoth's license-solver repository
 
-1. GitHub defaults and Templates for issues.
-2. Configuration for Coala and Black (code formating) are done using [`prow`](https://github.com/kubernetes/test-infra/tree/master/prow) with `pre-commit` and `mypy`.
-3. Zuul is no longer suppported. Instead [AICOE-CI](https://github.com/AICoE/aicoe-ci) is used for basic configuration.
-4. We have a public service configuration now accessible for everyone.
-5. If you are writing a Python module, [Kebechet](https://github.com/marketplace/khebhut) could manage the releases of your packages for you.
-6. If credentials are provided, Python module releases could be published to [`PyPI`](https://pypi.org/) by [Kebechet](https://github.com/marketplace/khebhut).
+This repository serves for license detection and classifier detection from PyPI metadata.
 
-Dependencies should be managed using `pipenv` (`Pipfile`, and the `Pipfile.lock` could be created by `thamos advise`), `pip3` and a `requirements.txt` files could be used.
+## How it works
+
+license-solver detect licenses and classifiers from input files/directory. If the solver can't find a license or
+classifier related to the supported name, then the result is for them `UNKNOWN`, for undetected license version
+is `UNDETECTED`. All dictionaries with the most used aliases are stored in thoth/license_solver/data. <br>
+After successful detection, license and classifier will be compared. If they don't match, then in final JSON will be
+warning: True. In case if it is missing license or classifier, comparing will be aborted. <br>
+In final will be printed JSON on STDOUT.
+
+## Run solver locally
+
+Often, it is useful to run adviser locally to experiment or verify your changes in implementation. You can do so easily
+by running:
+
+```
+PYTHONPATH=. python3 ./thoth-license-solver <arguments>
+```
+
+## Run tests
+
+It is a good habit for the program to be tested after the implementation of new features. You can run:
+
+```
+pytest tests/
+pytest --cov-report term-missing --cov=thoth tests/ # get test coverage
+```
