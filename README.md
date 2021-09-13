@@ -13,6 +13,13 @@ After successful detection, license and classifier will be compared. If they don
 warning: True. In case if it is missing license or classifier, comparing will be aborted. <br>
 In final will be printed JSON on STDOUT.
 
+## Important aliases
+license name:
+- `BSD` = 4 clause BSD ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
+
+classifier:
+- None for now
+
 ## Run solver locally
 
 Often, it is useful to run adviser locally to experiment or verify your changes in implementation. You can do so easily
