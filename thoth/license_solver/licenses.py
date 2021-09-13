@@ -37,20 +37,22 @@ class Licenses:
 
     def __attrs_post_init__(self) -> None:
         """Run methods."""
-        self._load_data()
-        self._extract()
+        self.load_data()
 
-    def _load_data(self) -> None:
-        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/spdx_licenses.json")
+    def load_data(self, file_path: str = "data/spdx_licenses.json") -> None:
+        """Load data for classes variables."""
+        file = os.path.join(os.path.dirname(os.path.realpath(__file__)), file_path)
         try:
-            with open(file_path) as file:
-                data = file.read()
+            with open(file) as f:
+                data = f.read()
                 self.received_text = data
                 self.json_data = json.loads(self.received_text)
                 _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
         except OSError:
             _LOGGER.critical(f"Could not open/read file: {file_path}")
             raise OSError
+
+        self._extract()
 
     def _extract(self) -> None:
         """Extract licenses from downloaded data."""
@@ -68,7 +70,5 @@ class Licenses:
                     li.append(i["licenseId"].replace("-", " "))
 
                 self.licenses_list.append(li)
-        except IndexError as e:
-            _LOGGER.warning(f"Something bad with Indexing: {e}")
         except Exception as e:
-            _LOGGER.warning(f"Exception. Nice to know but WTF?: {e}")
+            _LOGGER.warning(f"Something bad with Indexing: {e}")

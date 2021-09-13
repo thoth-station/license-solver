@@ -36,11 +36,11 @@ class Classifiers:
 
     def __attrs_post_init__(self) -> None:
         """INIT method."""
-        self._load_data()
-        self._extract_classifiers()
+        self.load_data()
 
-    def _load_data(self) -> None:
-        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/pypi_classifiers.txt")
+    def load_data(self, file_path: str = "data/pypi_classifiers.txt") -> None:
+        """Load data for classes variables."""
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), file_path)
         try:
             with open(file_path) as file:
                 data = file.read()
@@ -49,6 +49,8 @@ class Classifiers:
         except OSError:
             _LOGGER.critical(f"Could not open/read file: {file_path}")
             raise OSError
+
+        self._extract_classifiers()
 
     def _convert_to_list(self) -> None:
         """Covert downloaded string to list."""
@@ -59,8 +61,8 @@ class Classifiers:
         for classifier_full in self.classifiers:
             if len(classifier_full) >= 7 and classifier_full.startswith("License"):
                 # append licenses to list
-                classifier_name = self._get_name_license(classifier_full)
-                classifier_abbreviation = self._get_abbreviation(classifier_full)
+                classifier_name = self._extract_name(classifier_full)
+                classifier_abbreviation = self._extract_abbreviation(classifier_full)
 
                 li = list()
                 li.append(classifier_full)  # full classifier name
@@ -69,8 +71,7 @@ class Classifiers:
                 # abbreviation
                 if len(classifier_abbreviation) > 0:
                     for abbre in classifier_abbreviation:
-                        classifier_no_abbreviation = re.sub(" +", " ", classifier_name)
-                        classifier_no_abbreviation = re.sub(" +", " ", classifier_no_abbreviation)
+                        classifier_no_abbreviation = re.sub(r"\s*\([^()]*\)\s*", "", classifier_name)
                         if classifier_name != classifier_no_abbreviation:
                             li.append(classifier_no_abbreviation)  # name without abbreviation
 
@@ -87,7 +88,7 @@ class Classifiers:
         self._extract()
 
     @staticmethod
-    def _get_name_license(classifier: str) -> str:
+    def _extract_name(classifier: str) -> str:
         """Get licence name from classifier string."""
         data = classifier.split("::")
 
@@ -97,7 +98,7 @@ class Classifiers:
             return ""
 
     @staticmethod
-    def _get_abbreviation(classifier: str) -> List[str]:
+    def _extract_abbreviation(classifier: str) -> List[str]:
         """Abbreviation for license name."""
         abbreviation = list()
         start = classifier.find("(")

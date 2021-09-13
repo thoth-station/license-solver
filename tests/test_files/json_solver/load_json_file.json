@@ -1,0 +1,398 @@
+{
+  "metadata": {
+    "analyzer": "thoth-solver",
+    "analyzer_version": "1.4.1",
+    "arguments": {
+      "python": {
+        "exclude_packages": null,
+        "index": "https://pypi.org/simple",
+        "no_pretty": false,
+        "no_transitive": true,
+        "output": "http://result-api/api/v1/solver-result",
+        "requirements": "setuptools-scm==1.15.4",
+        "virtualenv": "/home/solver/venv"
+      },
+      "thoth-solver": {
+        "verbose": false
+      }
+    },
+    "datetime": "2019-12-27T17:42:43.781321",
+    "distribution": {
+      "codename": "",
+      "id": "fedora",
+      "like": "",
+      "version": "31",
+      "version_parts": {
+        "build_number": "",
+        "major": "31",
+        "minor": ""
+      }
+    },
+    "document_id": "solver-fedora-31-py37-0a0dcf4a",
+    "duration": 2,
+    "hostname": "solver-fedora-31-py37-0a0dcf4a-z8zvn",
+    "os_release": {
+      "id": "fedora",
+      "name": "Fedora",
+      "platform_id": "platform:f31",
+      "redhat_bugzilla_product": "Fedora",
+      "redhat_bugzilla_product_version": "31",
+      "redhat_support_product": "Fedora",
+      "redhat_support_product_version": "31",
+      "variant_id": "container",
+      "version": "31 (Container Image)",
+      "version_id": "31"
+    },
+    "python": {
+      "api_version": 1013,
+      "implementation_name": "cpython",
+      "major": 3,
+      "micro": 5,
+      "minor": 7,
+      "releaselevel": "final",
+      "serial": 0
+    },
+    "thoth_deployment_name": "thoth-psi-stage",
+    "timestamp": 1577468563
+  },
+  "result": {
+    "environment": {
+      "implementation_name": "cpython",
+      "implementation_version": "3.7.5",
+      "os_name": "posix",
+      "platform_machine": "x86_64",
+      "platform_python_implementation": "CPython",
+      "platform_release": "3.10.0-957.21.2.el7.x86_64",
+      "platform_system": "Linux",
+      "platform_version": "#1 SMP Tue May 28 09:26:43 UTC 2019",
+      "python_full_version": "3.7.5",
+      "python_version": "3.7",
+      "sys_platform": "linux"
+    },
+    "environment_packages": [
+      {
+        "package_name": "pipdeptree",
+        "package_version": "0.13.2"
+      }
+    ],
+    "errors": [],
+    "tree": [
+      {
+        "dependencies": [],
+        "importlib_metadata": {
+          "entry_points": [
+            {
+              "group": "distutils.setup_keywords",
+              "name": "use_scm_version",
+              "value": "setuptools_scm.integration:version_keyword"
+            },
+            {
+              "group": "setuptools.file_finders",
+              "name": "setuptools_scm",
+              "value": "setuptools_scm.integration:find_files"
+            },
+            {
+              "group": "setuptools_scm.parse_scm",
+              "name": ".hg",
+              "value": "setuptools_scm.hg:parse"
+            },
+            {
+              "group": "setuptools_scm.parse_scm",
+              "name": ".git",
+              "value": "setuptools_scm.git:parse"
+            },
+            {
+              "group": "setuptools_scm.parse_scm_fallback",
+              "name": ".hg_archival.txt",
+              "value": "setuptools_scm.hg:parse_archival"
+            },
+            {
+              "group": "setuptools_scm.parse_scm_fallback",
+              "name": "PKG-INFO",
+              "value": "setuptools_scm.hacks:parse_pkginfo"
+            },
+            {
+              "group": "setuptools_scm.parse_scm_fallback",
+              "name": "pip-egg-info",
+              "value": "setuptools_scm.hacks:parse_pip_egg_info"
+            },
+            {
+              "group": "setuptools_scm.files_command",
+              "name": ".hg",
+              "value": "setuptools_scm.hg:FILES_COMMAND"
+            },
+            {
+              "group": "setuptools_scm.files_command",
+              "name": ".git",
+              "value": "setuptools_scm.git:FILES_COMMAND"
+            },
+            {
+              "group": "setuptools_scm.version_scheme",
+              "name": "guess-next-dev",
+              "value": "setuptools_scm.version:guess_next_dev_version"
+            },
+            {
+              "group": "setuptools_scm.version_scheme",
+              "name": "post-release",
+              "value": "setuptools_scm.version:postrelease_version"
+            },
+            {
+              "group": "setuptools_scm.local_scheme",
+              "name": "node-and-date",
+              "value": "setuptools_scm.version:get_local_node_and_date"
+            },
+            {
+              "group": "setuptools_scm.local_scheme",
+              "name": "dirty-tag",
+              "value": "setuptools_scm.version:get_local_dirty_tag"
+            }
+          ],
+          "files": [
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "nqOyfNYxtXXhwmPxztYtfLsj_66Zs54MXMinwArmDX8"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/DESCRIPTION.rst",
+              "size": 9229
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/INSTALLER",
+              "size": 4
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "iYB6zyMJvShfAzQE7nhYFgLzzZuBmhasLw5fYP9KRz4"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/LICENSE.txt",
+              "size": 1023
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "M6qQxvH4ArIn-99w1uaB8jD_n01nJi07pMbD86zS1sI"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/METADATA",
+              "size": 10238
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm-1.15.4.dist-info/RECORD",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "AvR0WeTpDaxT645bl5FQxUK6NPsTls2ttpcGJg3j1Xg"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/WHEEL",
+              "size": 110
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "4XlRE-pb40Jc4kTQmtvUPF8sxTaGOa2OauCo9jTEQWs"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/entry_points.txt",
+              "size": 1028
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "aYD-supezFc5TNGciGgO-p87hXfziZxW1KIQXbocCs0"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/metadata.json",
+              "size": 2053
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "kiu-91q3_rJLUoc2wl8_lC4cIlpgtgdD_4NaChF4hOA"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/top_level.txt",
+              "size": 15
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "AbpHGcgLb-kRsJGnwFEktk7uzpZOCcBY74-YBdrKVGs"
+              },
+              "path": "setuptools_scm-1.15.4.dist-info/zip-safe",
+              "size": 1
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "r2jiMMxNGwZ2VYTcZplK6kF_OBliOFy2oGgPI_8tYRE"
+              },
+              "path": "setuptools_scm/__init__.py",
+              "size": 4145
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "EFJI0cqd5Siq9gSmAE_A87yn6T9DKg3_7nVfK2yKzk8"
+              },
+              "path": "setuptools_scm/__main__.py",
+              "size": 397
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/__init__.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/__main__.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/discover.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/git.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/hacks.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/hg.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/integration.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/utils.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": null,
+              "path": "setuptools_scm/__pycache__/version.cpython-37.pyc",
+              "size": null
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "l-NUqgoZeGnNt-aOkfQm2UAgADmNLPuZ5-4LWKmVS0k"
+              },
+              "path": "setuptools_scm/discover.py",
+              "size": 416
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "HUn-hvyi7gYA-wYcwYbPWvuqeuKt13nPBOlncywp-Rc"
+              },
+              "path": "setuptools_scm/git.py",
+              "size": 3151
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "ljZVX0cqsDSdP_lTyH9wyMG8PNBBuCVm77TK_pjauAU"
+              },
+              "path": "setuptools_scm/hacks.py",
+              "size": 598
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "Xfe-F5aLUYQkyArfdD6DqpttLK_mTYHIDI4cWCxXU-A"
+              },
+              "path": "setuptools_scm/hg.py",
+              "size": 2292
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "ATQjRg4GZ65qQN5UTnAcm4Yu0suJejAyovrWHScoOIw"
+              },
+              "path": "setuptools_scm/integration.py",
+              "size": 1250
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "Hrg26FC_SIhMgvctClLTsjsx89WDYfanUgkzrrp8LwY"
+              },
+              "path": "setuptools_scm/utils.py",
+              "size": 2377
+            },
+            {
+              "hash": {
+                "mode": "sha256",
+                "value": "5y8yDK7UgsGhU9FaGv8FwaFsYQfJF36nfNbo1gPmnOY"
+              },
+              "path": "setuptools_scm/version.py",
+              "size": 4587
+            }
+          ],
+          "metadata": {
+            "Author": "Ronny Pfannschmidt",
+            "Author-email": "opensource@ronnypfannschmidt.de",
+            "Classifier": [
+              "Development Status :: 4 - Beta",
+              "Intended Audience :: Developers",
+              "License :: OSI Approved :: MIT License",
+              "Programming Language :: Python",
+              "Programming Language :: Python :: 3",
+              "Programming Language :: Python :: 2.6",
+              "Programming Language :: Python :: 2.7",
+              "Programming Language :: Python :: 3.3",
+              "Programming Language :: Python :: 3.4",
+              "Programming Language :: Python :: 3.5",
+              "Programming Language :: Python :: 3.6",
+              "Topic :: Software Development :: Libraries",
+              "Topic :: Software Development :: Version Control",
+              "Topic :: System :: Software Distribution",
+              "Topic :: Utilities"
+            ],
+            "Home-page": "https://github.com/pypa/setuptools_scm/",
+            "License": "MIT",
+            "Metadata-Version": "2.0",
+            "Name": "setuptools-scm",
+            "Platform": [
+              "UNKNOWN"
+            ],
+            "Summary": "the blessed package to manage your versions by scm tags",
+            "Version": "1.15.4"
+          },
+          "requires": null,
+          "version": "1.15.4"
+        },
+        "index_url": "https://pypi.org/simple",
+        "package_name": "setuptools-scm",
+        "package_version": "1.15.4",
+        "package_version_requested": "1.15.4",
+        "sha256": [
+          "588673a63325c16887b12d6b2aabd2ce14501dee14615cadf628564695d947d4",
+          "c0cf88063af790a928a17d5e6a69631524cd1444d770a2d0127ddf9cf3e9196d",
+          "0f4f416d91d7ec1c277343b74a5044d49964daa6bdeafbcc644e4abf2b508dfb",
+          "1c2f78f41f01bdd2c4656018010c644d96bf3bb624cae2f8b2473f6df35fa8ab",
+          "7a7d77883bca946a3cf5b12a146d998481d95312117b4d55b7a6c8570a8050f3",
+          "e92dc60e0376c277d8ddb3d1102fd8b5c298b062f5dba063171aecca1429b868",
+          "4b2b1a48cc96ae63b64b26655e3f98e86de80051923d1db564981ab5ffe193a9",
+          "9453f135325daf172769f206fa2972fc8cd8b5c7ae4e021804ea2e7270332f6b"
+        ]
+      }
+    ],
+    "unparsed": [],
+    "unresolved": []
+  }
+}
