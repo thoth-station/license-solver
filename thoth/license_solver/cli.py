@@ -53,7 +53,12 @@ _LOGGER = logging.getLogger("thoth.license_solver")
     envvar="THOTH_SOLVER_LICENSE_JOB_DIRECTORY",
 )
 def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> None:
-    """Parse program arguments."""
+    """
+    License solver.
+
+    License-solver handles license detection and classifier detection from metadata provided by PyPI.
+    The program prints the result in the form of JSON on STDOUT.
+    """
     if verbose:
         _LOGGER.setLevel(logging.DEBUG)
         _LOGGER.debug("Debug mode is on")
