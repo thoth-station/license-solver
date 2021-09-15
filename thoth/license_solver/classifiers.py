@@ -47,7 +47,7 @@ class Classifiers:
                 self.received_text = data
                 _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
         except OSError:
-            _LOGGER.critical(f"Could not open/read file: {file_path}")
+            _LOGGER.critical("Could not open/read file: %s", file_path)
             raise OSError
 
         self._extract_classifiers()

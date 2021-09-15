@@ -66,11 +66,11 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
     license_solver = Solver()
 
     if directory:
-        _LOGGER.debug(f"Parsing directory argument: {directory}")
+        _LOGGER.debug("Parsing directory: %s", directory)
         license_solver.get_dir_files(directory)
 
     if file:
-        _LOGGER.debug(f"Parsing file argument: {file}")
+        _LOGGER.debug("Parsing file: %s", file)
         license_solver.get_file(file)
 
     license_solver.create_file()
