@@ -63,8 +63,6 @@ class TestSolver:
     def test_get_classifier_group_none(self) -> None:
         """Test detecting classifier group which output None."""
         assert self.solver.get_classifier_group(None) is None
-        # test not found in classifier list
-        assert self.solver.get_classifier_group("not_found") is None
 
     def test_get_classifier_group_found_in_classifier_list(self) -> None:
         """Test detecting classifier group found in classifier list."""
@@ -80,10 +78,9 @@ class TestSolver:
         classifier_input_2 = ["AFPL"]
         assert self.solver.get_classifier_group(classifier_input_2) == classifier_output
 
-        # TODO
         # tests with lowercase
-        # classifier_input_3 = ['aFpl']
-        # assert self.solver.get_classifier_group(classifier_input_3) == classifier_output
+        classifier_input_3 = ["aFpl"]
+        assert self.solver.get_classifier_group(classifier_input_3) == classifier_output
 
     @pytest.fixture(autouse=True)
     def capsys(self, capsys):

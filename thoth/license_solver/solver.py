@@ -22,7 +22,7 @@ from os import DirEntry
 import json
 import attr
 import logging
-from typing import List, Tuple, Union, Dict, Any, Optional
+from typing import List, Tuple, Dict, Any, Optional
 from .classifiers import Classifiers
 from .licenses import Licenses
 from .package import Package, _detect_version_and_delete
@@ -153,7 +153,7 @@ class Solver:
 
         return list(), False
 
-    def get_classifier_group(self, classifier_name: Union[List[Any], Any, None]) -> Optional[Any]:
+    def get_classifier_group(self, classifier_name: Optional[List[Any]]) -> Optional[List[Any]]:
         """
         Search for a group of entered classifier name.
 
@@ -163,8 +163,13 @@ class Solver:
         if classifier_name is None:
             return None
 
+        cla_li: List[str]
         for cla_li in self.classifiers.classifiers_list:
-            if list(set(cla_li) & set(classifier_name)):
+            # lowercase lists and compare
+            cla_li_lower = [x.lower() for x in cla_li.copy()]
+            classifier_name_lower = [x.lower() for x in classifier_name.copy()]
+
+            if list(set(cla_li_lower) & set(classifier_name_lower)):
                 return cla_li
 
         return None
