@@ -17,6 +17,7 @@
 # type: ignore[misc]
 
 """solver-license-jon CLI."""
+import sys
 
 import click
 import logging
@@ -67,7 +68,7 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
 
     if directory and file:
         _LOGGER.error("Can't be directory and file parsed at same time.")
-        exit(1)
+        print("Can't be directory and file parsed at same time. Choose only one", file=sys.stderr)
 
     if directory:
         _LOGGER.debug("Parsing directory: %s", file)

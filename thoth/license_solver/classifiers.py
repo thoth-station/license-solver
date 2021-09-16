@@ -22,6 +22,7 @@ import re
 import attr
 import logging
 from typing import List, Any
+from .exceptions import UnableOpenFileData
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,9 +47,9 @@ class Classifiers:
                 data = file.read()
                 self.data = data
                 _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
-        except OSError:
+        except Exception:
             _LOGGER.critical("Could not open/read file: %s", file_path)
-            raise OSError
+            raise UnableOpenFileData
 
         self._extract_classifiers()
 

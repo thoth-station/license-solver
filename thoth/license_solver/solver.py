@@ -29,6 +29,9 @@ from .package import Package, _detect_version_and_delete
 from .json_solver import JsonSolver
 from .comparator import _delete_brackets, _delete_brackets_and_content
 from .output_creator import OutputCreator
+from .exceptions import UnableOpenFileData
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def detect_license(
@@ -49,9 +52,6 @@ def detect_license(
         pass
 
 
-_LOGGER = logging.getLogger(__name__)
-
-
 @attr.s(slots=True)
 class Solver:
     """Class pass all detected files and try to detect all necessary data."""
@@ -69,8 +69,8 @@ class Solver:
             with open(file_path) as f:
                 self.license_dictionary = json.load(f).get("data")
                 _LOGGER.debug("File license_dictionary.json was successful loaded")
-        except OSError:
-            raise OSError
+        except Exception:
+            raise UnableOpenFileData
 
     def solve_from_file(self, input_file: Union[Dict[str, Any], str]) -> None:
         """
@@ -98,7 +98,7 @@ class Solver:
             json_solver = JsonSolver(input_file, "dictionary_input")
 
         else:
-            _LOGGER.warning("Not supported type: %s .", type(input_file))
+            _LOGGER.warning("Not supported type: %s. SKIPPED", type(input_file))
             return
 
         package = Package()
@@ -114,7 +114,10 @@ class Solver:
         _LOGGER.debug("Start parsing directory %s.", input_directory)
         file_path: DirEntry  # type: ignore[type-arg]
         for file_path in os.scandir(input_directory):
-            self.solve_from_file(file_path.path)
+            if file_path.is_file():
+                self.solve_from_file(file_path.path)
+            else:
+                _LOGGER.debug("Subdirectory SKIPPED %s.", file_path)
 
     def _get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """

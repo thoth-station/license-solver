@@ -22,6 +22,7 @@ import attr
 import json
 import logging
 from typing import List, Dict, Any
+from .exceptions import UnableOpenFileData
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -48,9 +49,9 @@ class Licenses:
                 self.data = data
                 self.json_data = json.loads(self.data)
                 _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
-        except OSError:
+        except Exception:
             _LOGGER.critical("Could not open/read file: %s", file_path)
-            raise OSError
+            raise UnableOpenFileData
 
         self._extract()
 
