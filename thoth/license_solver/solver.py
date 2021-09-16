@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Main class witch work with detecting and creating output."""
+"""Main class which work with detecting and creating output."""
 
 import os
 from os import DirEntry
@@ -55,7 +55,7 @@ class Solver:
 
     def solve_from_file(self, input_file: str, call_from_dir: bool = False) -> None:
         """
-        Pass input file and create output, witch will be printed on STDOUT.
+        Pass input file and create output, which will be printed on STDOUT.
 
         :param input_file: file path
         :param call_from_dir: if True function was called from directory solver
@@ -83,7 +83,7 @@ class Solver:
 
     def solve_from_directory(self, input_directory: str) -> None:
         """
-        Pass input directory and create output, witch will be printed on STDOUT.
+        Pass input directory and create output, which will be printed on STDOUT.
 
         :return: None
         """
@@ -99,8 +99,8 @@ class Solver:
         """
         Get classifier and license groups and save them to parameter package.
 
-        :param json_file: json class witch hold data from file
-        :param package: class package witch will hold all package data
+        :param json_file: json class which hold data from file
+        :param package: class package which will hold all package data
         :return: None
         """
         package.set_file_path(json_file.path)
