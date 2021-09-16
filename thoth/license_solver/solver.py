@@ -53,12 +53,11 @@ class Solver:
         except OSError:
             raise OSError
 
-    def solve_from_file(self, input_file: str, call_from_dir: bool = False) -> None:
+    def solve_from_file(self, input_file: str) -> None:
         """
         Pass input file and create output, which will be printed on STDOUT.
 
         :param input_file: file path
-        :param call_from_dir: if True function was called from directory solver
         :return: None
         """
         _LOGGER.debug("Parsing file: %s", input_file)
@@ -77,10 +76,6 @@ class Solver:
         self.get_classifier_and_license(json_solver, package)
         self.output.add_package(package)
 
-        # print result to STDOUT
-        if not call_from_dir:
-            self.output.print()
-
     def solve_from_directory(self, input_directory: str) -> None:
         """
         Pass input directory and create output, which will be printed on STDOUT.
@@ -90,10 +85,7 @@ class Solver:
         _LOGGER.debug("Start parsing directory %s.", input_directory)
         file_path: DirEntry  # type: ignore[type-arg]
         for file_path in os.scandir(input_directory):
-            self.solve_from_file(file_path.path, call_from_dir=True)
-
-        # print result to STDOUT
-        self.output.print()
+            self.solve_from_file(file_path.path)
 
     def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """
@@ -173,6 +165,10 @@ class Solver:
                 return cla_li
 
         return None
+
+    def print_output(self) -> None:
+        """Print final output on STDOU."""
+        self.output.print()
 
     @staticmethod
     def check_if_json(input_file: str) -> bool:

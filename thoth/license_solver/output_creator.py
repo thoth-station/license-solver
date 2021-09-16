@@ -20,9 +20,7 @@
 import json
 import sys
 import logging
-
 import attr
-
 from .comparator import Comparator
 from .package import Package
 from typing import Dict, Any

@@ -93,6 +93,7 @@ class TestSolver:
             os.path.dirname(os.path.realpath(__file__)), "test_files", "solver", "test_solver_files"
         )
         self.solver.solve_from_directory(file_path)
+        self.solver.print_output()
 
         out, err = self.capsys.readouterr()
 
