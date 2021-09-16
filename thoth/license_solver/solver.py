@@ -114,7 +114,7 @@ class Solver:
         classifier_name = json_file.get_classifier_name()
         package.set_classifier(self.get_classifier_group(classifier_name))
 
-    def get_license_group(self, license_name: Optional[Any]) -> Tuple[List[str], bool]:
+    def get_license_group(self, license_name: Optional[str]) -> Tuple[List[str], bool]:
         """
         Search for a group of entered license name.
 
@@ -153,7 +153,7 @@ class Solver:
 
         return list(), False
 
-    def get_classifier_group(self, classifier_name: Optional[List[Any]]) -> Optional[List[Any]]:
+    def get_classifier_group(self, classifier_name: Optional[List[str]]) -> Optional[List[str]]:
         """
         Search for a group of entered classifier name.
 
