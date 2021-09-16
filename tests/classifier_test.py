@@ -20,6 +20,7 @@
 import pytest
 
 from thoth.license_solver.classifiers import Classifiers
+from thoth.license_solver.exceptions import UnableOpenFileData
 
 
 class TestClassifier:
@@ -29,7 +30,7 @@ class TestClassifier:
 
     def test_wrong_file_path(self) -> None:
         """Test loading file and test with wrong file path."""
-        with pytest.raises(OSError):
+        with pytest.raises(UnableOpenFileData):
             self.classifier.load_data(file_path="wrong_path")
 
     def test_init_variables(self) -> None:

@@ -16,7 +16,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Tests related to class Licenses."""
+import pytest
 
+from thoth.license_solver.exceptions import UnableOpenFileData
 from thoth.license_solver.licenses import Licenses
 
 
@@ -27,13 +29,8 @@ class TestLicense:
 
     def test_wrong_file_path(self) -> None:
         """Test loading file and test with wrong file path."""
-        try:
+        with pytest.raises(UnableOpenFileData):
             self.licenses.load_data(file_path="wrong_path")
-            assert False, "Must be except"
-        except OSError:
-            assert True
-        except Exception as e:
-            assert False, f"Exception must be OSError. Not {e}"
 
     def test_init_variables(self) -> None:
         """Test if variables are initialized."""
