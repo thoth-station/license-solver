@@ -20,45 +20,60 @@
 import json
 import sys
 import logging
+
+import attr
+
+from .comparator import Comparator
 from .package import Package
 from typing import Dict, Any
 
 _LOGGER = logging.getLogger(__name__)
 
 
+@attr.s(slots=True)
 class OutputCreator:
     """Propose of this class is to create dictionary for all packages (input)."""
 
     file: Dict[Any, Any] = dict()
+    comparator: Comparator = Comparator()
 
-    def add_package(self, package: Package, warning: bool = False) -> None:
+    def add_package(self, package: Package) -> None:
         """
         Add package to dictionary.
 
         :param package: Package data
-        :param warning: default False, if true create warning in package info
         :return: None
         """
-        package_data: Dict[str, Any] = {
-            "license": package.license,
-            "license_version": str(package.license_version),
-            "classifier": package.classifier,
-        }
+        warning = False
 
-        if warning:
-            package_data["warning"] = True
-        else:
-            package_data["warning"] = False
+        # save only package with name and version
+        if package.name and package.version:
+            if not self.comparator.cmp(package):
+                warning = True
 
-        if self.file.get(package.name) is None:
-            self.file[package.name] = {package.version: package_data}
-        else:
-            if self.file[package.name].get(package.version) is None:
-                self.file[package.name][package.version] = package_data
+            package_data: Dict[str, Any] = {
+                "license": package.license,
+                "license_version": str(package.license_version),
+                "classifier": package.classifier,
+            }
+
+            if warning:
+                package_data["warning"] = True
             else:
-                self._check_duplicity(self.file[package.name].get(package.version), package_data)
+                package_data["warning"] = False
 
-        _LOGGER.debug("Add package to OutputCreator: %s", package_data)
+            if self.file.get(package.name) is None:
+                self.file[package.name] = {package.version: package_data}
+            else:
+                if self.file[package.name].get(package.version) is None:
+                    self.file[package.name][package.version] = package_data
+                else:
+                    self._check_duplicity(self.file[package.name].get(package.version), package_data)
+
+            _LOGGER.debug("Add package to OutputCreator: %s", package_data)
+
+        else:
+            _LOGGER.debug("The file %s has no package name or version. SKIPPED to create OUTPUT", package.file_path)
 
     @staticmethod
     def _check_duplicity(old: Dict[str, Any], new: Dict[str, Any]) -> None:

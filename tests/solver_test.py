@@ -80,50 +80,10 @@ class TestSolver:
         classifier_input_2 = ["AFPL"]
         assert self.solver.get_classifier_group(classifier_input_2) == classifier_output
 
-        # TODO: fix classifier group
+        # TODO
         # tests with lowercase
         # classifier_input_3 = ['aFpl']
         # assert self.solver.get_classifier_group(classifier_input_3) == classifier_output
-
-    def test_get_file(self) -> None:
-        """Test function get_file."""
-        file_path = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "test_files/solver/test_file_get_file.json"
-        )
-        self.solver.get_file(file_path)
-        assert len(self.solver._files_list) == 1
-
-        # clear list
-        self.solver._files_list.clear()
-
-        file_path_2 = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "test_files/solver/test_file_get_file_wrong_file_type.pu"
-        )
-        self.solver.get_file(file_path_2)
-        assert len(self.solver._files_list) == 0
-        self.solver._files_list.clear()
-
-    def test_get_dir_files(self) -> None:
-        """Test function get_dir_files."""
-        file_path = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "test_files", "solver", "test_get_dir_files"
-        )
-        self.solver.get_dir_files(file_path)
-        assert len(self.solver._files_list) == 3
-        self.solver._files_list.clear()
-
-        file_path_wrong = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "test_files/solver/test_get_dit_files_wrong"
-        )
-
-        self.solver.get_dir_files(file_path_wrong)
-        assert len(self.solver._files_list) == 3
-        self.solver._files_list.clear()
-
-        # test wrong dir path
-        self.solver.get_dir_files("a")
-        assert len(self.solver._files_list) == 0
-        self.solver._files_list.clear()
 
     @pytest.fixture(autouse=True)
     def capsys(self, capsys):
@@ -135,8 +95,7 @@ class TestSolver:
         file_path = os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "test_files", "solver", "test_solver_files"
         )
-        self.solver.get_dir_files(file_path)
-        self.solver.create_file()
+        self.solver.solve_from_directory(file_path)
 
         out, err = self.capsys.readouterr()
 

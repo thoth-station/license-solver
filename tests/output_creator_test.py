@@ -145,7 +145,7 @@ class TestOutputCreator:
             False,
             ["License :: OSI Approved :: Apache Software License", "Apache Software License"],
         )
-        self.output_creator.add_package(package, True)
+        self.output_creator.add_package(package)
 
         assert self.output_creator.file == {
             "test_1": {
@@ -197,7 +197,7 @@ class TestOutputCreator:
             ["License :: OSI Approved :: Apache Software License", "Apache Software License"],
         )
         self.output_creator.add_package(package_same_package)
-        self.output_creator.add_package(package_same_version, True)
+        self.output_creator.add_package(package_same_version)
 
         assert self.output_creator.file == {
             "test_1": {

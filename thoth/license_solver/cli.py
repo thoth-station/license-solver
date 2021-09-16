@@ -65,15 +65,17 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
 
     license_solver = Solver()
 
+    if directory and file:
+        _LOGGER.error("Can't be directory and file parsed at same time.")
+        exit(1)
+
     if directory:
-        _LOGGER.debug("Parsing directory: %s", directory)
-        license_solver.get_dir_files(directory)
+        _LOGGER.debug("Parsing directory: %s", file)
+        license_solver.solve_from_directory(directory)
 
     if file:
         _LOGGER.debug("Parsing file: %s", file)
-        license_solver.get_file(file)
-
-    license_solver.create_file()
+        license_solver.solve_from_file(file)
 
 
 __name__ == "__main__" and cli()
