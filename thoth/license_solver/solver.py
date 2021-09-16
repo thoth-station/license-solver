@@ -49,7 +49,8 @@ def detect_license(
                 solver.solve_from_file(enter)
             solver.print_output()
     except Exception:
-        pass
+        if raise_on_error:
+            raise Exception
 
 
 @attr.s(slots=True)
@@ -99,6 +100,12 @@ class Solver:
 
         else:
             _LOGGER.warning("Not supported type: %s. SKIPPED", type(input_file))
+            return
+
+        try:
+            if json_solver is None:
+                return
+        except Exception:
             return
 
         package = Package()
