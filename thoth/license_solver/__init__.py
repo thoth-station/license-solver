@@ -17,10 +17,13 @@
 
 """Init package."""
 
-from .solver import Solver
+from .solver import detect_license
+
 
 __title__ = "license-solver"
 __version__ = "0.1.0"
 __author__ = "Viliam Podhajecky <vpodhaje@redhat.com>"
 
-__all__ = ["Solver"]
+__all__ = [
+    "detect_license",
+]

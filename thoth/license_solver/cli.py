@@ -72,10 +72,12 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
     if directory:
         _LOGGER.debug("Parsing directory: %s", file)
         license_solver.solve_from_directory(directory)
+        license_solver.print_output()
 
     if file:
         _LOGGER.debug("Parsing file: %s", file)
         license_solver.solve_from_file(file)
+        license_solver.print_output()
 
 
 __name__ == "__main__" and cli()

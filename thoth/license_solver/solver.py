@@ -22,13 +22,32 @@ from os import DirEntry
 import json
 import attr
 import logging
-from typing import List, Tuple, Dict, Any, Optional
+from typing import List, Tuple, Dict, Any, Optional, Union
 from .classifiers import Classifiers
 from .licenses import Licenses
 from .package import Package, _detect_version_and_delete
 from .json_solver import JsonSolver
 from .comparator import _delete_brackets, _delete_brackets_and_content
 from .output_creator import OutputCreator
+
+
+def detect_license(
+    input_data: Union[Dict[str, Any], str, List[str], List[Dict[str, Any]]], raise_on_error: bool = True
+) -> None:
+    """Run license-solver from thoth-solver."""
+    try:
+        solver = Solver()
+
+        if type(input_data) == dict or type(input_data) == str:
+            solver.solve_from_file(input_data)
+            solver.print_output()
+        elif type(input_data) == list:
+            for enter in input_data:
+                solver.solve_from_file(enter)
+            solver.print_output()
+    except Exception:
+        pass
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -53,27 +72,37 @@ class Solver:
         except OSError:
             raise OSError
 
-    def solve_from_file(self, input_file: str) -> None:
+    def solve_from_file(self, input_file: Union[Dict[str, Any], str]) -> None:
         """
         Pass input file and create output, which will be printed on STDOUT.
 
         :param input_file: file path
         :return: None
         """
-        _LOGGER.debug("Parsing file: %s", input_file)
-        if not self.check_if_json(input_file):
-            _LOGGER.warning("Input file is not valid.")
+        if type(input_file) == str:
+            _LOGGER.debug("Parsing file: %s", input_file)
+            if not self._check_if_json(input_file):
+                _LOGGER.warning("Input file is not valid. SKIPPED")
+                return
+            # path to file
+            try:
+                with open(input_file) as f:
+                    json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
+                    _LOGGER.debug("Loaded file %s", input_file)
+            except Exception as e:
+                _LOGGER.error("Broken or can't find file: %s\nerror: %s.", input_file, e)
+
+        elif type(input_file) == dict:
+            _LOGGER.debug("Parsing dictionary.")
+            # dictionary parsing
+            json_solver = JsonSolver(input_file, "dictionary_input")
+
+        else:
+            _LOGGER.warning("Not supported type: %s .", type(input_file))
             return
 
-        try:
-            with open(input_file) as f:
-                json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
-                _LOGGER.debug("Loaded file %s", input_file)
-        except Exception as e:
-            _LOGGER.error("Broken or can't find file: %s\nerror: %s.", input_file, e)
-
         package = Package()
-        self.get_classifier_and_license(json_solver, package)
+        self._get_classifier_and_license(json_solver, package)
         self.output.add_package(package)
 
     def solve_from_directory(self, input_directory: str) -> None:
@@ -87,7 +116,7 @@ class Solver:
         for file_path in os.scandir(input_directory):
             self.solve_from_file(file_path.path)
 
-    def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
+    def _get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """
         Get classifier and license groups and save them to parameter package.
 
@@ -101,12 +130,12 @@ class Solver:
         package.set_version(json_file.get_package_version())
 
         license_name = json_file.get_license_name()
-        package.set_license(self.get_license_group(license_name))
+        package.set_license(self._get_license_group(license_name))
 
         classifier_name = json_file.get_classifier_name()
-        package.set_classifier(self.get_classifier_group(classifier_name))
+        package.set_classifier(self._get_classifier_group(classifier_name))
 
-    def get_license_group(self, license_name: Optional[str]) -> Tuple[List[str], bool]:
+    def _get_license_group(self, license_name: Optional[str]) -> Tuple[List[str], bool]:
         """
         Search for a group of entered license name.
 
@@ -145,7 +174,7 @@ class Solver:
 
         return list(), False
 
-    def get_classifier_group(self, classifier_name: Optional[List[str]]) -> Optional[List[str]]:
+    def _get_classifier_group(self, classifier_name: Optional[List[str]]) -> Optional[List[str]]:
         """
         Search for a group of entered classifier name.
 
@@ -171,7 +200,7 @@ class Solver:
         self.output.print()
 
     @staticmethod
-    def check_if_json(input_file: str) -> bool:
+    def _check_if_json(input_file: str) -> bool:
         """Check if input file is JSON type."""
         if not input_file.endswith(".json"):
             _LOGGER.warning("File %s is not JSON type. SKIPPED", input_file)

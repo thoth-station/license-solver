@@ -21,7 +21,7 @@ import re
 import yaml
 import os
 import logging
-from typing import Union, Tuple, List, Any, Optional
+from typing import Union, Tuple, List, Optional
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class Package:
     classifier: List[List[str]] = list()
     file_path: str = ""
 
-    def set_package_name(self, package_name: Optional[Any]) -> None:
+    def set_package_name(self, package_name: Optional[str]) -> None:
         """Set package name."""
         if type(package_name) is str:
             self.name = package_name
@@ -64,7 +64,7 @@ class Package:
         else:
             _LOGGER.debug("Unsuccessful set name package")
 
-    def set_version(self, package_version: Optional[Any]) -> None:
+    def set_version(self, package_version: Optional[str]) -> None:
         """Set version of package name."""
         if type(package_version) is str:
             self.version = package_version

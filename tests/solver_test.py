@@ -30,39 +30,39 @@ class TestSolver:
     # test get_license_group function
     def test_get_license_group_unknown(self) -> None:
         """Test detecting license group for unknown."""
-        assert self.solver.get_license_group(None) == (list(["UNKNOWN"]), False)
-        assert self.solver.get_license_group("UNKNOWN") == (list(["UNKNOWN"]), False)
-        assert self.solver.get_license_group("uNkNOWN") == (list(["UNKNOWN"]), False)
+        assert self.solver._get_license_group(None) == (list(["UNKNOWN"]), False)
+        assert self.solver._get_license_group("UNKNOWN") == (list(["UNKNOWN"]), False)
+        assert self.solver._get_license_group("uNkNOWN") == (list(["UNKNOWN"]), False)
 
     def test_get_license_group_found_in_license_list(self) -> None:
         """Test detecting license group in license."""
         bsd = ['BSD 4-Clause "Original" or "Old" License', "BSD-4-Clause", "BSD 4 Clause"]
-        assert self.solver.get_license_group(bsd[0]) == (bsd, True)
-        assert self.solver.get_license_group(bsd[1]) == (bsd, True)
-        assert self.solver.get_license_group(bsd[2]) == (bsd, True)
+        assert self.solver._get_license_group(bsd[0]) == (bsd, True)
+        assert self.solver._get_license_group(bsd[1]) == (bsd, True)
+        assert self.solver._get_license_group(bsd[2]) == (bsd, True)
 
         bsd_with_random_lowercase = ['bsd 4-ClaUse "Original" or "Old" License', "BsD-4-ClaUse", "BsD 4 Clause"]
-        assert self.solver.get_license_group(bsd_with_random_lowercase[0]) == (bsd, True)
-        assert self.solver.get_license_group(bsd_with_random_lowercase[1]) == (bsd, True)
-        assert self.solver.get_license_group(bsd_with_random_lowercase[2]) == (bsd, True)
+        assert self.solver._get_license_group(bsd_with_random_lowercase[0]) == (bsd, True)
+        assert self.solver._get_license_group(bsd_with_random_lowercase[1]) == (bsd, True)
+        assert self.solver._get_license_group(bsd_with_random_lowercase[2]) == (bsd, True)
 
         # find license without version
-        assert self.solver.get_license_group("Apache") == (list(["Apache"]), True)
+        assert self.solver._get_license_group("Apache") == (list(["Apache"]), True)
 
     def test_get_license_group_in_file(self) -> None:
         """Test detecting license group in dictionary."""
         apache = ["Apache License 1.0", "Apache-1.0", "Apache 1.0"]
-        assert self.solver.get_license_group("apache-1") == (apache, True)
-        assert self.solver.get_license_group("APACHE-1") == (apache, True)
+        assert self.solver._get_license_group("apache-1") == (apache, True)
+        assert self.solver._get_license_group("APACHE-1") == (apache, True)
 
     def test_get_license_group_not_fount(self) -> None:
         """Test detecting license group not found."""
-        assert self.solver.get_license_group("89fdslkj94") == (list(), False)
+        assert self.solver._get_license_group("89fdslkj94") == (list(), False)
 
     # test get_classifier_group function
     def test_get_classifier_group_none(self) -> None:
         """Test detecting classifier group which output None."""
-        assert self.solver.get_classifier_group(None) is None
+        assert self.solver._get_classifier_group(None) is None
 
     def test_get_classifier_group_found_in_classifier_list(self) -> None:
         """Test detecting classifier group found in classifier list."""
@@ -73,14 +73,14 @@ class TestSolver:
             "Aladdin Free Public License",
             "AFPL",
         ]
-        assert self.solver.get_classifier_group(classifier_input) == classifier_output
+        assert self.solver._get_classifier_group(classifier_input) == classifier_output
 
         classifier_input_2 = ["AFPL"]
-        assert self.solver.get_classifier_group(classifier_input_2) == classifier_output
+        assert self.solver._get_classifier_group(classifier_input_2) == classifier_output
 
         # tests with lowercase
         classifier_input_3 = ["aFpl"]
-        assert self.solver.get_classifier_group(classifier_input_3) == classifier_output
+        assert self.solver._get_classifier_group(classifier_input_3) == classifier_output
 
     @pytest.fixture(autouse=True)
     def capsys(self, capsys):

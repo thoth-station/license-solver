@@ -30,7 +30,7 @@ _LOGGER = logging.getLogger(__name__)
 class Classifiers:
     """Class detect all classifiers from downloaded data."""
 
-    received_text = attr.ib(init=False, type=str)
+    data = attr.ib(init=False, type=str)
     classifiers: List[str] = attr.ib(init=True, default=list())
     classifiers_list: List[Any] = list()
 
@@ -44,7 +44,7 @@ class Classifiers:
         try:
             with open(file_path) as file:
                 data = file.read()
-                self.received_text = data
+                self.data = data
                 _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
         except OSError:
             _LOGGER.critical("Could not open/read file: %s", file_path)
@@ -54,7 +54,7 @@ class Classifiers:
 
     def _convert_to_list(self) -> None:
         """Covert downloaded string to list."""
-        self.classifiers = list(self.received_text.split("\n"))
+        self.classifiers = list(self.data.split("\n"))
 
     def _extract(self) -> None:
         """Extract licence from classifiers list."""
