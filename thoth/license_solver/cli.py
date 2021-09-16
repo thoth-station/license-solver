@@ -17,6 +17,7 @@
 # type: ignore[misc]
 
 """solver-license-jon CLI."""
+import os
 import sys
 
 import click
@@ -71,7 +72,11 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
         print("Can't be directory and file parsed at same time. Choose only one", file=sys.stderr)
 
     if directory:
-        _LOGGER.debug("Parsing directory: %s", file)
+        if not os.path.isdir(directory):
+            _LOGGER.warning("You need to insert valid directory.")
+            return
+
+        _LOGGER.debug("Parsing directory: %s", directory)
         license_solver.solve_from_directory(directory)
         license_solver.print_output()
 
