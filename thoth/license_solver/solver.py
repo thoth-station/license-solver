@@ -99,7 +99,7 @@ class Solver:
         elif type(input_file) == dict:
             _LOGGER.debug("Parsing dictionary.")
             # dictionary parsing
-            json_solver = JsonSolver(input_file, "dictionary_input")
+            json_solver = JsonSolver(input_file, "dictionary_input")  # type: ignore[call-arg]
 
         else:
             _LOGGER.warning("Not supported type: %s. SKIPPED", type(input_file))
