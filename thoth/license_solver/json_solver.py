@@ -35,7 +35,6 @@ class JsonSolver:
     def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
         try:
-            # data = self.json_file["result"]["tree"][0].get("package_name")
             data = self.json_file.get("result")
             if data is None:
                 return self.json_file["tree"][0].get("package_name")
