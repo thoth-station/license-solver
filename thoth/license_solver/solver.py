@@ -36,21 +36,24 @@ _LOGGER = logging.getLogger(__name__)
 
 def detect_license(
     input_data: Union[Dict[str, Any], str, List[str], List[Dict[str, Any]]], raise_on_error: bool = True
-) -> None:
+) -> Dict[str, Any]:
     """Run license-solver from thoth-solver."""
     try:
         solver = Solver()
 
         if type(input_data) == dict or type(input_data) == str:
             solver.solve_from_file(input_data)
-            solver.print_output()
         elif type(input_data) == list:
             for enter in input_data:
                 solver.solve_from_file(enter)
-            solver.print_output()
+
+        return solver.get_output_dict()
+
     except Exception:
         if raise_on_error:
             raise Exception
+
+        return dict()
 
 
 @attr.s(slots=True)
@@ -216,3 +219,7 @@ class Solver:
             _LOGGER.warning("File %s is not JSON type. SKIPPED", input_file)
             return False
         return True
+
+    def get_output_dict(self) -> Dict[str, Any]:
+        """Return dictionary from 4OutputCreator class."""
+        return self.output.file
