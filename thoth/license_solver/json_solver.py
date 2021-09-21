@@ -35,7 +35,11 @@ class JsonSolver:
     def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
         try:
-            return self.json_file["result"]["tree"][0].get("package_name")
+            data = self.json_file.get("result")
+            if data is None:
+                return self.json_file["tree"][0].get("package_name")
+            else:
+                return self.json_file["result"]["tree"][0].get("package_name")
         except Exception:
             _LOGGER.debug("Can't detect package name from input file")
             return None
@@ -43,7 +47,11 @@ class JsonSolver:
     def get_package_version(self) -> Optional[Any]:
         """Get package version from metadata."""
         try:
-            return self.json_file["result"]["tree"][0].get("package_version")
+            data = self.json_file.get("result")
+            if data is None:
+                return self.json_file["tree"][0].get("package_version")
+            else:
+                return self.json_file["result"]["tree"][0].get("package_version")
         except Exception:
             _LOGGER.debug("Can't detect package version from input file")
             return None
@@ -51,7 +59,11 @@ class JsonSolver:
     def get_license_name(self) -> Optional[Any]:
         """Get license name from metadata."""
         try:
-            return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("License")
+            data = self.json_file.get("result")
+            if data is None:
+                return self.json_file["tree"][0]["importlib_metadata"]["metadata"].get("License")
+            else:
+                return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("License")
         except Exception:
             _LOGGER.debug("Can't detect license_name from input file")
             return None
@@ -59,7 +71,11 @@ class JsonSolver:
     def get_classifier_name(self) -> Union[List[Any], Any, None]:
         """Get classifier name from metadata."""
         try:
-            return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
+            data = self.json_file.get("result")
+            if data is None:
+                return self.json_file["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
+            else:
+                return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
         except Exception:
             _LOGGER.debug("Can't detect license_name from input file")
             return None

@@ -44,7 +44,7 @@ class Comparator:
 
     def __attrs_post_init__(self) -> None:
         """Open dictionary for comparing license and classifier."""
-        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/comparator_dictionary.yaml")
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "comparator_dictionary.yaml")
         with open(file_path) as f:
             try:
                 self._comparator_dictionary = yaml.safe_load(f)

@@ -15,19 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Main class witch work with detecting and creating output."""
+"""Main class which work with detecting and creating output."""
 
 import os
+from os import DirEntry
 import json
 import attr
 import logging
-from typing import List, Tuple, Union, Dict, Any, Optional
+from typing import List, Tuple, Dict, Any, Optional, Union
 from .classifiers import Classifiers
 from .licenses import Licenses
 from .package import Package, _detect_version_and_delete
 from .json_solver import JsonSolver
-from .comparator import Comparator, _delete_brackets, _delete_brackets_and_content
+from .comparator import _delete_brackets, _delete_brackets_and_content
 from .output_creator import OutputCreator
+from .exceptions import UnableOpenFileData
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,7 +39,6 @@ class Solver:
     """Class pass all detected files and try to detect all necessary data."""
 
     license_dictionary: Dict[str, Any] = attr.ib(init=False)
-    _files_list: List[str] = list()
 
     classifiers: Classifiers = Classifiers()
     licenses: Licenses = Licenses()
@@ -50,54 +51,68 @@ class Solver:
             with open(file_path) as f:
                 self.license_dictionary = json.load(f).get("data")
                 _LOGGER.debug("File license_dictionary.json was successful loaded")
-        except OSError:
-            raise OSError
+        except Exception:
+            raise UnableOpenFileData
 
-    def create_file(self) -> None:
+    def solve_from_file(self, input_file: Union[Dict[str, Any], str]) -> None:
         """
-        Pass all input files and create output, witch will be printed on STDOUT.
+        Pass input file and create output, which will be printed on STDOUT.
+
+        :param input_file: file path
+        :return: None
+        """
+        if type(input_file) == str:
+            _LOGGER.debug("Parsing file: %s", input_file)
+            if not self._check_if_json(input_file):
+                _LOGGER.warning("Input file is not valid. SKIPPED")
+                return
+            # path to file
+            try:
+                with open(input_file) as f:
+                    json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
+                    _LOGGER.debug("Loaded file %s", input_file)
+            except Exception as e:
+                _LOGGER.error("Broken or can't find file: %s\nerror: %s.", input_file, e)
+
+        elif type(input_file) == dict:
+            _LOGGER.debug("Parsing dictionary.")
+            # dictionary parsing
+            json_solver = JsonSolver(input_file, "dictionary_input")  # type: ignore[call-arg]
+
+        else:
+            _LOGGER.warning("Not supported type: %s. SKIPPED", type(input_file))
+            return
+
+        try:
+            if json_solver is None:
+                return
+        except Exception:
+            return
+
+        package = Package()
+        self._get_classifier_and_license(json_solver, package)
+        self.output.add_package(package)
+
+    def solve_from_directory(self, input_directory: str) -> None:
+        """
+        Pass input directory and create output, which will be printed on STDOUT.
 
         :return: None
         """
-        comparator = Comparator()
-        _LOGGER.debug("Start parsing file list")
-        for file_path in self._files_list[:]:
-            _LOGGER.debug("Parsing file: %s", file_path)
-            # pass all listed metadata
-            try:
-                with open(file_path) as f:
-                    json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
-                    _LOGGER.debug("Loaded file %s", file_path)
-            except Exception as e:
-                _LOGGER.error("Broken or can't find file: %s\nerror: %s", file_path, e)
-                exit(1)
+        _LOGGER.debug("Start parsing directory %s.", input_directory)
+        file_path: DirEntry  # type: ignore[type-arg]
+        for file_path in os.scandir(input_directory):
+            if file_path.is_file():
+                self.solve_from_file(file_path.path)
+            else:
+                _LOGGER.debug("Subdirectory SKIPPED %s.", file_path)
 
-            package = Package()
-            self.get_classifier_and_license(json_solver, package)
-
-            # save only package with name and version
-            if package.name and package.version:
-                if package.license and package.classifier:
-                    if comparator.cmp(package):
-                        # no warning
-                        self.output.add_package(package)
-                    else:
-                        # set warning
-                        self.output.add_package(package, warning=True)
-                        pass
-                else:
-                    # no need to compare license and classifier
-                    self.output.add_package(package)
-
-        # print result to STDOUT
-        self.output.print()
-
-    def get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
+    def _get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """
         Get classifier and license groups and save them to parameter package.
 
-        :param json_file: json class witch hold data from file
-        :param package: class package witch will hold all package data
+        :param json_file: json class which hold data from file
+        :param package: class package which will hold all package data
         :return: None
         """
         package.set_file_path(json_file.path)
@@ -106,12 +121,12 @@ class Solver:
         package.set_version(json_file.get_package_version())
 
         license_name = json_file.get_license_name()
-        package.set_license(self.get_license_group(license_name))
+        package.set_license(self._get_license_group(license_name))
 
         classifier_name = json_file.get_classifier_name()
-        package.set_classifier(self.get_classifier_group(classifier_name))
+        package.set_classifier(self._get_classifier_group(classifier_name))
 
-    def get_license_group(self, license_name: Optional[Any]) -> Tuple[List[str], bool]:
+    def _get_license_group(self, license_name: Optional[str]) -> Tuple[List[str], bool]:
         """
         Search for a group of entered license name.
 
@@ -150,7 +165,7 @@ class Solver:
 
         return list(), False
 
-    def get_classifier_group(self, classifier_name: Union[List[Any], Any, None]) -> Optional[Any]:
+    def _get_classifier_group(self, classifier_name: Optional[List[str]]) -> Optional[List[str]]:
         """
         Search for a group of entered classifier name.
 
@@ -160,38 +175,29 @@ class Solver:
         if classifier_name is None:
             return None
 
+        cla_li: List[str]
         for cla_li in self.classifiers.classifiers_list:
-            if list(set(cla_li) & set(classifier_name)):
+            # lowercase lists and compare
+            cla_li_lower = [x.lower() for x in cla_li.copy()]
+            classifier_name_lower = [x.lower() for x in classifier_name.copy()]
+
+            if list(set(cla_li_lower) & set(classifier_name_lower)):
                 return cla_li
 
         return None
 
-    def get_file(self, file: str) -> None:
-        """
-        Add file to file_list.
+    def print_output(self) -> None:
+        """Print final output on STDOU."""
+        self.output.print()
 
-        :param file: path to file
-        :return: None
-        """
-        if os.path.isfile(file) and file.lower().endswith(".json"):
-            self._files_list.append(file)
-        else:
-            _LOGGER.warning("wrong format you can insert only .json file: %s", file)
+    def get_output_dict(self) -> Dict[str, Any]:
+        """Return dictionary from 4OutputCreator class."""
+        return self.output.file
 
-    def get_dir_files(self, directory: str) -> None:
-        """
-        Create list of all files in directory.
-
-        :param directory: path to directory
-        :return: None
-        """
-        if os.path.isdir(directory):
-            _LOGGER.debug("Creating list of file from directory")
-            for f in os.listdir(directory):
-                full_path = os.path.join(directory, f)
-                if full_path.lower().endswith(".json"):
-                    self._files_list.append(full_path)
-                else:
-                    _LOGGER.warning("wrong format you can insert only .json SKIPPED: %s", f)
-        else:
-            _LOGGER.warning("invalid path to directory")
+    @staticmethod
+    def _check_if_json(input_file: str) -> bool:
+        """Check if input file is JSON type."""
+        if not input_file.endswith(".json"):
+            _LOGGER.warning("File %s is not JSON type. SKIPPED", input_file)
+            return False
+        return True
