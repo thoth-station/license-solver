@@ -59,7 +59,7 @@ class Package:
 
     def set_package_name(self, package_name: Optional[str]) -> None:
         """Set package name."""
-        if isinstance(package_name, str):
+        if type(package_name) is str:
             self.name = package_name
             _LOGGER.debug("Set name package: %s", package_name)
         else:
@@ -67,7 +67,7 @@ class Package:
 
     def set_version(self, package_version: Optional[str]) -> None:
         """Set version of package name."""
-        if isinstance(package_version, str):
+        if type(package_version) is str:
             self.version = package_version
             _LOGGER.debug("Set name package: %s", package_version)
         else:

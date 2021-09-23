@@ -33,9 +33,9 @@ def detect_license(
     try:
         license_solver = Solver()
 
-        if isinstance(input_data, dict) or isinstance(input_data, str):
+        if type(input_data) == dict or type(input_data) == str:
             license_solver.solve_from_file(input_data)
-        elif isinstance(input_data, list):
+        elif type(input_data) == list:
             for enter in input_data:
                 license_solver.solve_from_file(enter)
 
