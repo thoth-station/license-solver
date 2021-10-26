@@ -74,6 +74,7 @@ class Comparator:
             if (
                 list(set(license_name) & set(x))
                 or self.search_in_dictionary(license_name, x)
+                or classifier_name[0][0] == "UNDETECTED"
                 or license_name[0] == "UNKNOWN"
                 or license_name[0].lower() == "the unlicense"
             ):
@@ -94,7 +95,11 @@ class Comparator:
         if len(license_name) == 0:
             return False
 
-        if self._comparator_dictionary["classifier"].get(classifier[1]) is not None:
+        if (
+            classifier[0] == "UNDETECTED" and self._comparator_dictionary["classifier"].get(classifier[0]) is not None
+        ) or (
+            classifier[0] != "UNDETECTED" and self._comparator_dictionary["classifier"].get(classifier[1]) is not None
+        ):
             for x in self._comparator_dictionary["classifier"].get(classifier[1]):
                 if x == license_name[0]:
                     return True

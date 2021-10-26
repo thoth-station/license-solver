@@ -74,7 +74,7 @@ class TestPackage:
 
         # undetected license
         self.package.set_license((list(), False))
-        assert self.package.license == ["UNKNOWN"] and self.package.license_version == "UNDETECTED"
+        assert self.package.license == ["UNDETECTED"] and self.package.license_version == "UNDETECTED"
         self.package.set_license((list(["AAA", "AAA"]), True))
         assert self.package.license_version == "UNDETECTED"
 
@@ -90,8 +90,9 @@ class TestPackage:
         """Test set_classifier function."""
         # test None
         self.package.set_classifier(None)
-        assert self.package.classifier == list()
+        assert self.package.classifier == list([["UNDETECTED"]])
         # insert classifier
+        self.package.classifier = list()
         self.package.set_classifier(["License :: OSI Approved :: MIT License", "MIT License"])
         assert self.package.classifier == [["License :: OSI Approved :: MIT License", "MIT License"]]
         # try to insert same classifier

@@ -18,8 +18,8 @@
 """Init package."""
 
 from .solver import Solver
+from .solver_license import SolverLicense
 from typing import Dict, Any, List, Union
-
 
 __title__ = "license-solver"
 __version__ = "0.1.0"
@@ -28,7 +28,7 @@ __author__ = "Viliam Podhajecky <vpodhaje@redhat.com>"
 
 def detect_license(
     input_data: Union[Dict[str, Any], str, List[str], List[Dict[str, Any]]], raise_on_error: bool = True
-) -> Dict[str, Any]:
+) -> SolverLicense:
     """Run license-solver from thoth-solver."""
     try:
         license_solver = Solver()
@@ -39,15 +39,13 @@ def detect_license(
             for enter in input_data:
                 license_solver.solve_from_file(enter)
 
-        return license_solver.get_output_dict()
+        return SolverLicense(license_solver.get_output_dict())
 
     except Exception:
         if raise_on_error:
             raise Exception
 
-        return dict()
+        return SolverLicense({})
 
 
-__all__ = [
-    "detect_license",
-]
+__all__ = ["detect_license", "SolverLicense"]

@@ -109,9 +109,9 @@ class Package:
             self.set_license_version("UNDETECTED")
             _LOGGER.debug("Set license %s and version %s", license_name[0], "UNDETECTED")
         else:
-            self.license = list(["UNKNOWN"])
+            self.license = list(["UNDETECTED"])
             self.set_license_version("UNDETECTED")
-            _LOGGER.debug("Set license %s and version %s", list(["UNKNOWN"]), "UNDETECTED")
+            _LOGGER.debug("Set license %s and version %s", list(["UNDETECTED"]), "UNDETECTED")
 
     def set_license_version(self, license_version: str) -> None:
         """Set version of license."""
@@ -120,6 +120,7 @@ class Package:
     def set_classifier(self, classifier: Optional[List[str]]) -> None:
         """Set classifier."""
         if classifier is None:
+            self.classifier = [["UNDETECTED"]]
             return
 
         if len(self.classifier) == 0:

@@ -99,6 +99,10 @@ class OutputCreator:
                     _LOGGER.debug("Found not same duplicity set warning=True")
                     old["warning"] = True
 
+    def is_empty(self) -> bool:
+        """Check if variable file is empty."""
+        return True if not self.file else False
+
     def print(self) -> None:
         """Print dictionary on STDOUT."""
         _LOGGER.debug("Print on STDOUT final json")

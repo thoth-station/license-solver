@@ -89,9 +89,13 @@ class Solver:
         except Exception:
             return
 
-        package = Package()
-        self._get_classifier_and_license(json_solver, package)
-        self.output.add_package(package)
+        while True:
+            package = Package()
+            self._get_classifier_and_license(json_solver, package)
+            self.output.add_package(package)
+
+            if not json_solver.is_next():
+                return
 
     def solve_from_directory(self, input_directory: str) -> None:
         """
@@ -135,7 +139,7 @@ class Solver:
         """
         # undetected license
         if license_name is None:
-            return list(["UNKNOWN"]), False
+            return list(["UNDETECTED"]), False
 
         # UNKNOWN license name
         if license_name.lower() == "unknown":
@@ -163,7 +167,7 @@ class Solver:
             elif license_name_no_version == license_name:
                 return list([license_name]), True
 
-        return list(), False
+        return list(["UNDETECTED"]), False
 
     def _get_classifier_group(self, classifier_name: Optional[List[str]]) -> Optional[List[str]]:
         """
