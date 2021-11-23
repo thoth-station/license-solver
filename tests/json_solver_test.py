@@ -82,8 +82,3 @@ class TestJsonSolver:
         ]
         assert self.json_solver.get_classifier_name() == classifier
         assert self.json_solver_empty.get_classifier_name() is None
-
-    def test_get_errors(self):
-        """Test get_errors."""
-        assert self.json_solver_empty.get_errors() is False
-        assert self.json_solver.get_errors()

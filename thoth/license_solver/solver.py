@@ -89,13 +89,9 @@ class Solver:
         except Exception:
             return
 
-        while True:
-            package = Package()
-            self._get_classifier_and_license(json_solver, package)
-            self.output.add_package(package)
-
-            if not json_solver.is_next():
-                return
+        package = Package()
+        self._get_classifier_and_license(json_solver, package)
+        self.output.add_package(package)
 
     def solve_from_directory(self, input_directory: str) -> None:
         """
@@ -191,12 +187,22 @@ class Solver:
         return None
 
     def print_output(self) -> None:
-        """Print final output on STDOU."""
+        """Print final output on STDOUT."""
         self.output.print()
 
     def get_output_dict(self) -> Dict[str, Any]:
-        """Return dictionary from 4OutputCreator class."""
+        """Return dictionary from OutputCreator class."""
         return self.output.file
+
+    @staticmethod
+    def get_empty_dict() -> Dict[str, Any]:
+        """Return empty dictionary for license."""
+        return {
+            "license": "UNDETECTED",
+            "license_identifier": "UNDETECTED",
+            "license_version": "UNDETECTED",
+            "warning": True,
+        }
 
     @staticmethod
     def _check_if_json(input_file: str) -> bool:
