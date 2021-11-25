@@ -22,7 +22,9 @@ from os import DirEntry
 import json
 import attr
 import logging
+import requests
 from typing import List, Tuple, Dict, Any, Optional, Union
+
 from .classifiers import Classifiers
 from .licenses import Licenses
 from .package import Package, _detect_version_and_delete
@@ -106,6 +108,16 @@ class Solver:
                 self.solve_from_file(file_path.path)
             else:
                 _LOGGER.debug("Subdirectory SKIPPED %s.", file_path)
+
+    def solve_from_pypi(self, package_name: str, package_version: str) -> None:
+        """
+        Download JSON from PyPI for package and create output.
+
+        :return: None
+        """
+        url = f"https://pypi.org/pypi/{package_name}/json"
+        response = requests.get(url)
+        print(response.text)
 
     def _get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """

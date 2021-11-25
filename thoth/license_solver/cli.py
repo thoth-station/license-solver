@@ -54,7 +54,30 @@ _LOGGER = logging.getLogger("thoth.license_solver")
     help="Get licenses from folder",
     envvar="THOTH_SOLVER_LICENSE_JOB_DIRECTORY",
 )
-def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> None:
+@click.option(
+    "-pv",
+    "--package-version",
+    nargs=1,
+    type=str,
+    help="Package version",
+    envvar="THOTH_SOLVER_LICENSE_PACKAGE_VERSION",
+)
+@click.option(
+    "-pn",
+    "--package-name",
+    nargs=1,
+    type=str,
+    help="Package name detect from PyPI",
+    envvar="THOTH_SOLVER_LICENSE_PACKAGE_NAME",
+)
+def cli(
+    _: click.Context,
+    directory: str,
+    file: str,
+    package_name: str,
+    package_version: str,
+    verbose: bool = False,
+) -> None:
     """
     License solver.
 
@@ -67,11 +90,21 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
 
     license_solver = Solver()
 
+    if package_name or package_version:
+        if package_name and package_version:
+            _LOGGER.debug("Parsing PyPI: {} {}", package_name, package_version)
+            license_solver.solve_from_pypi(package_name, package_version)
+            license_solver.print_output()
+        else:
+            _LOGGER.error("Must be parsed package_name and package_version at same time.")
+            print("Must be parsed package_name and package_version at same time.", file=sys.stderr)
+            exit(1)
+
     if directory and file:
         _LOGGER.error("Can't be directory and file parsed at same time.")
         print("Can't be directory and file parsed at same time. Choose only one", file=sys.stderr)
-
-    if directory:
+        exit(1)
+    elif directory:
         if not os.path.isdir(directory):
             _LOGGER.warning("You need to insert valid directory.")
             return
@@ -79,8 +112,7 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
         _LOGGER.debug("Parsing directory: %s", directory)
         license_solver.solve_from_directory(directory)
         license_solver.print_output()
-
-    if file:
+    elif file:
         _LOGGER.debug("Parsing file: %s", file)
         license_solver.solve_from_file(file)
         license_solver.print_output()
