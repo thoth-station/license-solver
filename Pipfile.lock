@@ -437,11 +437,11 @@
         },
         "thoth-common": {
             "hashes": [
-                "sha256:7f8f04d8013cfb7b41e170f46cbde683f9bb5b6db2b01d7c36a47c9d4ef29b7c",
-                "sha256:d2a8805fdaad8d304b1a6479d9460cef4c8aaa26785f900aa5adbf240e53198b"
+                "sha256:d2d4219fe9d5943b923ed847715217e4d4f52b49274f09b1d68d3658c53cf023",
+                "sha256:fcae892884f2e191d35cecbee8a01a3fbe70b6468b6d3707414e29e537a113b7"
             ],
             "index": "pypi",
-            "version": "==0.32.0"
+            "version": "==0.33.0"
         },
         "tzdata": {
             "hashes": [
@@ -557,11 +557,11 @@
         },
         "types-requests": {
             "hashes": [
-                "sha256:809b5dcd3c408ac39d11d593835b6aff32420b3e7ddb79c7f3e823330f040466",
-                "sha256:df5ec8c34b413a42ebb38e4f96bdeb68090b875bdfcc5138dc82989c95445883"
+                "sha256:0893e112e1510bbb67f537941c92192de7472e51bf7f236e0e583866f0ed933e",
+                "sha256:853571b3accc188976c0f4feffcaebf6cdfc170082b5e43f3358aa78de61f531"
             ],
             "index": "pypi",
-            "version": "==2.26.0"
+            "version": "==2.26.1"
         }
     }
 }
