@@ -32,18 +32,24 @@ class JsonSolver:
     json_file = attrib(type=Dict[str, Any])
     path = attrib(type=str)
 
+    def get_info_attribute(self) -> None:
+        """Get info from metadata."""
+        res = self.json_file.get("info")
+        if res is not None:
+            self.json_file = res  # type: ignore[assignment]
+
     def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
-        return self.json_file.get("Name")
+        return self.json_file.get("Name") or self.json_file.get("name")
 
     def get_package_version(self) -> Optional[Any]:
         """Get package version from metadata."""
-        return self.json_file.get("Version")
+        return self.json_file.get("Version") or self.json_file.get("version")
 
     def get_license_name(self) -> Optional[Any]:
         """Get license name from metadata."""
-        return self.json_file.get("License")
+        return self.json_file.get("License") or self.json_file.get("license")
 
     def get_classifier_name(self) -> Union[List[Any], Any, None]:
         """Get classifier name from metadata."""
-        return self.json_file.get("Classifier")
+        return self.json_file.get("Classifier") or self.json_file.get("classifiers")

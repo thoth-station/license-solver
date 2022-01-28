@@ -46,7 +46,7 @@ class TestOutputCreator:
 
         return package
 
-    def test_add_package_solo(self):
+    def test_add_package_solo(self) -> None:
         """Test add_package solo versions."""
         package_1 = self.create_package(
             "test_1",
@@ -69,7 +69,7 @@ class TestOutputCreator:
             }
         }
 
-    def test_add_package_version_solo(self):
+    def test_add_package_version_solo(self) -> None:
         """Test add_package solo versions."""
         package = self.create_package(
             "test_1",
@@ -98,7 +98,7 @@ class TestOutputCreator:
             }
         }
 
-    def test_add_package(self):
+    def test_add_package(self) -> None:
         """Test add_package."""
         package = self.create_package(
             "test_2",
@@ -135,7 +135,7 @@ class TestOutputCreator:
             },
         }
 
-    def test_add_package_version(self):
+    def test_add_package_version(self) -> None:
         """Test add_package with version."""
         package = self.create_package(
             "test_2",
@@ -178,7 +178,7 @@ class TestOutputCreator:
             },
         }
 
-    def test_add_package_same_package_and_version(self):
+    def test_add_package_same_package_and_version(self) -> None:
         """Test add_package with same package and version."""
         package_same_package = self.create_package(
             "test_2",
@@ -230,7 +230,7 @@ class TestOutputCreator:
             },
         }
 
-    def test_check_duplicity(self):
+    def test_check_duplicity(self) -> None:
         """Test check_duplicity."""
         package_old = {
             "license": ["Apache License 1.1", "Apache-1.1", "Apache 1.1"],

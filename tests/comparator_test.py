@@ -27,7 +27,7 @@ class TestComparator:
     comparator: Comparator = Comparator()
 
     # tests related to Compare().cmp()
-    def test_cmp(self):
+    def test_cmp(self) -> None:
         """Test compare function in Comparator class."""
         package_1 = Package()
         assert self.comparator.cmp(package_1), "Empty package return true, because there is nothing to compare"
@@ -46,7 +46,7 @@ class TestComparator:
         package_3.set_classifier(["License :: OSI Approved :: Apache Software License", "Apache Software License"])
         assert self.comparator.cmp(package_3) is False, "License and Classifier can't match"
 
-    def test_cmp_missing(self):
+    def test_cmp_missing(self) -> None:
         """Test compare function in Comparator class and check result for missing license or classifier or both."""
         package_1 = Package()
         package_1.set_license((["Apache License 1.1", "Apache-1.1", "Apache 1.1"], True))
@@ -57,7 +57,7 @@ class TestComparator:
         assert self.comparator.cmp(package_2), "Must return true, because there is nothing to compare"
 
     # tests related to Compare().search_in_dictionary()
-    def test_search_in_dictionary(self):
+    def test_search_in_dictionary(self) -> None:
         """Test function search_in_dictionary."""
         license_name = ['BSD 4-Clause "Original" or "Old" License']
         license_name_not_valid = ["Not Valid", "NoV"]
@@ -72,6 +72,6 @@ class TestComparator:
             self.comparator.search_in_dictionary(license_name, classifier_not_valid) is False
         ), "Classifier cant be find because is not defined in dictionary file"
 
-    def test_search_in_dictionary_missing(self):
+    def test_search_in_dictionary_missing(self) -> None:
         """Test missing data/input in search_in_dictionary in Comparator."""
         assert self.comparator.search_in_dictionary(list(), list()) is False, "Nothing to found in license dictionary"
