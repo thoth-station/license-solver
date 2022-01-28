@@ -65,7 +65,7 @@ class Solver:
         :param input_file: file path
         :return: None
         """
-        if type(input_file) == str:
+        if isinstance(input_file, str):
             _LOGGER.debug("Parsing file: %s", input_file)
             if not self._check_if_json(input_file):
                 _LOGGER.warning("Input file is not valid. SKIPPED")
@@ -79,7 +79,7 @@ class Solver:
             except Exception as e:
                 _LOGGER.error("Broken or can't find file: %s\nerror: %s.", input_file, e)
 
-        elif type(input_file) == dict:
+        elif isinstance(input_file, dict):
             _LOGGER.debug("Parsing dictionary.")
             # dictionary parsing
             json_solver = JsonSolver(input_file, "dictionary_input")  # type: ignore[call-arg]
