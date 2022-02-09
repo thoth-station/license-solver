@@ -193,6 +193,7 @@ def cli(
             if package_version:
                 _LOGGER.warning("Can't insert version to multiple package_name entry")
                 print("Can't insert version to multiple package_name entry", file=sys.stderr)
+                exit(1)
 
             for pn in package_name:
                 license_solver.solve_from_pypi(pn, package_version)
@@ -207,7 +208,7 @@ def cli(
     if directory:
         for d in directory:
             if not os.path.isdir(d):
-                _LOGGER.warning("Not a valid directory %r", d)
+                _LOGGER.warning("Not a valid directory %r [SKIPPED]", d)
                 print(f'Not a valid directory "{d}" [SKIPPED]')
                 continue
 
@@ -218,8 +219,7 @@ def cli(
     if file:
         for f in file:
             if not os.path.isfile(f):
-                _LOGGER.warning("Not a valid file %r", f)
-                print(f'Not a valid file "{f}" [SKIPPED]')
+                _LOGGER.warning("Not a valid file %r [SKIPPED]", f)
                 continue
 
             _LOGGER.debug("Parsing file: %s", f)

@@ -6,9 +6,9 @@ This tool handles license and classifier detection from metadata provided by PyP
 ## What license-solver does
 Detects licenses and classifier from metadata provided by:
    - PyPI
-   - JSON file
-   - folder with JSON files
-   - dictionary ()
+   - JSON files
+   - folder/s with JSON files
+   - dictionary
 
 The output is printed by default on STDOUT (you can choose the file where to save the output more in --help).
 
@@ -161,9 +161,7 @@ $ PYTHONPATH=. python3 ./thoth-license-solver <arguments>
 ## Installation
 Install `license-solver`:
 ```shell
-$ git clone https://github.com/thoth-station/license-solver     # before clone, select folder where to clone repository
-$ python3 setup.py sdist
-$ pip install dist/thoth-license-solver-0.1.0.tar.gz
+$ pip install thoth-license-solver
 ```
 
 ## Run tests
