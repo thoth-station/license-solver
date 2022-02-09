@@ -191,8 +191,7 @@ def cli(
     if package_name is not None:
         if len(package_name) > 1:
             if package_version:
-                _LOGGER.warning("Can't insert version to multiple package_name entry")
-                print("Can't insert version to multiple package_name entry", file=sys.stderr)
+                _LOGGER.warning("Can't insert version to multiple package_name entry.")
                 exit(1)
 
             for pn in package_name:
@@ -208,8 +207,7 @@ def cli(
     if directory:
         for d in directory:
             if not os.path.isdir(d):
-                _LOGGER.warning("Not a valid directory %r [SKIPPED]", d)
-                print(f'Not a valid directory "{d}" [SKIPPED]')
+                _LOGGER.warning("Not a valid directory %r [SKIPPED].", d)
                 continue
 
             _LOGGER.debug("Parsing directory: %s", d)
@@ -219,7 +217,7 @@ def cli(
     if file:
         for f in file:
             if not os.path.isfile(f):
-                _LOGGER.warning("Not a valid file %r [SKIPPED]", f)
+                _LOGGER.warning("Not a valid file %r [SKIPPED].", f)
                 continue
 
             _LOGGER.debug("Parsing file: %s", f)
