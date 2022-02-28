@@ -99,7 +99,14 @@ class OutputCreator:
                     _LOGGER.debug("Found not same duplicity set warning=True")
                     old["warning"] = True
 
-    def print(self) -> None:
+    def is_empty(self) -> bool:
+        """Check if variable file is empty."""
+        return True if not self.file else False
+
+    def print(self, indent: int = -1) -> None:
         """Print dictionary on STDOUT."""
         _LOGGER.debug("Print on STDOUT final json")
-        print(json.dumps(self.file), file=sys.stdout)
+        if indent < 0:
+            print(json.dumps(self.file), file=sys.stdout)
+        else:
+            print(json.dumps(self.file, indent=indent), file=sys.stdout)

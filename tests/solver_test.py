@@ -30,7 +30,7 @@ class TestSolver:
     # test get_license_group function
     def test_get_license_group_unknown(self) -> None:
         """Test detecting license group for unknown."""
-        assert self.solver._get_license_group(None) == (list(["UNKNOWN"]), False)
+        assert self.solver._get_license_group(None) == (list(["UNDETECTED"]), False)
         assert self.solver._get_license_group("UNKNOWN") == (list(["UNKNOWN"]), False)
         assert self.solver._get_license_group("uNkNOWN") == (list(["UNKNOWN"]), False)
 
@@ -57,7 +57,7 @@ class TestSolver:
 
     def test_get_license_group_not_fount(self) -> None:
         """Test detecting license group not found."""
-        assert self.solver._get_license_group("89fdslkj94") == (list(), False)
+        assert self.solver._get_license_group("89fdslkj94") == (list(["UNDETECTED"]), False)
 
     # test get_classifier_group function
     def test_get_classifier_group_none(self) -> None:
@@ -98,41 +98,30 @@ class TestSolver:
         out, err = self.capsys.readouterr()
 
         assert str(out) == str(
-            '{"test_1": {"1.0": {"license": ["MIT License", "MIT"], "license_version": '
-            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: MIT '
-            'License", "MIT License"]], "warning": false}, "1.1": {"license": ["MIT '
-            'License", "MIT"], "license_version": "LICENSE-WITHOUT-VERSION", '
-            '"classifier": [["License :: OSI Approved :: MIT License", "MIT License"]], '
-            '"warning": false}}, "test_2": {"1.0": {"license": ["MIT License", "MIT"], '
-            '"license_version": "LICENSE-WITHOUT-VERSION", "classifier": [["License :: '
-            'OSI Approved :: MIT License", "MIT License"]], "warning": false}, "1.1": '
-            '{"license": ["MIT License", "MIT"], "license_version": '
-            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: '
-            'Apache Software License", "Apache Software License"]], "warning": true}}, '
-            '"oslotest": {"4.2.0": {"license": ["UNKNOWN"], "license_version": '
+            '{"oslotest": {"4.2.0": {"license": ["UNKNOWN"], "license_version": '
             '"UNDETECTED", "classifier": [["License :: OSI Approved :: Apache Software '
             'License", "Apache Software License"]], "warning": false}}, '
             '"polyaxon-client": {"0.6.0": {"license": ["MIT License", "MIT"], '
-            '"license_version": "LICENSE-WITHOUT-VERSION", "classifier": [], "warning": '
-            'false}}, "django-redis-cache": {"1.5.1": {"license": ["UNKNOWN"], '
-            '"license_version": "UNDETECTED", "classifier": [], "warning": false}}, '
-            '"django-webpack-loader": {"0.0.6.1": {"license": ["UNKNOWN"], '
-            '"license_version": "UNDETECTED", "classifier": [["License :: OSI Approved :: '
-            'MIT License", "MIT License"]], "warning": false}}, "trimesh": {"2.29.9": '
-            '{"license": ["MIT License", "MIT"], "license_version": '
-            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: MIT '
-            'License", "MIT License"]], "warning": false}}, "cwltool": '
-            '{"1.0.20160108200940": {"license": ["Apache License 2.0", "Apache-2.0", '
-            '"Apache 2.0"], "license_version": "2.0", "classifier": [], "warning": '
-            'false}}, "moto": {"1.3.15.dev221": {"license": ["Apache"], '
-            '"license_version": "UNDETECTED", "classifier": [["License :: OSI Approved :: '
-            'Apache Software License", "Apache Software License"]], "warning": false}}, '
-            '"setuptools-scm": {"1.15.4": {"license": ["MIT License", "MIT"], '
+            '"license_version": "LICENSE-WITHOUT-VERSION", "classifier": '
+            '[["UNDETECTED"]], "warning": false}}, "django-redis-cache": {"1.5.1": '
+            '{"license": ["UNKNOWN"], "license_version": "UNDETECTED", "classifier": '
+            '[["UNDETECTED"]], "warning": false}}, "django-webpack-loader": {"0.0.6.1": '
+            '{"license": ["UNKNOWN"], "license_version": "UNDETECTED", "classifier": '
+            '[["License :: OSI Approved :: MIT License", "MIT License"]], "warning": '
+            'false}}, "trimesh": {"2.29.9": {"license": ["MIT License", "MIT"], '
             '"license_version": "LICENSE-WITHOUT-VERSION", "classifier": [["License :: '
             'OSI Approved :: MIT License", "MIT License"]], "warning": false}}, '
-            '"itk-segmentation": {"4.13.2": {"license": ["Apache"], "license_version": '
-            '"UNDETECTED", "classifier": [["License :: OSI Approved :: Apache Software '
-            'License", "Apache Software License"]], "warning": false}}, '
+            '"cwltool": {"1.0.20160108200940": {"license": ["Apache License 2.0", '
+            '"Apache-2.0", "Apache 2.0"], "license_version": "2.0", "classifier": '
+            '[["UNDETECTED"]], "warning": false}}, "moto": {"1.3.15.dev221": {"license": '
+            '["Apache"], "license_version": "UNDETECTED", "classifier": [["License :: OSI '
+            'Approved :: Apache Software License", "Apache Software License"]], '
+            '"warning": false}}, "setuptools-scm": {"1.15.4": {"license": ["MIT License", '
+            '"MIT"], "license_version": "LICENSE-WITHOUT-VERSION", "classifier": '
+            '[["License :: OSI Approved :: MIT License", "MIT License"]], "warning": '
+            'false}}, "itk-segmentation": {"4.13.2": {"license": ["Apache"], '
+            '"license_version": "UNDETECTED", "classifier": [["License :: OSI Approved :: '
+            'Apache Software License", "Apache Software License"]], "warning": false}}, '
             '"great-expectations": {"0.11.0b0": {"license": ["Apache License 2.0", '
             '"Apache-2.0", "Apache 2.0"], "license_version": "2.0", "classifier": '
             '[["License :: OSI Approved :: Apache Software License", "Apache Software '

@@ -19,17 +19,79 @@
 """solver-license-jon CLI."""
 import os
 import sys
-
 import click
 import logging
+
 from thoth.common import init_logging
 from thoth.license_solver.solver import Solver
+from thoth.license_solver import __version__ as license_solver_version
 
 init_logging()
 _LOGGER = logging.getLogger("thoth.license_solver")
 
 
-@click.command()
+class OptionEatAll(click.Option):
+    """
+    Eat all argument of parameter.
+
+    source: https://stackoverflow.com/a/48394004
+    """
+
+    def __init__(self, *args, **kwargs):
+        """Initialize."""
+        self.save_other_options = kwargs.pop("save_other_options", True)
+        nargs = kwargs.pop("nargs", -1)
+        assert nargs == -1, "nargs, if set, must be -1 not {}".format(nargs)
+        super(OptionEatAll, self).__init__(*args, **kwargs)
+        self._previous_parser_process = None
+        self._eat_all_parser = None
+
+    def add_to_parser(self, parser, ctx):
+        """Add to parser."""
+
+        def parser_process(value, state):
+            """Parser process."""
+            # method to hook to the parser.process
+            done = False
+            value = [value]
+            if self.save_other_options:
+                # grab everything up to the next option
+                while state.rargs and not done:
+                    for prefix in self._eat_all_parser.prefixes:
+                        if state.rargs[0].startswith(prefix):
+                            done = True
+                    if not done:
+                        value.append(state.rargs.pop(0))
+            else:
+                # grab everything remaining
+                value += state.rargs
+                state.rargs[:] = []
+            value = tuple(value)
+
+            # call the actual process
+            self._previous_parser_process(value, state)
+
+        retval = super(OptionEatAll, self).add_to_parser(parser, ctx)
+        for name in self.opts:
+            our_parser = parser._long_opt.get(name) or parser._short_opt.get(name)
+            if our_parser:
+                self._eat_all_parser = our_parser
+                self._previous_parser_process = our_parser.process
+                our_parser.process = parser_process
+                break
+        return retval
+
+
+def _print_version(ctx: click.Context, _, value: str) -> None:
+    """Print license-solver version and exit."""
+    if not value or ctx.resilient_parsing:
+        return
+
+    click.echo(license_solver_version)
+    ctx.exit()
+
+
+@click.command(context_settings=dict(max_content_width=160))
 @click.pass_context
 @click.option(
     "-v",
@@ -39,22 +101,80 @@ _LOGGER = logging.getLogger("thoth.license_solver")
     help="Be verbose about what's going on.",
 )
 @click.option(
+    "--version",
+    is_flag=True,
+    is_eager=True,
+    callback=_print_version,
+    expose_value=False,
+    help="Print license-solver version and exit.",
+)
+@click.option(
     "-f",
     "--file",
-    nargs=1,
-    type=str,
-    help="Get license from file",
+    type=tuple,
+    cls=OptionEatAll,
+    help="Get license from file.",
     envvar="THOTH_SOLVER_LICENSE_JOB_FILE",
 )
 @click.option(
     "-d",
     "--directory",
-    nargs=1,
-    type=str,
-    help="Get licenses from folder",
+    type=tuple,
+    cls=OptionEatAll,
+    help="Get licenses from folder.",
     envvar="THOTH_SOLVER_LICENSE_JOB_DIRECTORY",
 )
-def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> None:
+@click.option(
+    "-pn",
+    "--package-name",
+    type=tuple,
+    cls=OptionEatAll,
+    help='Get license from latest PyPI release or use with "--package-version" for specific version.',
+    envvar="THOTH_SOLVER_LICENSE_PACKAGE_NAME",
+)
+@click.option(
+    "-pv",
+    "--package-version",
+    nargs=1,
+    type=str,
+    help="Get license with specific version.",
+    envvar="THOTH_SOLVER_LICENSE_PACKAGE_VERSION",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=str,
+    help="Save output to JSON file.",
+    envvar="THOTH_SOLVER_LICENSE_OUTPUT",
+)
+@click.option(
+    "-np",
+    "--no-print",
+    is_flag=True,
+    help="No print on STDOUT.",
+    envvar="THOTH_SOLVER_LICENSE_OUTPUT",
+)
+@click.option(
+    "-pp",
+    "--pretty-printing",
+    type=int,
+    nargs=1,
+    default=-1,
+    show_default=True,
+    help="Save/print result with prettier look.",
+    envvar="THOTH_SOLVER_LICENSE_INDENT",
+)
+def cli(
+    ctx: click.Context,
+    directory: tuple,
+    file: tuple,
+    package_name: str,
+    package_version: str,
+    output: str,
+    no_print: bool,
+    pretty_printing: int,
+    verbose: bool = False,
+) -> None:
     """
     License solver.
 
@@ -67,23 +187,47 @@ def cli(_: click.Context, directory: str, file: str, verbose: bool = False) -> N
 
     license_solver = Solver()
 
-    if directory and file:
-        _LOGGER.error("Can't be directory and file parsed at same time.")
-        print("Can't be directory and file parsed at same time. Choose only one", file=sys.stderr)
+    # package argument
+    if package_name is not None:
+        if len(package_name) > 1:
+            if package_version:
+                _LOGGER.warning("Can't insert version to multiple package_name entry.")
+                exit(1)
 
+            for pn in package_name:
+                license_solver.solve_from_pypi(pn, package_version)
+
+        elif len(package_name) == 1:
+            license_solver.solve_from_pypi(package_name[0], package_version)
+        elif package_version:
+            print(ctx.get_help(), "\n\n--package-version is used with --package-name.", file=sys.stderr)
+            exit(1)
+
+    # directory argument
     if directory:
-        if not os.path.isdir(directory):
-            _LOGGER.warning("You need to insert valid directory.")
-            return
+        for d in directory:
+            if not os.path.isdir(d):
+                _LOGGER.warning("Not a valid directory %r [SKIPPED].", d)
+                continue
 
-        _LOGGER.debug("Parsing directory: %s", directory)
-        license_solver.solve_from_directory(directory)
-        license_solver.print_output()
+            _LOGGER.debug("Parsing directory: %s", d)
+            license_solver.solve_from_directory(d)
 
+    # file argument
     if file:
-        _LOGGER.debug("Parsing file: %s", file)
-        license_solver.solve_from_file(file)
-        license_solver.print_output()
+        for f in file:
+            if not os.path.isfile(f):
+                _LOGGER.warning("Not a valid file %r [SKIPPED].", f)
+                continue
+
+            _LOGGER.debug("Parsing file: %s", f)
+            license_solver.solve_from_file(f)
+
+    if output:
+        license_solver.save_output(output, pretty_printing)
+
+    if not no_print:
+        license_solver.print_output(pretty_printing)
 
 
 __name__ == "__main__" and cli()

@@ -13,3 +13,6 @@ check: []
 #   registry-org: aicoe
 #   registry-project: <CHANGE-ME>
 #   registry-secret: aicoe-pusher-secret
+
+release:
+  - upload-pypi-sesheta

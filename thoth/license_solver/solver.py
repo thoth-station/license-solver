@@ -18,11 +18,15 @@
 """Main class which work with detecting and creating output."""
 
 import os
-from os import DirEntry
+import sys
 import json
 import attr
 import logging
+import requests
+
 from typing import List, Tuple, Dict, Any, Optional, Union
+from os import DirEntry
+
 from .classifiers import Classifiers
 from .licenses import Licenses
 from .package import Package, _detect_version_and_delete
@@ -56,7 +60,7 @@ class Solver:
 
     def solve_from_file(self, input_file: Union[Dict[str, Any], str]) -> None:
         """
-        Pass input file and create output, which will be printed on STDOUT.
+        Solver from file.
 
         :param input_file: file path
         :return: None
@@ -70,6 +74,7 @@ class Solver:
             try:
                 with open(input_file) as f:
                     json_solver = JsonSolver(json.load(f), f.name)  # type: ignore[call-arg]
+                    json_solver.get_info_attribute()
                     _LOGGER.debug("Loaded file %s", input_file)
             except Exception as e:
                 _LOGGER.error("Broken or can't find file: %s\nerror: %s.", input_file, e)
@@ -90,13 +95,15 @@ class Solver:
             return
 
         package = Package()
+
         self._get_classifier_and_license(json_solver, package)
         self.output.add_package(package)
 
     def solve_from_directory(self, input_directory: str) -> None:
         """
-        Pass input directory and create output, which will be printed on STDOUT.
+        Solve from directory.
 
+        :param input_directory: directory path
         :return: None
         """
         _LOGGER.debug("Start parsing directory %s.", input_directory)
@@ -106,6 +113,38 @@ class Solver:
                 self.solve_from_file(file_path.path)
             else:
                 _LOGGER.debug("Subdirectory SKIPPED %s.", file_path)
+
+    def solve_from_pypi(self, package_name: str, package_version: Optional[str]) -> None:
+        """
+        Solve from PyPI.
+
+        :param package_name: package name to solver
+        :param package_version: package version to solver
+        :return: None
+        """
+        if package_version:
+            url = f"https://pypi.org/pypi/{package_name}/{package_version}/json"
+            response = requests.get(url, headers={"User-Agent": "license-solver"})
+
+            if response.status_code != 200:
+                _LOGGER.warning("Package %r with version %r was not found on PyPI.", package_name, package_version)
+                print(f"Package {package_name} with {package_version} was not found on PyPI.", file=sys.stderr)
+                return
+        else:
+            # get latest licenses
+            url = f"https://pypi.org/pypi/{package_name}/json"
+            response = requests.get(url, headers={"User-Agent": "license-solver"})
+
+            if response.status_code != 200:
+                _LOGGER.warning("Package %r was not found on PyPI.", package_name)
+                print(f"Package {package_name} was not found on PyPI.", file=sys.stderr)
+                return
+
+        # convert to dictionary
+        res = json.loads(response.text)
+        # solver like file
+        self.solve_from_file(res)
+        self.solve_from_file(res.get("info"))
 
     def _get_classifier_and_license(self, json_file: JsonSolver, package: Package) -> None:
         """
@@ -135,7 +174,7 @@ class Solver:
         """
         # undetected license
         if license_name is None:
-            return list(["UNKNOWN"]), False
+            return list(["UNDETECTED"]), False
 
         # UNKNOWN license name
         if license_name.lower() == "unknown":
@@ -163,7 +202,7 @@ class Solver:
             elif license_name_no_version == license_name:
                 return list([license_name]), True
 
-        return list(), False
+        return list(["UNDETECTED"]), False
 
     def _get_classifier_group(self, classifier_name: Optional[List[str]]) -> Optional[List[str]]:
         """
@@ -186,13 +225,35 @@ class Solver:
 
         return None
 
-    def print_output(self) -> None:
-        """Print final output on STDOU."""
-        self.output.print()
+    def print_output(self, indent: int = -1) -> None:
+        """Print final output on STDOUT."""
+        self.output.print(indent)
 
-    def get_output_dict(self) -> Dict[str, Any]:
-        """Return dictionary from 4OutputCreator class."""
-        return self.output.file
+    def save_output(self, file_name: str, indent: int = -1) -> None:
+        """Save solver result to JSON."""
+        f = open(file_name, "w")
+        if indent < 0:
+            f.write(json.dumps(self.output.file))
+        else:
+            f.write(json.dumps(self.output.file, indent=indent))
+        f.close()
+
+    def get_output_dict(self, **kw: Any) -> Dict[str, Any]:
+        """Return dictionary from OutputCreator class."""
+        condition = True if kw["package_name"] and kw["package_version"] else False
+        return (  # type: ignore[no-any-return]
+            self.output.file[kw["package_name"]][kw["package_version"]] if condition else self.output.file
+        )
+
+    @staticmethod
+    def get_empty_dict() -> Dict[str, Any]:
+        """Return empty dictionary for license."""
+        return {
+            "license": "UNDETECTED",
+            "license_identifier": "UNDETECTED",
+            "license_version": "UNDETECTED",
+            "warning": True,
+        }
 
     @staticmethod
     def _check_if_json(input_file: str) -> bool:

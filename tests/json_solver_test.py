@@ -33,7 +33,7 @@ class TestJsonSolver:
     def _setup_json_solver_variables(self):
         """Set up class variables."""
         file_path = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "test_files/json_solver/load_json_file.json"
+            os.path.dirname(os.path.realpath(__file__)), "test_files", "json_solver", "load_json_file.json"
         )
         with open(file_path) as f:
             file_data = json.load(f)
@@ -82,8 +82,3 @@ class TestJsonSolver:
         ]
         assert self.json_solver.get_classifier_name() == classifier
         assert self.json_solver_empty.get_classifier_name() is None
-
-    def test_get_errors(self):
-        """Test get_errors."""
-        assert self.json_solver_empty.get_errors() is False
-        assert self.json_solver.get_errors()

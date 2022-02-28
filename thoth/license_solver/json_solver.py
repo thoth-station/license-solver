@@ -32,68 +32,24 @@ class JsonSolver:
     json_file = attrib(type=Dict[str, Any])
     path = attrib(type=str)
 
+    def get_info_attribute(self) -> None:
+        """Get info from metadata."""
+        res = self.json_file.get("info")
+        if res is not None:
+            self.json_file = res  # type: ignore[assignment]
+
     def get_package_name(self) -> Optional[Any]:
         """Get package name from metadata."""
-        try:
-            data = self.json_file.get("result")
-            if data is None:
-                return self.json_file["tree"][0].get("package_name")
-            else:
-                return self.json_file["result"]["tree"][0].get("package_name")
-        except Exception:
-            _LOGGER.debug("Can't detect package name from input file")
-            return None
+        return self.json_file.get("Name") or self.json_file.get("name")
 
     def get_package_version(self) -> Optional[Any]:
         """Get package version from metadata."""
-        try:
-            data = self.json_file.get("result")
-            if data is None:
-                return self.json_file["tree"][0].get("package_version")
-            else:
-                return self.json_file["result"]["tree"][0].get("package_version")
-        except Exception:
-            _LOGGER.debug("Can't detect package version from input file")
-            return None
+        return self.json_file.get("Version") or self.json_file.get("version")
 
     def get_license_name(self) -> Optional[Any]:
         """Get license name from metadata."""
-        try:
-            data = self.json_file.get("result")
-            if data is None:
-                return self.json_file["tree"][0]["importlib_metadata"]["metadata"].get("License")
-            else:
-                return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("License")
-        except Exception:
-            _LOGGER.debug("Can't detect license_name from input file")
-            return None
+        return self.json_file.get("License") or self.json_file.get("license")
 
     def get_classifier_name(self) -> Union[List[Any], Any, None]:
         """Get classifier name from metadata."""
-        try:
-            data = self.json_file.get("result")
-            if data is None:
-                return self.json_file["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
-            else:
-                return self.json_file["result"]["tree"][0]["importlib_metadata"]["metadata"].get("Classifier")
-        except Exception:
-            _LOGGER.debug("Can't detect license_name from input file")
-            return None
-
-    def get_errors(self) -> bool:
-        """
-        Check if errors occurred return True.
-
-        result->errors
-        result->unparsed
-        result->unresolved
-        """
-        try:
-            return not (
-                self.json_file["result"].get("errors")
-                or self.json_file["result"].get("unparsed")
-                or self.json_file["result"].get("unresolved")
-            )
-        except Exception:
-            _LOGGER.debug("Metadata from file have error (skipped)")
-            return False
+        return self.json_file.get("Classifier") or self.json_file.get("classifiers")
