@@ -7,21 +7,14 @@ This tool handles license and classifier detection from metadata provided by PyP
 Detects licenses and classifier from metadata provided by:
    - PyPI
    - JSON files
-   - folder/s with JSON files
-   - dictionary
+   - folders with JSON files
+   - dictionary (with function `detect_license()`)
 
 The output is printed by default on STDOUT (you can choose the file where to save the output more in --help).
 
 ## Good to know
 - unidentified license/version/classifier are named `UNDETECTED`
 - non-versioned licenses have an identifier in license_version `LICENSE-WITHOUT-VERSION`
-
-## Special aliases
-- default BSD naming is 4th clause ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
-
-## Important aliases
-This section provides information about specific implementation detail, which can be not obviously clear.
-- `BSD` license name in metadata without specific clause is `4-clause BSD` in license-solver implementation ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
 
 ## Run solver locally
 Often, it is useful to run license-solver locally to experiment or verify your changes in implementation. You can do so easily
@@ -171,3 +164,6 @@ $ pytest tests/
 # or
 $ pytest --cov-report term-missing --cov=thoth tests/     # coverage test
 ```
+
+## Special aliases
+- default BSD naming is 4th clause ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
