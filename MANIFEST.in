@@ -2,7 +2,7 @@ exclude *.yaml
 
 include OWNERS
 include LICENSE
-include README.rst
+include README.md
 include mypy.ini
 include Pipfile
 include Pipfile.lock
