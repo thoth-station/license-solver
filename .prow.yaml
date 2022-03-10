@@ -11,3 +11,21 @@ presubmits:
             - "pre-commit"
             - "run"
             - "--all-files"
+
+  - name: thoth-pytest-py38
+    decorate: true
+    skip_report: false
+    always_run: true
+    context: aicoe-ci/prow/pytest
+    spec:
+      containers:
+        - image: quay.io/thoth-station/thoth-pytest-py38:v0.13.0
+          command:
+             - "run-pytest"
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"

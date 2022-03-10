@@ -98,7 +98,18 @@ class TestSolver:
         out, err = self.capsys.readouterr()
 
         assert str(out) == str(
-            '{"oslotest": {"4.2.0": {"license": ["UNKNOWN"], "license_version": '
+            '{"test_1": {"1.0": {"license": ["MIT License", "MIT"], "license_version": '
+            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: MIT '
+            'License", "MIT License"]], "warning": false}, "1.1": {"license": ["MIT '
+            'License", "MIT"], "license_version": "LICENSE-WITHOUT-VERSION", '
+            '"classifier": [["License :: OSI Approved :: MIT License", "MIT License"]], '
+            '"warning": false}}, "test_2": {"1.0": {"license": ["MIT License", "MIT"], '
+            '"license_version": "LICENSE-WITHOUT-VERSION", "classifier": [["License :: '
+            'OSI Approved :: MIT License", "MIT License"]], "warning": false}, "1.1": '
+            '{"license": ["MIT License", "MIT"], "license_version": '
+            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: '
+            'Apache Software License", "Apache Software License"]], "warning": true}}, '
+            '"oslotest": {"4.2.0": {"license": ["UNKNOWN"], "license_version": '
             '"UNDETECTED", "classifier": [["License :: OSI Approved :: Apache Software '
             'License", "Apache Software License"]], "warning": false}}, '
             '"polyaxon-client": {"0.6.0": {"license": ["MIT License", "MIT"], '

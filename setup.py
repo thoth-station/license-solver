@@ -18,7 +18,45 @@
 """Setup configuration for adviser module."""
 
 import os
+import sys
 from setuptools import setup
+from setuptools.command.test import test as TestCommand  # noqa
+
+
+class Test(TestCommand):
+    """Introduce test command to run testsuite using pytest."""
+
+    _IMPLICIT_PYTEST_ARGS = [
+        "--verbose",
+        "-vv",
+        "tests/",
+    ]
+
+    user_options = [("pytest-args=", "a", "Arguments to pass into py.test")]
+
+    def initialize_options(self):
+        """Initialize cli options."""
+        super().initialize_options()
+        self.pytest_args = None
+
+    def finalize_options(self):
+        """Finalize cli options."""
+        super().finalize_options()
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        """Run module tests."""
+        import pytest
+
+        passed_args = list(self._IMPLICIT_PYTEST_ARGS)
+
+        if self.pytest_args:
+            self.pytest_args = [arg for arg in self.pytest_args.split() if arg]
+            passed_args.extend(self.pytest_args)
+
+        sys.exit(pytest.main(passed_args))
+
 
 try:
     from setuptools import find_namespace_packages
@@ -53,6 +91,11 @@ def get_version():
     raise ValueError("No version identifier found")
 
 
+def read(fname):
+    """Read."""
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+
 VERSION = get_version()
 setup(
     name="thoth-license-solver",
@@ -61,6 +104,7 @@ setup(
     author="Viliam Podhajecky",
     author_email="vpodhaje@redhat.com",
     license="GPLv3+",
+    long_description=read("README.rst"),
     packages=find_namespace_packages(),
     url="https://github.com/thoth-station/license-solver",
     package_data={
@@ -76,6 +120,7 @@ setup(
     entry_points={"console_scripts": ["thoth-license-solver=thoth.license_solver.cli:cli"]},
     zip_safe=False,
     install_requires=get_install_requires(),
+    cmdclass={"test": Test},
     long_description_content_type="text/x-rst",
     command_options={
         "build_sphinx": {
