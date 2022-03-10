@@ -111,7 +111,7 @@ setup(
     author="Viliam Podhajecky",
     author_email="vpodhaje@redhat.com",
     license="GPLv3+",
-    long_description=read("README.md"),
+    long_description=read("README.rst"),
     packages=find_namespace_packages(),
     url="https://github.com/thoth-station/license-solver",
     package_data={

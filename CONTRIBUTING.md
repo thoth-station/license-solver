@@ -34,7 +34,7 @@ If you are introducing a new dependency, please make sure it's added to:
 
 ### Documentation
 
-If you want to update documentation, [README.md](README.md) is the file you're looking for.
+If you want to update documentation, [README.rst](README.rst) is the file you're looking for.
 
 
 ### How to contribute code to Thoth-Station
