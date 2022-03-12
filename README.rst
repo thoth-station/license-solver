@@ -49,25 +49,25 @@ Examples
 
 .. code:: json
 
-        {
-            "requests": {
-                "2.27.1": {
-                    "license": [
-                        "Apache License 2.0",
-                        "Apache-2.0",
-                        "Apache 2.0"
-                    ],
-                    "license_version": "2.0",
-                    "classifier": [
-                        [
-                            "License :: OSI Approved :: Apache Software License",
-                            "Apache Software License"
-                        ]
-                    ],
-                    "warning": false
-                }
-            }
-        }
+   {
+      "requests": {
+          "2.27.1": {
+              "license": [
+                  "Apache License 2.0",
+                  "Apache-2.0",
+                  "Apache 2.0"
+              ],
+              "license_version": "2.0",
+              "classifier": [
+                  [
+                      "License :: OSI Approved :: Apache Software License",
+                      "Apache Software License"
+                  ]
+              ],
+              "warning": false
+          }
+      }
+   }
 
 ------------
 
@@ -118,7 +118,7 @@ Examples
           }
       }
    }
-   
+
 ------------
 
 
@@ -127,62 +127,62 @@ Examples
 .. code-block:: console
 
    $ thoth-license-solver --file tests/examples/request_example.json tests/examples/request_example_2.json --package-name numpy -pp 4
-        
+
 * Output 3.
 
 .. code-block:: json
 
-        {
-            "numpy": {
-                "1.22.1": {
-                    "license": [
-                        "BSD 4-Clause \"Original\" or \"Old\" License",
-                        "BSD-4-Clause",
-                        "BSD 4 Clause"
-                    ],
-                    "license_version": "4",
-                    "classifier": [
-                        [
-                            "License :: OSI Approved :: BSD License",
-                            "BSD License"
-                        ]
-                    ],
-                    "warning": false
-                }
-            },
-            "requests": {
-                "2.27.1": {
-                    "license": [
-                        "Apache License 2.0",
-                        "Apache-2.0",
-                        "Apache 2.0"
-                    ],
-                    "license_version": "2.0",
-                    "classifier": [
-                        [
-                            "License :: OSI Approved :: Apache Software License",
-                            "Apache Software License"
-                        ]
-                    ],
-                    "warning": false
-                },
-                "2.24.0": {
-                    "license": [
-                        "Apache License 2.0",
-                        "Apache-2.0",
-                        "Apache 2.0"
-                    ],
-                    "license_version": "2.0",
-                    "classifier": [
-                        [
-                            "License :: OSI Approved :: Apache Software License",
-                            "Apache Software License"
-                        ]
-                    ],
-                    "warning": false
-                }
-            }
-        }
+   {
+      "numpy": {
+          "1.22.1": {
+              "license": [
+                  "BSD 4-Clause \"Original\" or \"Old\" License",
+                  "BSD-4-Clause",
+                  "BSD 4 Clause"
+              ],
+              "license_version": "4",
+              "classifier": [
+                  [
+                      "License :: OSI Approved :: BSD License",
+                      "BSD License"
+                  ]
+              ],
+              "warning": false
+          }
+      },
+      "requests": {
+          "2.27.1": {
+              "license": [
+                  "Apache License 2.0",
+                  "Apache-2.0",
+                  "Apache 2.0"
+              ],
+              "license_version": "2.0",
+              "classifier": [
+                  [
+                      "License :: OSI Approved :: Apache Software License",
+                      "Apache Software License"
+                  ]
+              ],
+              "warning": false
+          },
+          "2.24.0": {
+              "license": [
+                  "Apache License 2.0",
+                  "Apache-2.0",
+                  "Apache 2.0"
+              ],
+              "license_version": "2.0",
+              "classifier": [
+                  [
+                      "License :: OSI Approved :: Apache Software License",
+                      "Apache Software License"
+                  ]
+              ],
+              "warning": false
+          }
+      }
+   }
 
 ^^^^^^^^^^
 Installation
