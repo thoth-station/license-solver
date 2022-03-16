@@ -17,7 +17,7 @@
 
 """Tests related to class OutputCreator."""
 
-from typing import Optional, List
+from typing import List, Dict
 from thoth.license_solver.output_creator import OutputCreator
 from thoth.license_solver.package import Package
 
@@ -31,16 +31,21 @@ class TestOutputCreator:
     def create_package(
         name: str,
         version: str,
-        license_name: Optional[List[str]],
+        license_name: Dict[str, str],
         license_version: str,
         license_bool: bool,
         classifier: List[str],
     ) -> Package:
         """Create package."""
+        license_list: List[str, str] = []
+
+        if license_name:
+            license_list = [license_name["full_name"], license_name["identifier_spdx"], license_name["identifier"]]
+
         package = Package()
         package.set_package_name(name)
         package.set_version(version)
-        package.set_license((license_name, license_bool))
+        package.set_license((license_list, license_bool))
         package.set_license_version(license_version)
         package.set_classifier(classifier)
 
@@ -51,7 +56,7 @@ class TestOutputCreator:
         package_1 = self.create_package(
             "test_1",
             "1.0",
-            ["MIT License", "MIT"],
+            {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
             "LICENSE-WITHOUT-VERSION",
             False,
             ["License :: OSI Approved :: MIT License", "MIT License"],
@@ -61,7 +66,7 @@ class TestOutputCreator:
         assert self.output_creator.file == {
             "test_1": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
@@ -74,7 +79,7 @@ class TestOutputCreator:
         package = self.create_package(
             "test_1",
             "1.1",
-            ["MIT License", "MIT"],
+            {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
             "LICENSE-WITHOUT-VERSION",
             False,
             ["License :: OSI Approved :: MIT License", "MIT License"],
@@ -84,13 +89,13 @@ class TestOutputCreator:
         assert self.output_creator.file == {
             "test_1": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
                 },
                 "1.1": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
@@ -103,7 +108,7 @@ class TestOutputCreator:
         package = self.create_package(
             "test_2",
             "1.0",
-            ["MIT License", "MIT"],
+            {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
             "LICENSE-WITHOUT-VERSION",
             False,
             ["License :: OSI Approved :: MIT License", "MIT License"],
@@ -113,13 +118,13 @@ class TestOutputCreator:
         assert self.output_creator.file == {
             "test_1": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
                 },
                 "1.1": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
@@ -127,7 +132,7 @@ class TestOutputCreator:
             },
             "test_2": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
@@ -140,7 +145,7 @@ class TestOutputCreator:
         package = self.create_package(
             "test_2",
             "1.1",
-            ["MIT License", "MIT"],
+            {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
             "LICENSE-WITHOUT-VERSION",
             False,
             ["License :: OSI Approved :: Apache Software License", "Apache Software License"],
@@ -150,13 +155,13 @@ class TestOutputCreator:
         assert self.output_creator.file == {
             "test_1": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
                 },
                 "1.1": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
@@ -164,13 +169,13 @@ class TestOutputCreator:
             },
             "test_2": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
                 },
                 "1.1": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: Apache Software License", "Apache Software License"]],
                     "warning": True,
@@ -183,7 +188,7 @@ class TestOutputCreator:
         package_same_package = self.create_package(
             "test_2",
             "1.1",
-            ["MIT License", "MIT"],
+            {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
             "LICENSE-WITHOUT-VERSION",
             False,
             ["License :: OSI Approved :: Apache Software License", "Apache Software License"],
@@ -191,7 +196,7 @@ class TestOutputCreator:
         package_same_version = self.create_package(
             "test_2",
             "1.1",
-            ["MIT License", "MIT"],
+            {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
             "LICENSE-WITHOUT-VERSION",
             False,
             ["License :: OSI Approved :: Apache Software License", "Apache Software License"],
@@ -202,13 +207,13 @@ class TestOutputCreator:
         assert self.output_creator.file == {
             "test_1": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
                 },
                 "1.1": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
@@ -216,13 +221,13 @@ class TestOutputCreator:
             },
             "test_2": {
                 "1.0": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: MIT License", "MIT License"]],
                     "warning": False,
                 },
                 "1.1": {
-                    "license": ["MIT License", "MIT"],
+                    "license": {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"},
                     "license_version": "LICENSE-WITHOUT-VERSION",
                     "classifier": [["License :: OSI Approved :: Apache Software License", "Apache Software License"]],
                     "warning": True,

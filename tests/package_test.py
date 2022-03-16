@@ -50,32 +50,46 @@ class TestPackage:
     def test_set_license(self) -> None:
         """Test set_license function."""
         # license found in license_without_version dictionary
-        license_without_version = (["MIT License", "MIT"], True)
+        license_without_version = (["MIT License", "MIT", "MIT"], True)
         self.package.set_license(license_without_version)
         assert (
-            self.package.license == license_without_version[0]
+            self.package.license == {"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"}
             and self.package.license_version == "LICENSE-WITHOUT-VERSION"
         )
 
         # license extract version
         license_with_version = (["Apache License 1.1", "Apache-1.1", "Apache 1.1"], True)
         self.package.set_license(license_with_version)
-        assert self.package.license == license_with_version[0] and self.package.license_version == "1.1"
+        assert (
+            self.package.license
+            == {"full_name": "Apache License 1.1", "identifier_spdx": "Apache-1.1", "identifier": "Apache 1.1"}
+            and self.package.license_version == "1.1"
+        )
 
         # license without version
-        license_with_version = (["Apache License", "Apache"], False)
+        license_with_version = (["Apache License", "Apache", "Apache"], False)
         self.package.set_license(license_with_version)
-        assert self.package.license == license_with_version[0] and self.package.license_version == "UNDETECTED"
+        assert (
+            self.package.license == {"full_name": "Apache License", "identifier_spdx": "Apache", "identifier": "Apache"}
+            and self.package.license_version == "UNDETECTED"
+        )
 
         # test license without version
         license_without_version = (list(["LGPL"]), True)
         self.package.set_license(license_without_version)
-        assert self.package.license == ["LGPL"] and self.package.license_version == "UNDETECTED"
+        assert (
+            self.package.license == {"full_name": "LGPL", "identifier_spdx": "UNDETECTED", "identifier": "UNDETECTED"}
+            and self.package.license_version == "UNDETECTED"
+        )
 
         # undetected license
         self.package.set_license((list(), False))
-        assert self.package.license == ["UNDETECTED"] and self.package.license_version == "UNDETECTED"
-        self.package.set_license((list(["AAA", "AAA"]), True))
+        assert (
+            self.package.license
+            == {"full_name": "UNDETECTED", "identifier": "UNDETECTED", "identifier_spdx": "UNDETECTED"}
+            and self.package.license_version == "UNDETECTED"
+        )
+        self.package.set_license((list(["AAA", "AAA", "AAA"]), True))
         assert self.package.license_version == "UNDETECTED"
 
     def test_set_license_version(self) -> None:
