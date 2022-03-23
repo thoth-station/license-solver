@@ -48,7 +48,7 @@ class Licenses:
                 data = f.read()
                 self.data = data
                 self.json_data = json.loads(self.data)
-                _LOGGER.debug("File pypi_classifiers.txt was successful loaded")
+                _LOGGER.debug("File spdx_licenses.json was successful loaded")
         except Exception:
             _LOGGER.critical("Could not open/read file: %s", file_path)
             raise UnableOpenFileData
@@ -69,6 +69,8 @@ class Licenses:
                 if i["licenseId"] != i["licenseId"].replace("-", " "):
                     # abbreviation without "-"
                     li.append(i["licenseId"].replace("-", " "))
+                else:
+                    li.append(i["licenseId"])
 
                 self.licenses_list.append(li)
         except Exception as e:

@@ -21,7 +21,7 @@ import re
 import yaml
 import os
 import logging
-from typing import Union, Tuple, List, Optional
+from typing import Union, Tuple, List, Optional, Dict
 from .exceptions import UnableOpenFileData
 
 _LOGGER = logging.getLogger(__name__)
@@ -50,12 +50,14 @@ def _detect_version_and_delete(string: str) -> Union[Tuple[str, str], Tuple[str,
 class Package:
     """Object which store values metadata."""
 
-    name: str = ""
-    version: str = ""
-    license: List[str] = list()
-    license_version: str = ""
-    classifier: List[List[str]] = list()
-    file_path: str = ""
+    def __init__(self) -> None:
+        """Init."""
+        self.name: str = ""
+        self.version: str = ""
+        self.license: Dict[str, str] = dict()
+        self.license_version: str = ""
+        self.classifier: List[List[str]] = list()
+        self.file_path: str = ""
 
     def set_package_name(self, package_name: Optional[str]) -> None:
         """Set package name."""
@@ -85,14 +87,18 @@ class Package:
 
         if len(license_name[0]) > 1:
             if license_name[0][0] in licenses_without_version:
-                self.license = license_name[0]
+                self.license["full_name"] = license_name[0][0]
+                self.license["identifier_spdx"] = license_name[0][1]
+                self.license["identifier"] = license_name[0][2]
                 self.set_license_version("LICENSE-WITHOUT-VERSION")
                 _LOGGER.debug("Set license %s and version %s", license_name[0], "LICENSE-WITHOUT-VERSION")
             elif license_name[1]:
                 _license_name_no_version, _license_version = _detect_version_and_delete(
                     license_name[0][len(license_name[0]) - 1]
                 )
-                self.license = license_name[0]
+                self.license["full_name"] = license_name[0][0]
+                self.license["identifier_spdx"] = license_name[0][1]
+                self.license["identifier"] = license_name[0][2]
 
                 if _license_version is None:
                     self.set_license_version("UNDETECTED")
@@ -101,15 +107,21 @@ class Package:
                     self.set_license_version(_license_version)
                     _LOGGER.debug("Set license %s and version %s", license_name[0], _license_version)
             else:
-                self.license = license_name[0]
+                self.license["full_name"] = license_name[0][0]
+                self.license["identifier_spdx"] = license_name[0][1]
+                self.license["identifier"] = license_name[0][2]
                 self.set_license_version("UNDETECTED")
                 _LOGGER.debug("Set license %s and version %s", license_name[0], "UNDETECTED")
         elif len(license_name[0]) == 1:
-            self.license = license_name[0]
+            self.license["full_name"] = license_name[0][0]
+            self.license["identifier_spdx"] = "UNDETECTED"
+            self.license["identifier"] = "UNDETECTED"
             self.set_license_version("UNDETECTED")
             _LOGGER.debug("Set license %s and version %s", license_name[0], "UNDETECTED")
         else:
-            self.license = list(["UNDETECTED"])
+            self.license["full_name"] = "UNDETECTED"
+            self.license["identifier_spdx"] = "UNDETECTED"
+            self.license["identifier"] = "UNDETECTED"
             self.set_license_version("UNDETECTED")
             _LOGGER.debug("Set license %s and version %s", list(["UNDETECTED"]), "UNDETECTED")
 

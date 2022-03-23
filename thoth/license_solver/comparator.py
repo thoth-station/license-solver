@@ -67,16 +67,18 @@ class Comparator:
         if not license_name or not classifier_name:
             return True
 
+        license_list = [license_name["full_name"], license_name["identifier_spdx"], license_name["identifier"]]
+
         for x in classifier_name:
 
             _LOGGER.debug("Compare license and classifier:\n" "%s%s\n" "%s%s", debug_tab, license_name, debug_tab, x)
 
             if (
-                list(set(license_name) & set(x))
-                or self.search_in_dictionary(license_name, x)
+                list(set(license_list) & set(x))
+                or self.search_in_dictionary(license_list, x)
                 or classifier_name[0][0] == "UNDETECTED"
-                or license_name[0] == "UNKNOWN"
-                or license_name[0].lower() == "the unlicense"
+                or license_list[0] == "UNKNOWN"
+                or license_list[0].lower() == "the unlicense"
             ):
                 _LOGGER.debug("Found match or alias")
                 return True

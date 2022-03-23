@@ -36,13 +36,13 @@ class TestComparator:
         assert self.comparator.cmp(package_1), "Not matched apache license and classifier"
 
         package_2 = Package()
-        package_2.set_license((["MIT License", "MIT"], True))
+        package_2.set_license((["MIT License", "MIT", "MIT"], True))
         package_2.set_classifier(["License :: OSI Approved :: MIT License", "MIT License"])
         assert self.comparator.cmp(package_2), "Not matched MIT license and classifier"
 
         # test wrong license and classifier
         package_3 = Package()
-        package_3.set_license((["MIT License", "MIT"], True))
+        package_3.set_license((["MIT License", "MIT", "MIT"], True))
         package_3.set_classifier(["License :: OSI Approved :: Apache Software License", "Apache Software License"])
         assert self.comparator.cmp(package_3) is False, "License and Classifier can't match"
 
@@ -51,6 +51,7 @@ class TestComparator:
         package_1 = Package()
         package_1.set_license((["Apache License 1.1", "Apache-1.1", "Apache 1.1"], True))
         assert self.comparator.cmp(package_1), "Must return true, because there is nothing to compare"
+        # del package_1
 
         package_2 = Package()
         package_2.set_classifier(["License :: OSI Approved :: MIT License", "MIT License"])
