@@ -1,5 +1,17 @@
 # Changelog for Thoth's Template GitHub Project
 
+## Release 0.1.2 (2022-03-29T12:48:55)
+* 3f6d66b :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
+* e0e60dc fix solver_test
+* d4df827 change list of licenses to dictionary + test fix
+* d2f9a00 Update README.rst
+* 314d1b3 Update README.rst
+* 57b67a0 maybe this one is last fix :)
+* bc5505a maybe last fix :)
+* c6f425f rename readme.rst to .md
+* 4e679a7 MANIFEST.in: change readme.md to .rst
+* 21cc4e8 udpate
+
 ## Release 0.1.1 (2022-03-02T19:58:50)
 * Remove template bits
 * :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
