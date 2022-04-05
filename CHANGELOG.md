@@ -1,5 +1,10 @@
 # Changelog for Thoth's Template GitHub Project
 
+## Release 0.1.3 (2022-04-05T13:55:42)
+* 44d2fda :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
+* 252f70b update pyproject.toml
+* 0bbc372 new template, deliver missing module
+
 ## Release 0.1.2 (2022-03-29T12:48:55)
 * 3f6d66b :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
 * e0e60dc fix solver_test
