@@ -1,5 +1,8 @@
 # Changelog for Thoth's Template GitHub Project
 
+## Release 0.1.4 (2022-04-05T17:57:17)
+* e218ca2 Fix the rst structure of README
+
 ## Release 0.1.3 (2022-04-05T13:55:42)
 * 44d2fda :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
 * 252f70b update pyproject.toml
