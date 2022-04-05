@@ -17,16 +17,16 @@ Detects licenses and classifier from metadata provided by:
 
 The output is printed by default on STDOUT (you can choose the file where to save the output more in --help).
 
-^^^^^^^^^^
+
 Good to know
-^^^^^^^^^^
+^^^^^^^^^^^^
 
 * unidentified license/version/classifier are named `UNDETECTED`
 * non-versioned licenses have an identifier in license_version `LICENSE-WITHOUT-VERSION`
 
-^^^^^^^^^^
+
 Run solver locally
-^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 Often, it is useful to run license-solver locally to experiment or verify your changes in implementation. You can do so easily
 by running:
 
@@ -35,9 +35,9 @@ by running:
 
    $ PYTHONPATH=. python3 ./thoth-license-solver <arguments>
 
-^^^^^^^^^^
+
 Examples
-^^^^^^^^^^
+^^^^^^^^
 
 1. sample with 1 `file <https://github.com/thoth-station/license-solver/tree/master/tests/examples/request_example.json>`_:
 
@@ -184,9 +184,9 @@ Examples
       }
    }
 
-^^^^^^^^^^
+
 Installation
-^^^^^^^^^^
+^^^^^^^^^^^^
 
 Install `license-solver`:
 
@@ -194,9 +194,9 @@ Install `license-solver`:
 
    $ pip install thoth-license-solver
 
-^^^^^^^^^^
+
 Run tests
-^^^^^^^^^^
+^^^^^^^^^
 It is a good habit for the program to be tested after the implementation of new features. You can run:
 
 .. code-block:: console
@@ -205,7 +205,7 @@ It is a good habit for the program to be tested after the implementation of new 
    # or
    $ pytest --cov-report term-missing --cov=thoth tests/     # coverage test
 
-^^^^^^^^^^
+
 Special aliases
-^^^^^^^^^^
+^^^^^^^^^^^^^^^
 - default BSD naming is 4th clause ([source](https://en.wikipedia.org/wiki/BSD_licenses#Terms))
