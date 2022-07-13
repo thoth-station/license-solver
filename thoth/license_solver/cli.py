@@ -231,9 +231,6 @@ def cli(
             _LOGGER.debug("Parsing file: %s", f)
             license_solver.solve_from_file(f)
 
-    if github_check:
-        license_solver.github_check()
-
     if output:
         license_solver.save_output(output, pretty_printing)
 
