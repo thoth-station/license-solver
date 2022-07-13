@@ -20,7 +20,6 @@
 import json
 import sys
 import logging
-import attr
 from .comparator import Comparator
 from .package import Package
 from typing import Dict, Any
@@ -28,12 +27,17 @@ from typing import Dict, Any
 _LOGGER = logging.getLogger(__name__)
 
 
-@attr.s(slots=True)
 class OutputCreator:
     """Propose of this class is to create dictionary for all packages (input)."""
 
-    file: Dict[Any, Any] = dict()
-    comparator: Comparator = Comparator()
+    def __init__(self, github: bool = False) -> None:
+        """
+        Init variables for OutputCreator.
+
+        :param github:
+        """
+        self.file: Dict[Any, Any] = dict()
+        self.comparator: Comparator = Comparator(github)
 
     def add_package(self, package: Package) -> None:
         """

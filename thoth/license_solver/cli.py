@@ -30,6 +30,15 @@ init_logging()
 _LOGGER = logging.getLogger("thoth.license_solver")
 
 
+def _print_version(ctx: click.Context, _, value: str) -> None:
+    """Print license-solver version and exit."""
+    if not value or ctx.resilient_parsing:
+        return
+
+    click.echo(license_solver_version)
+    ctx.exit()
+
+
 class OptionEatAll(click.Option):
     """
     Eat all argument of parameter.
@@ -82,23 +91,14 @@ class OptionEatAll(click.Option):
         return retval
 
 
-def _print_version(ctx: click.Context, _, value: str) -> None:
-    """Print license-solver version and exit."""
-    if not value or ctx.resilient_parsing:
-        return
-
-    click.echo(license_solver_version)
-    ctx.exit()
-
-
 @click.command(context_settings=dict(max_content_width=160))
 @click.pass_context
 @click.option(
     "-v",
     "--verbose",
     is_flag=True,
-    envvar="THOTH_SOLVER_LICENSE_JOB_DEBUG",
     help="Be verbose about what's going on.",
+    envvar="THOTH_SOLVER_LICENSE_JOB_DEBUG",
 )
 @click.option(
     "--version",
@@ -152,7 +152,7 @@ def _print_version(ctx: click.Context, _, value: str) -> None:
     "--no-print",
     is_flag=True,
     help="No print on STDOUT.",
-    envvar="THOTH_SOLVER_LICENSE_OUTPUT",
+    envvar="THOTH_SOLVER_LICENSE_NO_PRINT",
 )
 @click.option(
     "-pp",
@@ -164,6 +164,13 @@ def _print_version(ctx: click.Context, _, value: str) -> None:
     help="Save/print result with prettier look.",
     envvar="THOTH_SOLVER_LICENSE_INDENT",
 )
+@click.option(
+    "-gch",
+    "--github-check",
+    is_flag=True,
+    help="Check licenses with Github repository.",
+    envvar="THOTH_SOLVER_LICENSE_GITHUB_CHECK",
+)
 def cli(
     ctx: click.Context,
     directory: tuple,
@@ -173,6 +180,7 @@ def cli(
     output: str,
     no_print: bool,
     pretty_printing: int,
+    github_check: bool = False,
     verbose: bool = False,
 ) -> None:
     """
@@ -185,7 +193,7 @@ def cli(
         _LOGGER.setLevel(logging.DEBUG)
         _LOGGER.debug("Debug mode is on")
 
-    license_solver = Solver()
+    license_solver = Solver(github_check)
 
     # package argument
     if package_name is not None:
@@ -222,6 +230,9 @@ def cli(
 
             _LOGGER.debug("Parsing file: %s", f)
             license_solver.solve_from_file(f)
+
+    if github_check:
+        license_solver.github_check()
 
     if output:
         license_solver.save_output(output, pretty_printing)
