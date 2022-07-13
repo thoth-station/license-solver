@@ -29,13 +29,14 @@ def detect_license(
     input_data: Union[Dict[str, Any], str, List[str], List[Dict[str, Any]]],
     package_name: Optional[str] = None,
     package_version: Optional[str] = None,
-    raise_on_error: Optional[bool] = True,
+    raise_on_error: bool = True,
+    github_check: bool = False,
 ) -> Dict[str, Any]:
     """Detect license with license-solver."""
     condition = True if package_name and package_version else False
 
     try:
-        license_solver = Solver()
+        license_solver = Solver(github_check)
 
         if isinstance(input_data, dict) or isinstance(input_data, str):
             license_solver.solve_from_file(input_data)

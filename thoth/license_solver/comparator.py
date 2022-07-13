@@ -20,8 +20,10 @@
 import os
 import re
 import yaml
-import attr
+import json
 import logging
+import urllib.request
+import urllib.error
 from typing import List, Any, Dict
 from .package import Package
 
@@ -36,18 +38,29 @@ def _delete_brackets_and_content(license_list: str) -> str:
     return re.sub(r"\(.*?\)", "", license_list).strip()
 
 
-@attr.s(slots=True)
 class Comparator:
     """Class Comparator compare classifiers and licenses."""
 
-    _comparator_dictionary: Dict[str, Any] = attr.ib(init=False)
+    def __init__(self, github: bool = False) -> None:
+        """
+        Init class variables.
 
-    def __attrs_post_init__(self) -> None:
-        """Open dictionary for comparing license and classifier."""
+        :param: github: check license with github repository
+        :return: None
+        """
+        self.github: bool = github
+        self._comparator_dictionary: Dict[str, Any] = self.open_dictionary()
+
+    def open_dictionary(self) -> Any:
+        """
+        Open directory with dictionary for Comparator.
+
+        :return: yaml
+        """
         file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "comparator_dictionary.yaml")
         with open(file_path) as f:
             try:
-                self._comparator_dictionary = yaml.safe_load(f)
+                return yaml.safe_load(f)
             except yaml.YAMLError:
                 _LOGGER.warning("Can't open data/comparator_dictionary.yaml or broken file")
                 raise yaml.YAMLError
@@ -81,10 +94,31 @@ class Comparator:
                 or license_list[0].lower() == "the unlicense"
             ):
                 _LOGGER.debug("Found match or alias")
-                return True
+
+                return True if not self.github else self.check_github(package)
 
         _LOGGER.debug("No match")
         return False
+
+    def check_github(self, package: Package) -> bool:
+        """
+        Compare github license with PyPI license.
+
+        :param package: name of package to check
+        :return: True if match, False if not
+        """
+        prescription = self._get_prescription(package.name)
+
+        if prescription is None:
+            _LOGGER.warning("Failed to check github license for %s", package.name)
+            return True
+
+        link = prescription["units"]["wraps"][0]["run"]["justification"][0]["link"]
+        owner, repo = link.split("/")[-2:]
+        url = f"https://api.github.com/repos/{owner}/{repo}/license"
+        data_api_github = json.loads(urllib.request.urlopen(url).read().decode())
+
+        return True if data_api_github["license"]["spdx_id"] in package.license["identifier_spdx"] else False
 
     def search_in_dictionary(self, license_name: List[str], classifier: List[str]) -> bool:
         """
@@ -107,3 +141,32 @@ class Comparator:
                     return True
 
         return False
+
+    def _get_prescription(self, package_name: str) -> Any:
+        """
+        Get prescription from https://github.com/thoth-station/prescriptions.
+
+        :param package_name: Package name
+        :return: None if method failed, yaml if prescription is found
+        """
+        name = re.sub("[^a-zA-z0-9]", "-", package_name)
+        url = "https://raw.githubusercontent.com/thoth-station/prescriptions/master/prescriptions/"
+
+        if len(name) == 1:
+            url += f"{name}/gh_link.yaml"
+        elif len(name) == 2:
+            url += f"{name[:2]}/gh_link.yaml"
+        else:
+            url += f"{name[:2]}_/{name}/gh_link.yaml"
+
+        try:
+            r = urllib.request.urlopen(url).read().decode()  # get webpage data
+            text = yaml.safe_load(r)
+        except urllib.error.HTTPError as e:
+            _LOGGER.warning("Failed to download prescription: %s", e)
+            text = None
+        except yaml.YAMLError as e:
+            _LOGGER.warning("Failed open downloaded prescription: %s", e)
+            text = None
+
+        return text

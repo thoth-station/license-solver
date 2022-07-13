@@ -24,7 +24,7 @@ from thoth.license_solver.package import Package
 class TestComparator:
     """Test Comparator."""
 
-    comparator: Comparator = Comparator()
+    comparator: Comparator = Comparator(False)
 
     # tests related to Compare().cmp()
     def test_cmp(self) -> None:
