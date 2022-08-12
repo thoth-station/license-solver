@@ -98,21 +98,7 @@ class TestSolver:
         out, err = self.capsys.readouterr()
 
         assert str(out) == str(
-            '{"test_1": {"1.0": {"license": {"full_name": "MIT License", '
-            '"identifier_spdx": "MIT", "identifier": "MIT"}, "license_version": '
-            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: MIT '
-            'License", "MIT License"]], "warning": false}, "1.1": {"license": '
-            '{"full_name": "MIT License", "identifier_spdx": "MIT", "identifier": "MIT"}, '
-            '"license_version": "LICENSE-WITHOUT-VERSION", "classifier": [["License :: '
-            'OSI Approved :: MIT License", "MIT License"]], "warning": false}}, "test_2": '
-            '{"1.0": {"license": {"full_name": "MIT License", "identifier_spdx": "MIT", '
-            '"identifier": "MIT"}, "license_version": "LICENSE-WITHOUT-VERSION", '
-            '"classifier": [["License :: OSI Approved :: MIT License", "MIT License"]], '
-            '"warning": false}, "1.1": {"license": {"full_name": "MIT License", '
-            '"identifier_spdx": "MIT", "identifier": "MIT"}, "license_version": '
-            '"LICENSE-WITHOUT-VERSION", "classifier": [["License :: OSI Approved :: '
-            'Apache Software License", "Apache Software License"]], "warning": true}}, '
-            '"moto": {"1.3.15.dev221": {"license": {"full_name": "Apache", '
+            '{"moto": {"1.3.15.dev221": {"license": {"full_name": "Apache", '
             '"identifier_spdx": "UNDETECTED", "identifier": "UNDETECTED"}, '
             '"license_version": "UNDETECTED", "classifier": [["License :: OSI Approved :: '
             'Apache Software License", "Apache Software License"]], "warning": false}}, '

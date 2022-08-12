@@ -25,7 +25,7 @@ from thoth.license_solver.package import Package
 class TestOutputCreator:
     """Test OutputCreator."""
 
-    output_creator: OutputCreator = OutputCreator()
+    output_creator: OutputCreator = OutputCreator(False)
 
     @staticmethod
     def create_package(

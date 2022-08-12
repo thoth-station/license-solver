@@ -20,7 +20,6 @@
 import os
 import sys
 import json
-import attr
 import logging
 import requests
 
@@ -38,19 +37,17 @@ from .exceptions import UnableOpenFileData
 _LOGGER = logging.getLogger(__name__)
 
 
-@attr.s(slots=True)
 class Solver:
     """Class pass all detected files and try to detect all necessary data."""
 
-    license_dictionary: Dict[str, Any] = attr.ib(init=False)
+    def __init__(self, github: bool = False) -> None:
+        """Init class variables and open JSON file of license aliases."""
+        self.license_dictionary: Dict[str, Any] = dict()
+        self.classifiers: Classifiers = Classifiers()
+        self.licenses: Licenses = Licenses()
+        self.output: OutputCreator = OutputCreator(github)
 
-    classifiers: Classifiers = Classifiers()
-    licenses: Licenses = Licenses()
-    output: OutputCreator = OutputCreator()
-
-    def __attrs_post_init__(self) -> None:
-        """Open JSON file of license aliases."""
-        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/license_dictionary.json")
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "license_dictionary.json")
         try:
             with open(file_path) as f:
                 self.license_dictionary = json.load(f).get("data")
