@@ -21,7 +21,7 @@ from .solver import Solver
 from typing import Dict, Any, List, Union, Optional
 
 __title__ = "license-solver"
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __author__ = "Viliam Podhajecky <vpodhaje@redhat.com>"
 
 

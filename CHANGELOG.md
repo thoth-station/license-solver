@@ -1,5 +1,13 @@
 # Changelog for Thoth's Template GitHub Project
 
+## Release 0.1.5 (2022-09-16T03:25:35)
+* d9e90fc :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
+* 46449cb :recycle: HouseKeeping: Updated pre-commit and OWNERS
+* 55738d3 Set the default in the same pattern as result
+* f519341 :arrow_up: Automatic update of dependencies by Kebechet for the ubi8 environment
+* a3c1bf3 combine results with GitHub license #34
+* dfa09b7 combine results with GitHub license #34
+
 ## Release 0.1.4 (2022-04-05T17:57:17)
 * e218ca2 Fix the rst structure of README
 
