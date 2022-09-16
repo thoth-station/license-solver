@@ -246,8 +246,11 @@ class Solver:
     def get_empty_dict() -> Dict[str, Any]:
         """Return empty dictionary for license."""
         return {
-            "license": "UNDETECTED",
-            "license_identifier": "UNDETECTED",
+            "license": {
+                "full_name": "UNDETECTED",
+                "identifier": "UNDETECTED",
+                "identifier_spdx": "UNDETECTED",
+            },
             "license_version": "UNDETECTED",
             "warning": True,
         }
